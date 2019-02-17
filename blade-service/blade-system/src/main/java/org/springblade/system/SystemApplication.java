@@ -16,17 +16,17 @@
  */
 package org.springblade.system;
 
+import org.springblade.core.cloud.feign.EnableBladeFeign;
 import org.springblade.core.launch.BladeApplication;
 import org.springblade.core.launch.constant.AppConstant;
 import org.springframework.cloud.client.SpringCloudApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * 系统模块启动器
  * @author Chill
  */
+@EnableBladeFeign
 @SpringCloudApplication
-@EnableFeignClients(AppConstant.BASE_PACKAGES)
 public class SystemApplication {
 
 	public static void main(String[] args) {
