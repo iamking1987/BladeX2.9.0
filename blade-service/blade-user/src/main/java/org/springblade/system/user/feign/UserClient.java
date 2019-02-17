@@ -35,7 +35,7 @@ public class UserClient implements IUserClient {
 	IUserService service;
 
 	@Override
-	@GetMapping(API_PREFIX + "/userInfo")
+	@GetMapping(API_PREFIX + "/user-info")
 	public R<UserInfo> userInfo(String account, String password) {
 		return R.data(service.userInfo(account, password));
 	}

@@ -42,7 +42,7 @@ public interface IUserClient {
 	 * @param password 密码
 	 * @return
 	 */
-	@GetMapping(API_PREFIX + "/userInfo")
+	@GetMapping(API_PREFIX + "/user-info")
 	R<UserInfo> userInfo(@RequestParam("account") String account, @RequestParam("password") String password);
 
 }
