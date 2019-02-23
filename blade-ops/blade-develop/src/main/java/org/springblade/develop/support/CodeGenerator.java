@@ -29,9 +29,13 @@ public class CodeGenerator {
 	 */
 	public static String PACKAGE_NAME = "org.springblade.demo";
 	/**
-	 * 代码生成的地址
+	 * 前端代码生成所属系统
 	 */
-	public static String PACKAGE_DIR = "/blade-ops/blade-codegen/src/main/java";
+	public static String SYSTEM_NAME = "saber";
+	/**
+	 * 前端代码生成地址
+	 */
+	public static String PACKAGE_WEB_DIR = "/Users/chill/Workspaces/dev/Saber";
 	/**
 	 * 需要去掉的表前缀
 	 */
@@ -39,7 +43,7 @@ public class CodeGenerator {
 	/**
 	 * 需要生成的表名(两者只能取其一)
 	 */
-	public static String[] INCLUDE_TABLES = {"blade_blog"};
+	public static String[] INCLUDE_TABLES = {"blade_notice"};
 	/**
 	 * 需要排除的表名(两者只能取其一)
 	 */
@@ -53,13 +57,15 @@ public class CodeGenerator {
 	 */
 	public static String[] SUPER_ENTITY_COLUNMS = {"id", "create_time", "create_user", "update_time", "update_user", "status", "is_deleted"};
 
+
 	/**
 	 * RUN THIS
 	 */
-	public static void generate() {
+	public static void main(String[] args) {
 		BladeGenerator generator = new BladeGenerator();
+		generator.setSystemName(SYSTEM_NAME);
 		generator.setPackageName(PACKAGE_NAME);
-		generator.setPackageDir(PACKAGE_DIR);
+		generator.setPackageWebDir(PACKAGE_WEB_DIR);
 		generator.setTablePrefix(TABLE_PREFIX);
 		generator.setIncludeTables(INCLUDE_TABLES);
 		generator.setExcludeTables(EXCLUDE_TABLES);
