@@ -14,8 +14,10 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.develop.support;
+package org.springblade.test;
 
+
+import org.springblade.develop.support.BladeGenerator;
 
 /**
  * 代码生成器
