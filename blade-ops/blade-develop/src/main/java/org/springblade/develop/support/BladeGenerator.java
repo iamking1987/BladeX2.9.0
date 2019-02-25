@@ -286,7 +286,7 @@ public class BladeGenerator {
 	 * @return outputDir
 	 */
 	public String getOutputDir() {
-		return (Func.isBlank(packageDir) ? System.getProperty("user.dir") : packageDir) + "/src/main/java";
+		return (Func.isBlank(packageDir) ? System.getProperty("user.dir") + "/blade-ops/blade-develop" : packageDir) + "/src/main/java";
 	}
 
 	/**
