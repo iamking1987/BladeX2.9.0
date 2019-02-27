@@ -18,6 +18,7 @@ package org.springblade.system.feign;
 
 import org.springblade.core.tool.api.R;
 import org.springblade.system.entity.Dict;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ import java.util.List;
  *
  * @author Chill
  */
+@Component
 public class IDictClientFallback implements IDictClient {
 	@Override
 	public R<String> getValue(String code, Integer dictKey) {
