@@ -14,36 +14,41 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.system.mapper;
+package org.springblade.system.feign;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springblade.system.entity.Dept;
-import org.springblade.system.vo.DeptVO;
-
-import java.util.List;
+import org.springblade.system.entity.Role;
+import org.springframework.stereotype.Component;
 
 /**
- * Mapper 接口
+ * Feign失败配置
  *
  * @author Chill
  */
-public interface DeptMapper extends BaseMapper<Dept> {
+@Component
+public class ISysClientFallback implements ISysClient {
+	@Override
+	public String getDeptName(Integer id) {
+		return null;
+	}
 
-	/**
-	 * 自定义分页
-	 *
-	 * @param page
-	 * @param dept
-	 * @return
-	 */
-	List<DeptVO> selectDeptPage(IPage page, DeptVO dept);
+	@Override
+	public Dept getDept(Integer id) {
+		return null;
+	}
 
-	/**
-	 * 获取树形节点
-	 *
-	 * @return
-	 */
-	List<DeptVO> tree();
+	@Override
+	public String getRoleName(Integer id) {
+		return null;
+	}
 
+	@Override
+	public String getRoleAlias(Integer id) {
+		return null;
+	}
+
+	@Override
+	public Role getRole(Integer id) {
+		return null;
+	}
 }

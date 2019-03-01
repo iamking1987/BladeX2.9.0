@@ -16,40 +16,56 @@
  */
 package org.springblade.system.feign;
 
-
 import lombok.AllArgsConstructor;
-import org.springblade.core.tool.api.R;
-import org.springblade.system.entity.Dict;
-import org.springblade.system.service.IDictService;
+import org.springblade.system.entity.Dept;
+import org.springblade.system.entity.Role;
+import org.springblade.system.service.IDeptService;
+import org.springblade.system.service.IRoleService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.List;
-
-
 /**
- * 字典服务Feign实现类
+ * 系统服务Feign实现类
  *
  * @author Chill
  */
 @ApiIgnore
 @RestController
 @AllArgsConstructor
-public class DictClient implements IDictClient {
+public class SysClient implements ISysClient {
 
-	IDictService service;
+	IDeptService deptService;
+
+	IRoleService roleService;
 
 	@Override
-	@GetMapping(API_PREFIX + "/getValue")
-	public R<String> getValue(String code, Integer dictKey) {
-		return R.data(service.getValue(code, dictKey));
+	@GetMapping(API_PREFIX + "/getDeptName")
+	public String getDeptName(Integer id) {
+		return deptService.getById(id).getDeptName();
 	}
 
 	@Override
-	@GetMapping(API_PREFIX + "/getList")
-	public R<List<Dict>> getList(String code) {
-		return R.data(service.getList(code));
+	@GetMapping(API_PREFIX + "/getDept")
+	public Dept getDept(Integer id) {
+		return deptService.getById(id);
 	}
 
+	@Override
+	@GetMapping(API_PREFIX + "/getRoleName")
+	public String getRoleName(Integer id) {
+		return roleService.getById(id).getRoleName();
+	}
+
+	@Override
+	@GetMapping(API_PREFIX + "/getRoleAlias")
+	public String getRoleAlias(Integer id) {
+		return roleService.getById(id).getRoleAlias();
+	}
+
+	@Override
+	@GetMapping(API_PREFIX + "/getRole")
+	public Role getRole(Integer id) {
+		return roleService.getById(id);
+	}
 }
