@@ -65,3 +65,10 @@ management:
   endpoint:
     health:
       show-details: always
+
+# 租户表维护
+blade:
+  tenant:
+    column: tenant_code
+    tables:
+      - blade_notice
