@@ -17,16 +17,6 @@ spring:
         uri: lb://${blade.service.blade-auth}
         predicates:
         - Path=/${blade.service.blade-auth}/**
-        filters:
-        - name: RequestRateLimiter
-          args:
-            # 使用SpEL按名称引用bean
-            key-resolver: '#{@remoteAddrKeyResolver}'
-            # 允许用户每秒处理多少个请求
-            redis-rate-limiter.replenishRate: 10
-            # 允许在一秒钟内完成的最大请求数
-            redis-rate-limiter.burstCapacity: 20
-        - StripPrefix=1
       # 首页模块
       - id: ${blade.service.blade-desk}
         uri: lb://${blade.service.blade-desk}

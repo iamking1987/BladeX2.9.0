@@ -50,8 +50,8 @@ public class AuthController {
 
 	@ApiLog("登录用户验证")
 	@PostMapping("token")
-	@ApiOperation(value = "获取认证token", notes = "传入租户编号:code,账号:account,密码:password")
-	public R<AuthInfo> token(@ApiParam(value = "租户编号", required = true) @RequestParam String code,
+	@ApiOperation(value = "获取认证token", notes = "传入租户编号:tenantCode,账号:account,密码:password")
+	public R<AuthInfo> token(@ApiParam(value = "租户编号", required = true) @RequestParam String tenantCode,
 							 @ApiParam(value = "账号", required = true) @RequestParam String account,
 							 @ApiParam(value = "密码", required = true) @RequestParam String password) {
 
@@ -59,7 +59,7 @@ public class AuthController {
 			return R.fail("接口调用不合法");
 		}
 
-		R<UserInfo> res = client.userInfo(code, account, DigestUtil.encrypt(password));
+		R<UserInfo> res = client.userInfo(tenantCode, account, DigestUtil.encrypt(password));
 
 		User user = res.getData().getUser();
 

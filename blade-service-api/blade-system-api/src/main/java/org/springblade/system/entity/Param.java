@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springblade.core.tenant.mp.TenantEntity;
+import org.springblade.core.mp.base.BaseEntity;
 
 /**
  * 实体类
@@ -32,7 +32,7 @@ import org.springblade.core.tenant.mp.TenantEntity;
 @TableName("blade_param")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "Param对象", description = "Param对象")
-public class Param extends TenantEntity {
+public class Param extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
