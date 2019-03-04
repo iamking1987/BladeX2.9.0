@@ -29,11 +29,15 @@ public class CodeGenerator {
 	/**
 	 * 代码生成的模块名
 	 */
-	public static String CODE_NAME = "自定义模块";
+	public static String CODE_NAME = "租户管理";
+	/**
+	 * 代码所在服务名
+	 */
+	public static String SERVICE_NAME = "blade-system";
 	/**
 	 * 代码生成的包名
 	 */
-	public static String PACKAGE_NAME = "org.springblade.demo";
+	public static String PACKAGE_NAME = "org.springblade.system";
 	/**
 	 * 前端代码生成所属系统
 	 */
@@ -49,7 +53,7 @@ public class CodeGenerator {
 	/**
 	 * 需要生成的表名(两者只能取其一)
 	 */
-	public static String[] INCLUDE_TABLES = {"blade_notice"};
+	public static String[] INCLUDE_TABLES = {"blade_tenant"};
 	/**
 	 * 需要排除的表名(两者只能取其一)
 	 */
@@ -70,6 +74,7 @@ public class CodeGenerator {
 	public static void main(String[] args) {
 		BladeCodeGenerator generator = new BladeCodeGenerator();
 		generator.setCodeName(CODE_NAME);
+		generator.setServiceName(SERVICE_NAME);
 		generator.setSystemName(SYSTEM_NAME);
 		generator.setPackageName(PACKAGE_NAME);
 		generator.setPackageWebDir(PACKAGE_WEB_DIR);
