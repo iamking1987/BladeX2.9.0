@@ -92,7 +92,10 @@ public class RoleController extends BladeController {
 	 */
 	@PostMapping("/submit")
 	@ApiOperation(value = "新增或修改", notes = "传入role", position = 6)
-	public R submit(@Valid @RequestBody Role role) {
+	public R submit(@Valid @RequestBody Role role, BladeUser user) {
+		if (Func.isEmpty(role.getId())) {
+			role.setTenantCode(user.getTenantCode());
+		}
 		return R.status(roleService.saveOrUpdate(role));
 	}
 

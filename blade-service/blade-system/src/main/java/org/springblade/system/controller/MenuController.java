@@ -113,8 +113,8 @@ public class MenuController extends BladeController {
 	 */
 	@GetMapping("/grant-tree")
 	@ApiOperation(value = "权限分配树形结构", notes = "权限分配树形结构", position = 6)
-	public R<List<MenuVO>> grantTree() {
-		return R.data(menuService.grantTree());
+	public R<List<MenuVO>> grantTree(BladeUser user) {
+		return R.data(menuService.grantTree(user));
 	}
 
 	/**
@@ -147,7 +147,6 @@ public class MenuController extends BladeController {
 
 	/**
 	 * 获取配置的角色权限
-	 * @return
 	 */
 	@GetMapping("auth-routes")
 	@ApiOperation(value = "菜单的角色权限", position = 8)

@@ -67,9 +67,10 @@ public interface IMenuService extends IService<Menu> {
 	/**
 	 * 授权树形结构
 	 *
+	 * @param user
 	 * @return
 	 */
-	List<MenuVO> grantTree();
+	List<MenuVO> grantTree(BladeUser user);
 
 	/**
 	 * 默认选中节点
@@ -81,6 +82,7 @@ public interface IMenuService extends IService<Menu> {
 
 	/**
 	 * 获取配置的角色权限
+	 *
 	 * @param user
 	 * @return
 	 */
