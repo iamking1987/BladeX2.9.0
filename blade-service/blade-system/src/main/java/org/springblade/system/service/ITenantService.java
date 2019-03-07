@@ -21,7 +21,7 @@ import org.springblade.core.mp.base.BaseService;
 import org.springblade.system.entity.Tenant;
 
 /**
- *  服务类
+ * 服务类
  *
  * @author Chill
  */
@@ -35,5 +35,13 @@ public interface ITenantService extends BaseService<Tenant> {
 	 * @return
 	 */
 	IPage<Tenant> selectTenantPage(IPage<Tenant> page, Tenant tenant);
+
+	/**
+	 * 新增
+	 *
+	 * @param tenant
+	 * @return
+	 */
+	boolean saveTenant(Tenant tenant);
 
 }

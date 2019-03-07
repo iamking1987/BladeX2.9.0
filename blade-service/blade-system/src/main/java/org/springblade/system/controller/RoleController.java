@@ -16,13 +16,15 @@
  */
 package org.springblade.system.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springblade.core.boot.ctrl.BladeController;
 import org.springblade.core.mp.support.Condition;
+import org.springblade.core.secure.BladeUser;
 import org.springblade.core.tool.api.R;
+import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.node.INode;
-import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.system.entity.Role;
 import org.springblade.system.service.IRoleService;
@@ -68,8 +70,9 @@ public class RoleController extends BladeController {
 		@ApiImplicitParam(name = "roleAlias", value = "角色别名", paramType = "query", dataType = "string")
 	})
 	@ApiOperation(value = "列表", notes = "传入role", position = 2)
-	public R<List<INode>> list(@ApiIgnore @RequestParam Map<String, Object> role) {
-		List<Role> list = roleService.list(Condition.getQueryWrapper(role, Role.class));
+	public R<List<INode>> list(@ApiIgnore @RequestParam Map<String, Object> role, BladeUser bladeUser) {
+		QueryWrapper<Role> queryWrapper = Condition.getQueryWrapper(role, Role.class);
+		List<Role> list = roleService.list((!bladeUser.getTenantCode().equals(BladeConstant.ADMIN_TENANT_CODE)) ? queryWrapper.lambda().eq(Role::getTenantCode, bladeUser.getTenantCode()) : queryWrapper);
 		RoleWrapper roleWrapper = new RoleWrapper(roleService);
 		return R.data(roleWrapper.listNodeVO(list));
 	}
@@ -79,8 +82,8 @@ public class RoleController extends BladeController {
 	 */
 	@GetMapping("/tree")
 	@ApiOperation(value = "树形结构", notes = "树形结构", position = 3)
-	public R<List<RoleVO>> tree() {
-		List<RoleVO> tree = roleService.tree();
+	public R<List<RoleVO>> tree(String tenantCode) {
+		List<RoleVO> tree = roleService.tree(tenantCode);
 		return R.data(tree);
 	}
 

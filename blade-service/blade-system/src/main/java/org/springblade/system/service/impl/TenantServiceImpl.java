@@ -17,23 +17,79 @@
 package org.springblade.system.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import lombok.AllArgsConstructor;
 import org.springblade.core.mp.base.BaseServiceImpl;
+import org.springblade.core.tenant.TenantId;
+import org.springblade.core.tool.constant.BladeConstant;
+import org.springblade.core.tool.utils.Func;
+import org.springblade.system.entity.Dept;
+import org.springblade.system.entity.Role;
 import org.springblade.system.entity.Tenant;
+import org.springblade.system.mapper.DeptMapper;
+import org.springblade.system.mapper.RoleMapper;
 import org.springblade.system.mapper.TenantMapper;
 import org.springblade.system.service.ITenantService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- *  服务实现类
+ * 服务实现类
  *
  * @author Chill
  */
 @Service
+@AllArgsConstructor
 public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> implements ITenantService {
+
+	private final TenantId tenantId;
+	private final RoleMapper roleMapper;
+	private final DeptMapper deptMapper;
 
 	@Override
 	public IPage<Tenant> selectTenantPage(IPage<Tenant> page, Tenant tenant) {
 		return page.setRecords(baseMapper.selectTenantPage(page, tenant));
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public boolean saveTenant(Tenant tenant) {
+		if (Func.isEmpty(tenant.getId())) {
+			List<Tenant> tenants = baseMapper.selectList(Wrappers.<Tenant>query().lambda().eq(Tenant::getIsDeleted, BladeConstant.DB_NOT_DELETED));
+			List<String> codes = tenants.stream().map(Tenant::getTenantCode).collect(Collectors.toList());
+			String tenantCode = getTenantCode(codes);
+			tenant.setTenantCode(tenantCode);
+			// 新建租户对应的默认角色
+			Role role = new Role();
+			role.setTenantCode(tenantCode);
+			role.setParentId(1);
+			role.setRoleName("管理员");
+			role.setRoleAlias("admin");
+			role.setSort(2);
+			role.setIsDeleted(0);
+			roleMapper.insert(role);
+			// 新建租户对应的默认部门
+			Dept dept = new Dept();
+			dept.setTenantCode(tenantCode);
+			dept.setParentId(0);
+			dept.setDeptName(tenant.getTenantName());
+			dept.setFullName(tenant.getTenantName());
+			dept.setSort(2);
+			dept.setIsDeleted(0);
+			deptMapper.insert(dept);
+		}
+		return super.saveOrUpdate(tenant);
+	}
+
+	private String getTenantCode(List<String> codes) {
+		String code = tenantId.generate();
+		if (codes.contains(code)) {
+			return getTenantCode(codes);
+		}
+		return code;
 	}
 
 }

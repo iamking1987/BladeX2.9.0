@@ -10,7 +10,7 @@ const FormItem = Form.Item;
 
 @connect(({ $!{table.entityPath}, loading }) => ({
   $!{table.entityPath},
-  submitting: loading.effects['code/submit'],
+  submitting: loading.effects['$!{table.entityPath}/submit'],
 }))
 @Form.create()
 class $!{entity}Edit extends PureComponent {
