@@ -3,7 +3,7 @@ services:
 
   blade-nginx:
     image: nginx:stable-alpine-perl
-    hostname: "consul-nginx"
+    hostname: "blade-nginx"
     ports:
     - 8500:8500
     - 88:88
