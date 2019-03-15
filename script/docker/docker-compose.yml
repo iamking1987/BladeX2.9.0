@@ -3,7 +3,7 @@ services:
 
   nacos:
     image: nacos/nacos-server:latest
-    container_name: nacos-standalone
+    container_name: nacos
     environment:
       - PREFER_HOST_MODE=hostname
       - MODE=standalone
@@ -11,14 +11,17 @@ services:
       - ./standalone-logs/:/home/nacos/logs
       - ./init.d/custom.properties:/home/nacos/init.d/custom.properties
     ports:
-      - "8848:8848"
+      - 8848:8848
+    networks:
+      blade_net:
+        ipv4_address: 172.30.0.48
   prometheus:
     container_name: prometheus
     image: prom/prometheus:latest
     volumes:
       - ./prometheus/prometheus-standalone.yaml:/etc/prometheus/prometheus.yml
     ports:
-      - "9090:9090"
+      - 9090:9090
     depends_on:
       - nacos
     restart: on-failure
@@ -28,6 +31,16 @@ services:
     ports:
       - 3000:3000
     restart: on-failure
+
+  sentinel:
+    container_name: sentinel
+    image: bladex/sentinel-dashboard:1.4.2
+    ports:
+      - 8858:8858
+    restart: on-failure
+    networks:
+      blade_net:
+        ipv4_address: 172.30.0.58
 
   blade-nginx:
     image: nginx:stable-alpine-perl
@@ -58,7 +71,7 @@ services:
     image: redis:5.0.2-alpine
     hostname: "blade-redis"
     ports:
-    - "3379:6379"
+    - 3379:6379
     volumes:
     - /docker/redis/data:/data
     command: "redis-server --appendonly yes"

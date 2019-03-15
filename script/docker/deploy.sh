@@ -27,7 +27,7 @@ base(){
 		cp /nginx/web/nginx.conf /docker/nginx/web/nginx.conf
 		cp /nginx/web/html /docker/nginx/web/html
 	fi
-	docker-compose up -d nacos prometheus grafana web-nginx blade-nginx blade-redis blade-gateway1 blade-gateway2 blade-gateway3
+	docker-compose up -d nacos prometheus grafana sentinel web-nginx blade-nginx blade-redis blade-gateway1 blade-gateway2 blade-gateway3
 }
 
 #启动程序模块

@@ -15,7 +15,7 @@
         <java.version>1.8</java.version>
         <swagger.version>2.9.2</swagger.version>
         <swagger.models.version>1.5.21</swagger.models.version>
-        <swagger.bootstrapui.version>1.9.0</swagger.bootstrapui.version>
+        <swagger.bootstrapui.version>1.9.1</swagger.bootstrapui.version>
         <mybatis.plus.version>3.1.0</mybatis.plus.version>
         <curator.framework.version>4.0.1</curator.framework.version>
         <protostuff.version>1.6.0</protostuff.version>
@@ -27,7 +27,7 @@
         <spring.platform.version>Cairo-SR7</spring.platform.version>
 
         <!-- 推荐使用Harbor -->
-        <docker.registry.url>192.168.186.129</docker.registry.url>
+        <docker.registry.url>192.168.0.157</docker.registry.url>
         <docker.registry.host>http://${docker.registry.url}:2375</docker.registry.host>
         <docker.plugin.version>1.2.0</docker.plugin.version>
     </properties>
