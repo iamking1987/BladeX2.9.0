@@ -10,12 +10,12 @@ public interface CommonConstant {
 	/**
 	 * nacos dev 地址
 	 */
-	String NACOS_DEV_ADDR = "127.0.0.1:8848";
+	String NACOS_DEV_ADDR = "10.211.55.5:8848";
 
 	/**
 	 * nacos prod 地址
 	 */
-	String NACOS_PROD_ADDR = "192.168.0.157:8848";
+	String NACOS_PROD_ADDR = "172.30.0.48:8848";
 
 	/**
 	 * sentinel dev 地址
@@ -25,7 +25,7 @@ public interface CommonConstant {
 	/**
 	 * sentinel prod 地址
 	 */
-	String SENTINEL_PROD_ADDR = "192.168.0.157:8858";
+	String SENTINEL_PROD_ADDR = "172.30.0.48:8858";
 
 	/**
 	 * sword 系统名

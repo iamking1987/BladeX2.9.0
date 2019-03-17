@@ -27,7 +27,7 @@
         <spring.platform.version>Cairo-SR7</spring.platform.version>
 
         <!-- 推荐使用Harbor -->
-        <docker.registry.url>192.168.0.157</docker.registry.url>
+        <docker.registry.url>10.211.55.5</docker.registry.url>
         <docker.registry.host>http://${docker.registry.url}:2375</docker.registry.host>
         <docker.plugin.version>1.2.0</docker.plugin.version>
     </properties>

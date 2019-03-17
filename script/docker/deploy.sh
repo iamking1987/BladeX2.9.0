@@ -16,23 +16,31 @@ port(){
 	service firewalld restart
 }
 
-#启动基础模块
-base(){
+##放置挂载文件
+mount(){
 	if test ! -f "/docker/nginx/gateway/nginx.conf" ;then
-		mkdir /docker/nginx/gateway
-		cp /nginx/gateway/nginx.conf /docker/nginx/gateway/nginx.conf
+		mkdir -p /docker/nginx/gateway
+		cp nginx/gateway/nginx.conf /docker/nginx/gateway/nginx.conf
 	fi
 	if test ! -f "/docker/nginx/web/nginx.conf" ;then
-		mkdir /docker/nginx/web
-		cp /nginx/web/nginx.conf /docker/nginx/web/nginx.conf
-		cp /nginx/web/html /docker/nginx/web/html
+		mkdir -p /docker/nginx/web
+		cp nginx/web/nginx.conf /docker/nginx/web/nginx.conf
+		cp -r nginx/web/html /docker/nginx/web/html
 	fi
-	docker-compose up -d nacos prometheus grafana sentinel web-nginx blade-nginx blade-redis blade-gateway1 blade-gateway2 blade-gateway3
+	if test ! -f "/docker/nacos/init.d/custom.properties" ;then
+		mkdir -p /docker/nacos/init.d
+		cp nacos/custom.properties /docker/nacos/init.d/custom.properties
+	fi
+}
+
+#启动基础模块
+base(){
+	docker-compose up -d nacos sentinel web-nginx blade-nginx blade-redis
 }
 
 #启动程序模块
 modules(){
-	docker-compose up -d blade-admin blade-auth blade-user blade-desk blade-system blade-log
+	docker-compose up -d blade-gateway1 blade-gateway2 blade-gateway3 blade-admin blade-auth blade-user blade-desk blade-system blade-log
 }
 
 #关闭所有模块
@@ -54,6 +62,9 @@ rmiNoneTag(){
 case "$1" in
 "port")
 	port
+;;
+"mount")
+	mount
 ;;
 "base")
 	base
