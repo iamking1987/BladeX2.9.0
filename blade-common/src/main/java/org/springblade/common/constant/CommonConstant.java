@@ -25,7 +25,7 @@ public interface CommonConstant {
 	/**
 	 * sentinel prod 地址
 	 */
-	String SENTINEL_PROD_ADDR = "172.30.0.48:8858";
+	String SENTINEL_PROD_ADDR = "172.30.0.58:8858";
 
 	/**
 	 * sword 系统名

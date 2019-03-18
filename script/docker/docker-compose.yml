@@ -21,7 +21,8 @@ services:
       - 8858:8858
     restart: on-failure
     networks:
-      - blade_net
+      blade_net:
+        ipv4_address: 172.30.0.58
 
   blade-nginx:
     image: nginx:stable-alpine-perl
