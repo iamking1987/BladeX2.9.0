@@ -10,6 +10,7 @@ port(){
 	firewall-cmd --add-port=88/tcp --permanent
 	firewall-cmd --add-port=8000/tcp --permanent
 	firewall-cmd --add-port=8848/tcp --permanent
+	firewall-cmd --add-port=8858/tcp --permanent
 	firewall-cmd --add-port=3306/tcp --permanent
 	firewall-cmd --add-port=3379/tcp --permanent
 	firewall-cmd --add-port=7002/tcp --permanent
@@ -29,7 +30,7 @@ mount(){
 	fi
 	if test ! -f "/docker/nacos/init.d/custom.properties" ;then
 		mkdir -p /docker/nacos/init.d
-		cp nacos/custom.properties /docker/nacos/init.d/custom.properties
+		cp nacos/init.d/custom.properties /docker/nacos/init.d/custom.properties
 	fi
 }
 

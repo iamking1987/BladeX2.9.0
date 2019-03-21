@@ -15,7 +15,7 @@ services:
         ipv4_address: 172.30.0.48
 
   sentinel:
-    image: bladex/sentinel-dashboard:1.4.2
+    image: bladex/sentinel-dashboard:1.5.0
     hostname: "sentinel"
     ports:
       - 8858:8858
@@ -63,7 +63,7 @@ services:
     - blade_net
 
   blade-admin:
-    image: "10.211.55.5/blade/blade-admin:2.0.0.RC6"
+    image: "${REGISTER}/blade/blade-admin:${TAG}"
     ports:
     - 7002:7002
     privileged: true
@@ -72,7 +72,7 @@ services:
     - blade_net
 
   blade-gateway1:
-    image: "10.211.55.5/blade/blade-gateway:2.0.0.RC6"
+    image: "${REGISTER}/blade/blade-gateway:${TAG}"
     privileged: true
     restart: always
     networks:
@@ -80,7 +80,7 @@ services:
         ipv4_address: 172.30.0.81
 
   blade-gateway2:
-    image: "10.211.55.5/blade/blade-gateway:2.0.0.RC6"
+    image: "${REGISTER}/blade/blade-gateway:${TAG}"
     privileged: true
     restart: always
     networks:
@@ -88,7 +88,7 @@ services:
         ipv4_address: 172.30.0.82
 
   blade-gateway3:
-    image: "10.211.55.5/blade/blade-gateway:2.0.0.RC6"
+    image: "${REGISTER}/blade/blade-gateway:${TAG}"
     privileged: true
     restart: always
     networks:
@@ -96,35 +96,35 @@ services:
         ipv4_address: 172.30.0.83
 
   blade-auth:
-    image: "10.211.55.5/blade/blade-auth:2.0.0.RC6"
+    image: "${REGISTER}/blade/blade-auth:${TAG}"
     privileged: true
     restart: always
     networks:
     - blade_net
 
   blade-log:
-    image: "10.211.55.5/blade/blade-log:2.0.0.RC6"
+    image: "${REGISTER}/blade/blade-log:${TAG}"
     privileged: true
     restart: always
     networks:
     - blade_net
 
   blade-desk:
-    image: "10.211.55.5/blade/blade-desk:2.0.0.RC6"
+    image: "${REGISTER}/blade/blade-desk:${TAG}"
     privileged: true
     restart: always
     networks:
     - blade_net
 
   blade-user:
-    image: "10.211.55.5/blade/blade-user:2.0.0.RC6"
+    image: "${REGISTER}/blade/blade-user:${TAG}"
     privileged: true
     restart: always
     networks:
     - blade_net
 
   blade-system:
-    image: "10.211.55.5/blade/blade-system:2.0.0.RC6"
+    image: "${REGISTER}/blade/blade-system:${TAG}"
     privileged: true
     restart: always
     networks:
