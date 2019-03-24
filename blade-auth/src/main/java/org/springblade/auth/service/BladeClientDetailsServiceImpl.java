@@ -17,8 +17,6 @@
 package org.springblade.auth.service;
 
 import lombok.SneakyThrows;
-import org.springblade.auth.constant.AuthConstant;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 
@@ -42,7 +40,6 @@ public class BladeClientDetailsServiceImpl extends JdbcClientDetailsService {
 	 */
 	@Override
 	@SneakyThrows
-	@Cacheable(value = AuthConstant.CLIENT_DETAILS, key = "#clientId", unless = "#result == null")
 	public ClientDetails loadClientByClientId(String clientId) {
 		return super.loadClientByClientId(clientId);
 	}
