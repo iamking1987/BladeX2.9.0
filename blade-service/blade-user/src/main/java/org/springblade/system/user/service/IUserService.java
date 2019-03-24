@@ -45,10 +45,9 @@ public interface IUserService extends BaseService<User> {
 	 *
 	 * @param tenantCode
 	 * @param account
-	 * @param password
 	 * @return
 	 */
-	UserInfo userInfo(String tenantCode, String account, String password);
+	UserInfo userInfo(String tenantCode, String account);
 
 	/**
 	 * 给用户设置角色

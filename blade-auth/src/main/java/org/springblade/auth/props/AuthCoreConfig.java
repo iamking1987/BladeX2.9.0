@@ -14,27 +14,17 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.auth.config;
+package org.springblade.auth.props;
 
-
-import org.springblade.core.secure.registry.SecureRegistry;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * secure模块api放行配置
+ * AuthCoreConfig
  *
  * @author Chill
  */
 @Configuration
-public class RegistryConfiguration implements WebMvcConfigurer {
-
-	@Bean
-	public SecureRegistry secureRegistry() {
-		SecureRegistry secureRegistry = new SecureRegistry();
-		secureRegistry.excludePathPatterns("/token/**");
-		return secureRegistry;
-	}
-
+@EnableConfigurationProperties(AuthProperties.class)
+public class AuthCoreConfig {
 }

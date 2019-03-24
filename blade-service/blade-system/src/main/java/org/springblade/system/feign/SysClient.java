@@ -16,14 +16,20 @@
  */
 package org.springblade.system.feign;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
+import org.springblade.core.tool.constant.BladeConstant;
+import org.springblade.system.entity.Client;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.entity.Role;
+import org.springblade.system.service.IClientService;
 import org.springblade.system.service.IDeptService;
 import org.springblade.system.service.IRoleService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.List;
 
 /**
  * 系统服务Feign实现类
@@ -38,6 +44,8 @@ public class SysClient implements ISysClient {
 	IDeptService deptService;
 
 	IRoleService roleService;
+
+	IClientService clientService;
 
 	@Override
 	@GetMapping(API_PREFIX + "/getDeptName")
@@ -68,4 +76,5 @@ public class SysClient implements ISysClient {
 	public Role getRole(Integer id) {
 		return roleService.getById(id);
 	}
+
 }

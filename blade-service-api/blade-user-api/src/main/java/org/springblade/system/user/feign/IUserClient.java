@@ -39,12 +39,11 @@ public interface IUserClient {
 	/**
 	 * 获取用户信息
 	 *
-	 * @param tenantCode     租户编号
-	 * @param account  账号
-	 * @param password 密码
+	 * @param tenantCode 租户编号
+	 * @param account    账号
 	 * @return
 	 */
 	@GetMapping(API_PREFIX + "/user-info")
-	R<UserInfo> userInfo(@RequestParam("tenantCode") String tenantCode, @RequestParam("account") String account, @RequestParam("password") String password);
+	R<UserInfo> userInfo(@RequestParam("tenantCode") String tenantCode, @RequestParam("account") String account);
 
 }

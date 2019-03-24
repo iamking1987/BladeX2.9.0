@@ -87,20 +87,21 @@ services:
       blade_net:
         ipv4_address: 172.30.0.82
 
-  blade-gateway3:
-    image: "${REGISTER}/blade/blade-gateway:${TAG}"
-    privileged: true
-    restart: always
-    networks:
-      blade_net:
-        ipv4_address: 172.30.0.83
-
-  blade-auth:
+  blade-auth1:
     image: "${REGISTER}/blade/blade-auth:${TAG}"
     privileged: true
     restart: always
     networks:
-    - blade_net
+      blade_net:
+        ipv4_address: 172.30.0.91
+
+  blade-auth2:
+    image: "${REGISTER}/blade/blade-auth:${TAG}"
+    privileged: true
+    restart: always
+    networks:
+      blade_net:
+        ipv4_address: 172.30.0.92
 
   blade-log:
     image: "${REGISTER}/blade/blade-log:${TAG}"

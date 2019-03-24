@@ -1,2 +1,11 @@
 server:
   port: 8100
+
+blade:
+  security:
+    oauth2:
+      storeType: jwt
+      jwtSigningKey: BladeX
+      clients[0]:
+        clientId: sword
+        clientSecret: sword_secret

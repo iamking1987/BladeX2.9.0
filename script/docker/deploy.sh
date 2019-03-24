@@ -19,9 +19,9 @@ port(){
 
 ##放置挂载文件
 mount(){
-	if test ! -f "/docker/nginx/gateway/nginx.conf" ;then
-		mkdir -p /docker/nginx/gateway
-		cp nginx/gateway/nginx.conf /docker/nginx/gateway/nginx.conf
+	if test ! -f "/docker/nginx/api/nginx.conf" ;then
+		mkdir -p /docker/nginx/api
+		cp nginx/api/nginx.conf /docker/nginx/api/nginx.conf
 	fi
 	if test ! -f "/docker/nginx/web/nginx.conf" ;then
 		mkdir -p /docker/nginx/web
@@ -41,7 +41,7 @@ base(){
 
 #启动程序模块
 modules(){
-	docker-compose up -d blade-gateway1 blade-gateway2 blade-gateway3 blade-admin blade-auth blade-user blade-desk blade-system blade-log
+	docker-compose up -d blade-gateway1 blade-gateway2 blade-admin blade-auth1 blade-auth2 blade-user blade-desk blade-system blade-log
 }
 
 #关闭所有模块
