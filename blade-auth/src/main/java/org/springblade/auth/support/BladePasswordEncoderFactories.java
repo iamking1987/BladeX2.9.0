@@ -41,15 +41,9 @@ public class BladePasswordEncoderFactories {
 	 * <ul>
 	 * <li>blade - {@link BladePasswordEncoder} (sha1(md5("password")))</li>
 	 * <li>bcrypt - {@link BCryptPasswordEncoder} (Also used for encoding)</li>
-	 * <li>ldap - {@link org.springframework.security.crypto.password.LdapShaPasswordEncoder}</li>
-	 * <li>MD4 - {@link org.springframework.security.crypto.password.Md4PasswordEncoder}</li>
-	 * <li>MD5 - {@code new MessageDigestPasswordEncoder("MD5")}</li>
-	 * <li>noop - {@link org.springframework.security.crypto.password.NoOpPasswordEncoder}</li>
+	 * <li>noop - {@link BladeNoOpPasswordEncoder}</li>
 	 * <li>pbkdf2 - {@link Pbkdf2PasswordEncoder}</li>
 	 * <li>scrypt - {@link SCryptPasswordEncoder}</li>
-	 * <li>SHA-1 - {@code new MessageDigestPasswordEncoder("SHA-1")}</li>
-	 * <li>SHA-256 - {@code new MessageDigestPasswordEncoder("SHA-256")}</li>
-	 * <li>sha256 - {@link org.springframework.security.crypto.password.StandardPasswordEncoder}</li>
 	 * </ul>
 	 *
 	 * @return the {@link PasswordEncoder} to use
@@ -60,19 +54,14 @@ public class BladePasswordEncoderFactories {
 		Map<String, PasswordEncoder> encoders = new HashMap<>(16);
 		encoders.put(encodingId, new BladePasswordEncoder());
 		encoders.put("bcrypt", new BCryptPasswordEncoder());
-		encoders.put("ldap", new org.springframework.security.crypto.password.LdapShaPasswordEncoder());
-		encoders.put("MD4", new org.springframework.security.crypto.password.Md4PasswordEncoder());
-		encoders.put("MD5", new org.springframework.security.crypto.password.MessageDigestPasswordEncoder("MD5"));
-		encoders.put("noop", org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance());
+		encoders.put("noop", BladeNoOpPasswordEncoder.getInstance());
 		encoders.put("pbkdf2", new Pbkdf2PasswordEncoder());
 		encoders.put("scrypt", new SCryptPasswordEncoder());
-		encoders.put("SHA-1", new org.springframework.security.crypto.password.MessageDigestPasswordEncoder("SHA-1"));
-		encoders.put("SHA-256", new org.springframework.security.crypto.password.MessageDigestPasswordEncoder("SHA-256"));
-		encoders.put("sha256", new org.springframework.security.crypto.password.StandardPasswordEncoder());
 
 		return new DelegatingPasswordEncoder(encodingId, encoders);
 	}
 
-	private BladePasswordEncoderFactories() {}
+	private BladePasswordEncoderFactories() {
+	}
 
 }
