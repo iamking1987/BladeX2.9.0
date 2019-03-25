@@ -16,9 +16,8 @@
  */
 package org.springblade.auth.config;
 
-import lombok.AllArgsConstructor;
-import org.springblade.auth.props.AuthProperties;
 import org.springblade.auth.support.BladeJwtTokenEnhancer;
+import org.springblade.core.launch.constant.TokenConstant;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -34,11 +33,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
  * @author Chill
  */
 @Configuration
-@AllArgsConstructor
 @ConditionalOnProperty(prefix = "blade.security.oauth2", name = "storeType", havingValue = "jwt", matchIfMissing = true)
 public class JwtTokenStoreConfiguration {
-
-	private AuthProperties authProperties;
 
 	/**
 	 * 使用jwtTokenStore存储token
@@ -54,7 +50,7 @@ public class JwtTokenStoreConfiguration {
 	@Bean
 	public JwtAccessTokenConverter jwtAccessTokenConverter() {
 		JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
-		accessTokenConverter.setSigningKey(authProperties.getJwtSigningKey());
+		accessTokenConverter.setSigningKey(TokenConstant.SIGN_KEY);
 		return accessTokenConverter;
 	}
 

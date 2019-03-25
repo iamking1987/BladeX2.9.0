@@ -38,7 +38,9 @@ public class TokenUtil {
 	public final static String USER_NAME = TokenConstant.USER_NAME;
 	public final static String ROLE_NAME = TokenConstant.ROLE_NAME;
 	public final static String TENANT_CODE = TokenConstant.TENANT_CODE;
-	public final static String LICENSE = "license";
+	public final static String LICENSE = TokenConstant.LICENSE;
+	public final static String LICENSE_NAME = TokenConstant.LICENSE_NAME;
+
 
 	public final static String TENANT_HEADER_KEY = "Tenant-Code";
 	public final static String DEFAULT_TENANT_CODE = "000000";
@@ -46,8 +48,6 @@ public class TokenUtil {
 	public final static String HEADER_KEY = "Authorization";
 	public final static String HEADER_PREFIX = "Basic ";
 	public final static String DEFAULT_AVATAR = "https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png";
-	public final static String LICENSE_NAME = "powered by bladex";
-
 	/**
 	 * 解码
 	 *

@@ -39,6 +39,7 @@ public class BladePasswordEncoderFactories {
 	 * updates should not impact users. The mappings current are:
 	 *
 	 * <ul>
+	 * <li>blade - {@link BladePasswordEncoder} (sha1(md5("password")))</li>
 	 * <li>bcrypt - {@link BCryptPasswordEncoder} (Also used for encoding)</li>
 	 * <li>ldap - {@link org.springframework.security.crypto.password.LdapShaPasswordEncoder}</li>
 	 * <li>MD4 - {@link org.springframework.security.crypto.password.Md4PasswordEncoder}</li>

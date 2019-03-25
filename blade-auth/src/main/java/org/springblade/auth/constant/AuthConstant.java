@@ -23,9 +23,10 @@ package org.springblade.auth.constant;
  */
 public interface AuthConstant {
 
+	/**
+	 * 密码加密规则
+	 */
 	String ENCRYPT = "{blade}";
-
-	String CLIENT_DETAILS = "blade_oauth:client:details";
 
 	/**
 	 * blade_client表字段
@@ -35,12 +36,12 @@ public interface AuthConstant {
 		"refresh_token_validity, additional_information, autoapprove";
 
 	/**
-	 * 查询语句
+	 * blade_client查询语句
 	 */
 	String BASE_STATEMENT = "select " + CLIENT_FIELDS + " from blade_client";
 
 	/**
-	 * 查询排序
+	 * blade_client查询排序
 	 */
 	String DEFAULT_FIND_STATEMENT = BASE_STATEMENT + " order by client_id";
 

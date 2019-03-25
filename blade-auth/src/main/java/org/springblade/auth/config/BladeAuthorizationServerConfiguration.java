@@ -19,13 +19,11 @@ package org.springblade.auth.config;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springblade.auth.constant.AuthConstant;
-import org.springblade.auth.props.AuthProperties;
 import org.springblade.auth.service.BladeClientDetailsServiceImpl;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -53,8 +51,6 @@ public class BladeAuthorizationServerConfiguration extends AuthorizationServerCo
 
 	private final DataSource dataSource;
 
-	private AuthProperties authProperties;
-
 	private AuthenticationManager authenticationManager;
 
 	private UserDetailsService userDetailsService;
@@ -64,8 +60,6 @@ public class BladeAuthorizationServerConfiguration extends AuthorizationServerCo
 	private JwtAccessTokenConverter jwtAccessTokenConverter;
 
 	private TokenEnhancer jwtTokenEnhancer;
-
-	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
@@ -84,25 +78,6 @@ public class BladeAuthorizationServerConfiguration extends AuthorizationServerCo
 				.accessTokenConverter(jwtAccessTokenConverter);
 		}
 	}
-
-
-	/*@Override
-	@SneakyThrows
-	public void configure(ClientDetailsServiceConfigurer clients) {
-		InMemoryClientDetailsServiceBuilder build = clients.inMemory();
-		if (ArrayUtils.isNotEmpty(authProperties.getClients())) {
-			for (AuthClientProperties config : authProperties.getClients()) {
-				build.withClient(config.getClientId())
-					.secret("{noop}" + config.getClientSecret())
-					.accessTokenValiditySeconds(TokenUtil.getTokenValiditySecond())
-					.refreshTokenValiditySeconds(TokenUtil.getRefreshTokenValiditySeconds())
-					//OAuth2支持的验证模式
-					.authorizedGrantTypes("refresh_token", "password", "authorization_code")
-					.redirectUris("http://example.com")
-					.scopes("all");
-			}
-		}
-	}*/
 
 	/**
 	 * 配置客户端信息

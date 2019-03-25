@@ -28,4 +28,6 @@ public interface CacheNames {
 	String DICT_VALUE = "blade_dict:dict:value";
 	String DICT_LIST = "blade_dict:dict:list";
 
+	String AUTH_ROUTES = "blade_menu:auth_routes";
+
 }
