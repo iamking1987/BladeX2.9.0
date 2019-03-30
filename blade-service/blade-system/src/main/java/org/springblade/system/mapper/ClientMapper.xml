@@ -18,9 +18,4 @@
         <result column="remark" property="remark"/>
     </resultMap>
 
-
-    <select id="selectClientPage" resultMap="clientResultMap">
-        select * from blade_client where is_deleted = 0
-    </select>
-
 </mapper>
