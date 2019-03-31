@@ -36,6 +36,7 @@ public class BladeJwtTokenEnhancer implements TokenEnhancer {
 	public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
 		BladeUserDetails principal = (BladeUserDetails) authentication.getUserAuthentication().getPrincipal();
 		Map<String, Object> info = new HashMap<>(16);
+		info.put(TokenUtil.CLIENT_ID, TokenUtil.getClientIdFromHeader());
 		info.put(TokenUtil.USER_ID, principal.getUserId());
 		info.put(TokenUtil.ROLE_ID, principal.getRoleId());
 		info.put(TokenUtil.TENANT_CODE, principal.getTenantCode());

@@ -55,12 +55,8 @@ public class AppLoginInSuccessHandler extends SavedRequestAwareAuthenticationSuc
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 		log.info("【AppLoginInSuccessHandler】 onAuthenticationSuccess authentication={}", authentication);
-		String header = request.getHeader(TokenUtil.HEADER_KEY);
-		if (header == null || !header.startsWith(TokenUtil.HEADER_PREFIX)) {
-			throw new UnapprovedClientAuthenticationException("请求头中无client信息");
-		}
 
-		String[] tokens = TokenUtil.extractAndDecodeHeader(header);
+		String[] tokens = TokenUtil.extractAndDecodeHeader();
 		assert tokens.length == 2;
 		String clientId = tokens[0];
 		String clientSecret = tokens[1];

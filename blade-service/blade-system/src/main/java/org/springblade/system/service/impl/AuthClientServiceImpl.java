@@ -14,16 +14,20 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.system.service;
+package org.springblade.system.service.impl;
 
-import org.springblade.core.mp.base.BaseService;
-import org.springblade.system.entity.Client;
+import org.springblade.core.mp.base.BaseServiceImpl;
+import org.springblade.system.entity.AuthClient;
+import org.springblade.system.mapper.AuthClientMapper;
+import org.springblade.system.service.IAuthClientService;
+import org.springframework.stereotype.Service;
 
 /**
- *  服务类
+ *  服务实现类
  *
  * @author Chill
  */
-public interface IClientService extends BaseService<Client> {
+@Service
+public class AuthClientServiceImpl extends BaseServiceImpl<AuthClientMapper, AuthClient> implements IAuthClientService {
 
 }

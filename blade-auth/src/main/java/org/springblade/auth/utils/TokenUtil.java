@@ -19,7 +19,10 @@ package org.springblade.auth.utils;
 import lombok.SneakyThrows;
 import org.springblade.core.launch.constant.TokenConstant;
 import org.springblade.core.tool.utils.Charsets;
+import org.springblade.core.tool.utils.StringPool;
+import org.springblade.core.tool.utils.WebUtil;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;
 
 import java.util.Base64;
 import java.util.Calendar;
@@ -38,6 +41,7 @@ public class TokenUtil {
 	public final static String USER_NAME = TokenConstant.USER_NAME;
 	public final static String ROLE_NAME = TokenConstant.ROLE_NAME;
 	public final static String TENANT_CODE = TokenConstant.TENANT_CODE;
+	public final static String CLIENT_ID = TokenConstant.CLIENT_ID;
 	public final static String LICENSE = TokenConstant.LICENSE;
 	public final static String LICENSE_NAME = TokenConstant.LICENSE_NAME;
 
@@ -48,13 +52,17 @@ public class TokenUtil {
 	public final static String HEADER_KEY = "Authorization";
 	public final static String HEADER_PREFIX = "Basic ";
 	public final static String DEFAULT_AVATAR = "https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png";
+
 	/**
 	 * 解码
-	 *
-	 * @param header
 	 */
 	@SneakyThrows
-	public static String[] extractAndDecodeHeader(String header) {
+	public static String[] extractAndDecodeHeader() {
+		String header = WebUtil.getRequest().getHeader(TokenUtil.HEADER_KEY);
+		if (header == null || !header.startsWith(TokenUtil.HEADER_PREFIX)) {
+			throw new UnapprovedClientAuthenticationException("请求头中无client信息");
+		}
+
 		byte[] base64Token = header.substring(6).getBytes(Charsets.UTF_8_NAME);
 
 		byte[] decoded;
@@ -65,12 +73,21 @@ public class TokenUtil {
 		}
 
 		String token = new String(decoded, Charsets.UTF_8_NAME);
-		int index = token.indexOf(":");
+		int index = token.indexOf(StringPool.COLON);
 		if (index == -1) {
 			throw new BadCredentialsException("Invalid basic authentication token");
 		} else {
 			return new String[]{token.substring(0, index), token.substring(index + 1)};
 		}
+	}
+
+	/**
+	 * 获取请求头中的客户端id
+	 */
+	public static String getClientIdFromHeader() {
+		String[] tokens = extractAndDecodeHeader();
+		assert tokens.length == 2;
+		return tokens[0];
 	}
 
 	/**
@@ -90,6 +107,7 @@ public class TokenUtil {
 
 	/**
 	 * 获取refreshToken过期时间
+	 *
 	 * @return expire
 	 */
 	public static int getRefreshTokenValiditySeconds() {
