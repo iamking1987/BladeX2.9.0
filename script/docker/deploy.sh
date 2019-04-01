@@ -1,7 +1,7 @@
 
 #使用说明，用来提示输入参数
 usage() {
-	echo "Usage: sh 执行脚本.sh [port|mount|base|modules|stop|rm|rmiNoneTag]"
+	echo "Usage: sh 执行脚本.sh [port|mount|base|modules|monitor|stop|rm|rmiNoneTag]"
 	exit 1
 }
 
@@ -41,7 +41,12 @@ base(){
 
 #启动程序模块
 modules(){
-	docker-compose up -d blade-gateway1 blade-gateway2 blade-admin blade-auth1 blade-auth2 blade-user blade-desk blade-system blade-log
+	docker-compose up -d blade-gateway1 blade-gateway2 blade-auth1 blade-auth2 blade-user blade-desk blade-system blade-log
+}
+
+#启动监控模块
+monitor(){
+	docker-compose up -d blade-admin
 }
 
 #关闭所有模块
@@ -72,6 +77,9 @@ case "$1" in
 ;;
 "modules")
 	modules
+;;
+"monitor")
+	monitor
 ;;
 "stop")
 	stop
