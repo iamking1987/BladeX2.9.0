@@ -47,6 +47,7 @@ public class BladeResourceServerConfiguration extends ResourceServerConfigurerAd
 			.successHandler(appLoginInSuccessHandler)
 			.and()
 			.authorizeRequests()
+			.antMatchers("/actuator/**", "/token/**", "/mobile/**").permitAll()
 			.anyRequest().authenticated().and()
 			.csrf().disable();
 	}
