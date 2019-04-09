@@ -19,6 +19,7 @@
         <mybatis.plus.version>3.1.0</mybatis.plus.version>
         <curator.framework.version>4.0.1</curator.framework.version>
         <protostuff.version>1.6.0</protostuff.version>
+        <flowable.version>6.4.1</flowable.version>
         <alibaba.cloud.version>0.2.1.RELEASE</alibaba.cloud.version>
         <spring.boot.admin.version>2.1.2</spring.boot.admin.version>
 
@@ -133,16 +134,16 @@
 
     <repositories>
         <repository>
+            <id>release</id>
+            <name>Release Repository</name>
+            <url>http://nexus.gitee.ltd/repository/maven-releases/</url>
+        </repository>
+        <repository>
             <id>aliyun-repos</id>
             <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-        </repository>
-        <repository>
-            <id>release</id>
-            <name>Release Repository</name>
-            <url>http://nexus.gitee.ltd/repository/maven-releases/</url>
         </repository>
     </repositories>
 
