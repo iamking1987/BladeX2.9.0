@@ -2,6 +2,8 @@ server:
   port: 9999
 
 spring:
+  application:
+    name: blade-flowdesign
   profiles:
     active: test
   thymeleaf:
@@ -36,6 +38,7 @@ spring:
     allow-bean-definition-overriding: true
   devtools:
     add-properties: false
+
 
 flowable:
   activity-font-name: \u5B8B\u4F53
