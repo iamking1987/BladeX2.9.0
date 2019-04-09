@@ -16,8 +16,10 @@
  */
 package org.springblade.flowable;
 
+import org.flowable.ui.common.conf.DevelopmentConfiguration;
 import org.flowable.ui.common.rest.idm.remote.RemoteAccountResource;
-import org.springframework.boot.SpringApplication;
+import org.springblade.core.launch.BladeApplication;
+import org.springblade.core.launch.constant.AppConstant;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -43,12 +45,12 @@ import static org.springblade.flowable.constant.FlowableConstant.FLOWABLE_BASE_P
 )
 @ComponentScan(
 	basePackages = {BASE_PACHAGE, FLOWABLE_BASE_PACKAGE},
-	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {RemoteAccountResource.class})
+	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {RemoteAccountResource.class, DevelopmentConfiguration.class})
 )
 public class FlowDesignApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FlowDesignApplication.class, args);
+		BladeApplication.run(AppConstant.APPLICATION_FLOWDESIGN_NAME, FlowDesignApplication.class, args);
 	}
 
 }

@@ -2,10 +2,6 @@ server:
   port: 9999
 
 spring:
-  application:
-    name: blade-flowdesign
-  profiles:
-    active: test
   thymeleaf:
     cache: false
     mode: LEGACYHTML5
