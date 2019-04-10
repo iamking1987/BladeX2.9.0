@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class RemoteAccountController {
 	@RequestMapping(value = "/rest/account")
 	public String getAccount() {
-		return "{\"id\":\"admin\",\"firstName\":\"Test\",\"lastName\":\"Administrator\",\"email\":\"admin@flowable.org\",\"fullName\":\"Test Administrator\",\"groups\":[],\"privileges\":[\"access-idm\",\"access-task\",\"access-modeler\",\"access-admin\"]}\n";
+		return "{\"id\":\"admin\",\"firstName\":\"BladeX\",\"lastName\":\"Flowable\",\"email\":\"admin@flowable.org\",\"fullName\":\"BladeX Flowable\",\"groups\":[],\"privileges\":[\"access-idm\",\"access-task\",\"access-modeler\",\"access-admin\"]}\n";
 	}
 }

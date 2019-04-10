@@ -1,3 +1,19 @@
+/*
+ *      Copyright (c) 2018-2028, Chill Zhuang All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are met:
+ *
+ *  Redistributions of source code must retain the above copyright notice,
+ *  this list of conditions and the following disclaimer.
+ *  Redistributions in binary form must reproduce the above copyright
+ *  notice, this list of conditions and the following disclaimer in the
+ *  documentation and/or other materials provided with the distribution.
+ *  Neither the name of the dreamlu.net developer nor the names of its
+ *  contributors may be used to endorse or promote products derived from
+ *  this software without specific prior written permission.
+ *  Author: Chill 庄骞 (smallchill@163.com)
+ */
 package org.springblade.flowable.config;
 
 import org.flowable.common.engine.impl.cfg.IdGenerator;
@@ -29,14 +45,14 @@ import java.io.IOException;
  */
 @Configuration
 @EnableConfigurationProperties(FlowableProperties.class)
-public class FlowAutoConfiguration extends ProcessEngineAutoConfiguration {
+public class FlowableAutoConfiguration extends ProcessEngineAutoConfiguration {
 
 	@Autowired
 	private FlowableProperties flowableProperties;
 
-	public FlowAutoConfiguration(FlowableProperties flowableProperties,
-								 FlowableProcessProperties processProperties, FlowableAppProperties appProperties, FlowableIdmProperties idmProperties,
-								 FlowableMailProperties mailProperties) {
+	public FlowableAutoConfiguration(FlowableProperties flowableProperties,
+									 FlowableProcessProperties processProperties, FlowableAppProperties appProperties, FlowableIdmProperties idmProperties,
+									 FlowableMailProperties mailProperties) {
 		super(flowableProperties, processProperties, appProperties, idmProperties, mailProperties);
 	}
 
@@ -46,12 +62,10 @@ public class FlowAutoConfiguration extends ProcessEngineAutoConfiguration {
 																			 ObjectProvider<IdGenerator> globalIdGenerator,
 																			 @ProcessAsync ObjectProvider<AsyncExecutor> asyncExecutorProvider,
 																			 @ProcessAsyncHistory ObjectProvider<AsyncExecutor> asyncHistoryExecutorProvider) throws IOException {
-
 		SpringProcessEngineConfiguration conf = super.springProcessEngineConfiguration(dataSource, platformTransactionManager, processIdGenerator, globalIdGenerator, asyncExecutorProvider, asyncHistoryExecutorProvider);
 		conf.setActivityFontName(flowableProperties.getActivityFontName());
 		conf.setLabelFontName(flowableProperties.getLabelFontName());
 		conf.setAnnotationFontName(flowableProperties.getAnnotationFontName());
-
 		return conf;
 	}
 
