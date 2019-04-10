@@ -34,6 +34,11 @@
             <artifactId>blade-starter-tenant</artifactId>
             <version>${bladex.tool.version}</version>
         </dependency>
+        <!--<dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-redis</artifactId>
+            <version>${bladex.tool.version}</version>
+        </dependency>-->
     </dependencies>
 
     <build>

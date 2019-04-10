@@ -15,6 +15,12 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <!-- Blade -->
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-common</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-core-boot</artifactId>
@@ -22,8 +28,15 @@
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
-            <artifactId>blade-common</artifactId>
-            <version>${bladex.project.version}</version>
+            <artifactId>blade-core-auto</artifactId>
+            <version>${bladex.tool.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- 工作流 -->
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-spring-boot-starter</artifactId>
+            <version>${flowable.version}</version>
         </dependency>
     </dependencies>
 

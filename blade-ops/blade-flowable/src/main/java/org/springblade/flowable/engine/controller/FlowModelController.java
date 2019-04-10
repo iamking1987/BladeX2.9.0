@@ -14,20 +14,12 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.common.cache;
+package org.springblade.flowable.engine.controller;
 
 /**
- * 缓存名
+ * 流程模型控制器
  *
  * @author Chill
  */
-public interface CacheNames {
-
-	String NOTICE_ONE = "blade_notice:one";
-
-	String DICT_VALUE = "blade_dict:value";
-	String DICT_LIST = "blade_dict:list";
-
-	String AUTH_ROUTES = "blade_menu:auth_routes";
-
+public class FlowModelController {
 }

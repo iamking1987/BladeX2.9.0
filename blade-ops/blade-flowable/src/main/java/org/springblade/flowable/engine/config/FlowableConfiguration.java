@@ -14,7 +14,7 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.flowable.config;
+package org.springblade.flowable.engine.config;
 
 import lombok.AllArgsConstructor;
 import org.flowable.spring.SpringProcessEngineConfiguration;
@@ -24,14 +24,14 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 
 /**
- * flowable配置
+ * Flowable配置类
  *
  * @author Chill
  */
 @Configuration
 @AllArgsConstructor
 @EnableConfigurationProperties(FlowableProperties.class)
-public class FlowableAutoConfiguration implements EngineConfigurationConfigurer<SpringProcessEngineConfiguration> {
+public class FlowableConfiguration implements EngineConfigurationConfigurer<SpringProcessEngineConfiguration> {
 	private FlowableProperties flowableProperties;
 
 	@Override

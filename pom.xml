@@ -101,6 +101,7 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring.boot.version}</version>
                     <configuration>
+                        <fork>true</fork>
                         <finalName>${project.build.finalName}</finalName>
                     </configuration>
                     <executions>
