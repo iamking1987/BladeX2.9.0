@@ -18,6 +18,9 @@ package org.springblade.flowable.engine.entity;
 
 import lombok.Data;
 import org.flowable.engine.impl.persistence.entity.ProcessDefinitionEntityImpl;
+import org.springblade.core.tool.utils.Func;
+import org.springblade.core.tool.utils.StringPool;
+import org.springblade.system.utils.DictUtil;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -47,7 +50,7 @@ public class ProcessDefinition implements Serializable {
 		this.name = entity.getName();
 		this.key = entity.getKey();
 		this.category = entity.getCategory();
-		this.categoryName = "";
+		this.categoryName = DictUtil.getValue(entity.getCategory().split(StringPool.UNDERSCORE)[0], Func.toInt(entity.getCategory().split(StringPool.UNDERSCORE)[1]));
 		this.version = entity.getVersion();
 		this.deploymentId = entity.getDeploymentId();
 		this.resourceName = entity.getResourceName();
