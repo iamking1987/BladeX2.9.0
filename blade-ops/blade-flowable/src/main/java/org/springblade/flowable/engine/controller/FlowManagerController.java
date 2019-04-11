@@ -16,10 +16,19 @@
  */
 package org.springblade.flowable.engine.controller;
 
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 /**
  * 流程管理接口
  *
  * @author Chill
  */
+@RestController
+@RequestMapping("manager")
+@AllArgsConstructor
 public class FlowManagerController {
+
+
 }
