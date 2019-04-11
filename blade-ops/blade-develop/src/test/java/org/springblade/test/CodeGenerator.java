@@ -45,7 +45,7 @@ public class CodeGenerator {
 	/**
 	 * 前端代码生成地址
 	 */
-	public static String PACKAGE_WEB_DIR = "/Users/chill/Workspaces/product/Saber";
+	public static String PACKAGE_WEB_DIR = "/Users/chill/Workspaces1/product/Saber";
 	/**
 	 * 需要去掉的表前缀
 	 */
