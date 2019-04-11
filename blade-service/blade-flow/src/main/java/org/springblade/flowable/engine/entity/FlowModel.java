@@ -14,25 +14,38 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.flowable;
+package org.springblade.flowable.engine.entity;
 
-import org.springblade.core.cloud.feign.EnableBladeFeign;
-import org.springblade.core.launch.BladeApplication;
-import org.springblade.core.launch.constant.AppConstant;
-import org.springframework.cloud.client.SpringCloudApplication;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
- * Flowable启动器
+ * 流程模型
  *
  * @author Chill
  */
-@EnableBladeFeign
-@SpringCloudApplication
-public class FlowableApplication {
+@Data
+@TableName("ACT_DE_MODEL")
+public class FlowModel implements Serializable {
 
-	public static void main(String[] args) {
-		BladeApplication.run(AppConstant.APPLICATION_FLOWABLE_NAME, FlowableApplication.class, args);
-	}
+	private static final long serialVersionUID = 1L;
+
+	private String id;
+	private String name;
+	private String modelKey;
+	private String description;
+	private Date created;
+	private Date lastUpdated;
+	private String createdBy;
+	private String lastUpdatedBy;
+	private Integer version;
+	private String modelEditorJson;
+	private String modelComment;
+	private Integer modelType;
+	private String tenantId;
+	private byte[] thumbnail;
 
 }
-

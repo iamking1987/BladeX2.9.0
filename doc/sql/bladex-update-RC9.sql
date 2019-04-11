@@ -11,11 +11,11 @@ set @modelid = (SELECT LAST_INSERT_ID());
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
 VALUES (@modelid, 'flow_model_create', '新增', 'create', 'http://localhost:9999/index.html', 'plus', 1, 2, 1, 1, NULL, 0);
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
-VALUES (@modelid, 'flow_model_update', '修改', 'update', 'http://localhost:9999/index.html#/editor/', 'form', 2, 2, 2, 1, NULL, 0);
+VALUES (@modelid, 'flow_model_update', '修改', 'update', 'http://localhost:9999/index.html#/editor', 'form', 2, 2, 2, 1, NULL, 0);
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
 VALUES (@modelid, 'flow_model_deploy', '部署', 'deploy', '', 'cloud-upload', 3, 2, 2, 1, NULL, 0);
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
-VALUES (@modelid, 'flow_model_download', '下载', 'download', '', 'download', 4, 2, 2, 1, NULL, 0);
+VALUES (@modelid, 'flow_model_download', '下载', 'download', 'http://localhost:9999/app/rest/models', 'download', 4, 2, 2, 1, NULL, 0);
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
 VALUES (@modelid, 'flow_model_delete', '删除', 'delete', '/api/blade-flowable/model/remove', 'delete', 5, 2, 3, 1, NULL, 0);
 

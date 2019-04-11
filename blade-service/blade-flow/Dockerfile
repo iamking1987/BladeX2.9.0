@@ -8,7 +8,7 @@ WORKDIR /blade/admin
 
 EXPOSE 7002
 
-ADD ./target/blade-flowable.jar ./app.jar
+ADD ./target/blade-flow.jar ./app.jar
 
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]
 

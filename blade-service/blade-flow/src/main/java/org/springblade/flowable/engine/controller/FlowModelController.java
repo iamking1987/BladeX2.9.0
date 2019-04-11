@@ -20,16 +20,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
 import org.springblade.core.tool.api.R;
+import org.springblade.core.tool.utils.Func;
 import org.springblade.flowable.engine.entity.FlowModel;
 import org.springblade.flowable.engine.service.FlowService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Map;
@@ -51,12 +50,33 @@ public class FlowModelController {
 	 */
 	@GetMapping("/list")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "category", value = "公告类型", paramType = "query", dataType = "integer"),
-		@ApiImplicitParam(name = "title", value = "公告标题", paramType = "query", dataType = "string")
+		@ApiImplicitParam(name = "modelKey", value = "模型标识", paramType = "query", dataType = "string"),
+		@ApiImplicitParam(name = "name", value = "模型名称", paramType = "query", dataType = "string")
 	})
 	@ApiOperation(value = "分页", notes = "传入notice", position = 1)
 	public R<IPage<FlowModel>> list(@ApiIgnore @RequestParam Map<String, Object> flow, Query query) {
 		IPage<FlowModel> pages = flowService.page(Condition.getPage(query), Condition.getQueryWrapper(flow, FlowModel.class));
 		return R.data(pages);
 	}
+
+	/**
+	 * 删除
+	 */
+	@PostMapping("/remove")
+	@ApiOperation(value = "删除", notes = "传入主键集合", position = 7)
+	public R remove(@ApiParam(value = "主键集合") @RequestParam String ids) {
+		boolean temp = flowService.removeByIds(Func.toStrList(ids));
+		return R.status(temp);
+	}
+
+	/**
+	 * 部署
+	 */
+	@PostMapping("/deploy")
+	@ApiOperation(value = "部署", notes = "传入模型id和分类", position = 7)
+	public R deploy(@ApiParam(value = "模型id") @RequestParam String modelId, @ApiParam(value = "分类") @RequestParam String category) {
+		boolean temp = flowService.deploy(modelId, category);
+		return R.status(temp);
+	}
+
 }
