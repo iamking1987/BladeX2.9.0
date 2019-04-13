@@ -31,7 +31,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 public class FlowApplication {
 
 	public static void main(String[] args) {
-		BladeApplication.run(AppConstant.APPLICATION_FLOWABLE_NAME, FlowApplication.class, args);
+		BladeApplication.run(AppConstant.APPLICATION_FLOW_NAME, FlowApplication.class, args);
 	}
 
 }

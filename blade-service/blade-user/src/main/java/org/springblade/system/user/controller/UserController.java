@@ -27,8 +27,10 @@ import lombok.AllArgsConstructor;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
 import org.springblade.core.secure.BladeUser;
+import org.springblade.core.secure.annotation.PreAuth;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
+import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.system.feign.IDictClient;
 import org.springblade.system.user.entity.User;
@@ -49,6 +51,7 @@ import java.util.Map;
 @RestController
 @RequestMapping
 @AllArgsConstructor
+@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
 public class UserController {
 
 	private IUserService userService;
