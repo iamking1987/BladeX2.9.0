@@ -33,6 +33,12 @@ public class FlowModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	public static final int MODEL_TYPE_BPMN = 0;
+	public static final int MODEL_TYPE_FORM = 2;
+	public static final int MODEL_TYPE_APP = 3;
+	public static final int MODEL_TYPE_DECISION_TABLE = 4;
+	public static final int MODEL_TYPE_CMMN = 5;
+
 	private String id;
 	private String name;
 	private String modelKey;

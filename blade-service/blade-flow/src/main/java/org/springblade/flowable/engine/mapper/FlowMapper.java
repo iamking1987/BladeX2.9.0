@@ -36,4 +36,11 @@ public interface FlowMapper extends BaseMapper<FlowModel> {
 	 * @return
 	 */
 	List<FlowModel> selectFlowPage(IPage page, FlowModel flowModel);
+
+	/**
+	 * 获取模型
+	 * @param parentModelId
+	 * @return
+	 */
+	List<FlowModel> findByParentModelId(String parentModelId);
 }

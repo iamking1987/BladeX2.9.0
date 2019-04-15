@@ -20,9 +20,7 @@ import lombok.AllArgsConstructor;
 import org.flowable.spring.SpringProcessEngineConfiguration;
 import org.flowable.spring.boot.EngineConfigurationConfigurer;
 import org.flowable.spring.boot.FlowableProperties;
-import org.flowable.ui.modeler.properties.FlowableModelerAppProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -35,11 +33,6 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(FlowableProperties.class)
 public class FlowableConfiguration implements EngineConfigurationConfigurer<SpringProcessEngineConfiguration> {
 	private FlowableProperties flowableProperties;
-
-	@Bean
-	public FlowableModelerAppProperties flowableModelerAppProperties() {
-		return new FlowableModelerAppProperties();
-	}
 
 	@Override
 	public void configure(SpringProcessEngineConfiguration engineConfiguration) {
