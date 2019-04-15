@@ -47,7 +47,7 @@
     <select id="findByParentModelId" parameterType="string" resultMap="flowModelResultMap">
         select model.* from ACT_DE_MODEL_RELATION modelrelation
                                 inner join ACT_DE_MODEL model on modelrelation.model_id = model.id
-        where modelrelation.parent_model_id = #{parentModelId, jdbcType=VARCHAR}
+        where modelrelation.parent_model_id = #{_parameter}
     </select>
 
 </mapper>
