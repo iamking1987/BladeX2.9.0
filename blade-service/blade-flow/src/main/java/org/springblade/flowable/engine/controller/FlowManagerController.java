@@ -16,7 +16,16 @@
  */
 package org.springblade.flowable.engine.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
+import org.springblade.core.mp.support.Condition;
+import org.springblade.core.mp.support.Query;
+import org.springblade.core.tool.api.R;
+import org.springblade.flowable.engine.entity.FlowProcess;
+import org.springblade.flowable.engine.service.FlowService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,5 +39,16 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class FlowManagerController {
 
+	private FlowService flowService;
+
+	/**
+	 * 分页
+	 */
+	@GetMapping("/list")
+	@ApiOperation(value = "分页", notes = "传入notice", position = 1)
+	public R<IPage<FlowProcess>> list(@ApiParam("流程类型") String category, Query query) {
+		IPage<FlowProcess> pages = flowService.selectManagerPage(Condition.getPage(query), category);
+		return R.data(pages);
+	}
 
 }

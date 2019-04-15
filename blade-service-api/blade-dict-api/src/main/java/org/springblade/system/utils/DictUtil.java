@@ -29,7 +29,7 @@ public class DictUtil {
 	 */
 	public static String getValue(String code, Integer dictKey) {
 		String dictValue = CacheUtil.get(CacheConstant.DICT_VALUE, code + StringPool.UNDERSCORE + dictKey, String.class);
-		if (Func.isEmpty(dictKey)) {
+		if (Func.isEmpty(dictValue)) {
 			R<String> result = dictClient.getValue(code, dictKey);
 			if (result.isSuccess()) {
 				CacheUtil.put(CacheConstant.DICT_VALUE, code + StringPool.UNDERSCORE + dictKey, result.getData());

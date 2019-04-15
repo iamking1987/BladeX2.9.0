@@ -19,6 +19,7 @@ package org.springblade.flowable.engine.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springblade.flowable.engine.entity.FlowModel;
+import org.springblade.flowable.engine.entity.FlowProcess;
 
 /**
  * FlowService
@@ -35,6 +36,15 @@ public interface FlowService extends IService<FlowModel> {
 	 * @return
 	 */
 	IPage<FlowModel> selectFlowPage(IPage<FlowModel> page, FlowModel flowModel);
+
+	/**
+	 * 流程管理列表
+	 *
+	 * @param page     分页工具
+	 * @param category 分类
+	 * @return
+	 */
+	IPage<FlowProcess> selectManagerPage(IPage<FlowProcess> page, String category);
 
 	/**
 	 * 部署流程

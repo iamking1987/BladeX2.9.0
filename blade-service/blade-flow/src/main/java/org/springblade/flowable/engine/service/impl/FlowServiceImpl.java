@@ -28,12 +28,16 @@ import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.Process;
 import org.flowable.editor.language.json.converter.BpmnJsonConverter;
 import org.flowable.engine.RepositoryService;
+import org.flowable.engine.impl.persistence.entity.ProcessDefinitionEntityImpl;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
+import org.flowable.engine.repository.ProcessDefinitionQuery;
 import org.springblade.core.log.exception.ServiceException;
+import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.flowable.engine.constant.FlowableConstant;
 import org.springblade.flowable.engine.entity.FlowModel;
+import org.springblade.flowable.engine.entity.FlowProcess;
 import org.springblade.flowable.engine.mapper.FlowMapper;
 import org.springblade.flowable.engine.service.FlowService;
 import org.springframework.stereotype.Service;
@@ -61,6 +65,31 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 	@Override
 	public IPage<FlowModel> selectFlowPage(IPage<FlowModel> page, FlowModel flowModel) {
 		return page.setRecords(baseMapper.selectFlowPage(page, flowModel));
+	}
+
+	@Override
+	public IPage<FlowProcess> selectManagerPage(IPage<FlowProcess> page, String category) {
+
+		ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery().latestVersion().orderByProcessDefinitionKey().asc();
+
+		if (StringUtils.isNotEmpty(category)){
+			processDefinitionQuery.processDefinitionCategory(category);
+		}
+
+		page.setTotal(processDefinitionQuery.count());
+		List<ProcessDefinition> processDefinitionList = processDefinitionQuery.listPage(Func.toInt(page.getCurrent() - 1), Func.toInt(page.getSize()));
+
+		List<FlowProcess> flowProcessList = new ArrayList<>();
+		for (ProcessDefinition processDefinition : processDefinitionList) {
+			String deploymentId = processDefinition.getDeploymentId();
+			Deployment deployment = repositoryService.createDeploymentQuery().deploymentId(deploymentId).singleResult();
+
+			FlowProcess flowProcess = new FlowProcess((ProcessDefinitionEntityImpl) processDefinition);
+			flowProcess.setDeploymentTime(deployment.getDeploymentTime());
+			flowProcessList.add(flowProcess);
+		}
+		page.setRecords(flowProcessList);
+		return page;
 	}
 
 	@Override

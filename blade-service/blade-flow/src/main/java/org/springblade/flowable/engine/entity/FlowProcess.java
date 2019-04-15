@@ -26,12 +26,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * ProcessDefinition
+ * FlowProcess
  *
  * @author Chill
  */
 @Data
-public class ProcessDefinition implements Serializable {
+public class FlowProcess implements Serializable {
 
 	private String id;
 	private String name;
@@ -45,7 +45,7 @@ public class ProcessDefinition implements Serializable {
 	private Integer suspensionState;
 	private Date deploymentTime;
 
-	public ProcessDefinition(ProcessDefinitionEntityImpl entity) {
+	public FlowProcess(ProcessDefinitionEntityImpl entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.key = entity.getKey();
