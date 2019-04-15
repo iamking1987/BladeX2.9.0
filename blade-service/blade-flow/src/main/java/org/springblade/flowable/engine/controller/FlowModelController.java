@@ -74,7 +74,7 @@ public class FlowModelController {
 	 */
 	@PostMapping("/deploy")
 	@ApiOperation(value = "部署", notes = "传入模型id和分类", position = 7)
-	public R deploy(@ApiParam(value = "模型id") @RequestParam String modelId, @ApiParam(value = "分类") @RequestParam String category) {
+	public R deploy(@ApiParam(value = "模型id") @RequestParam String modelId, @ApiParam(value = "工作流分类") @RequestParam String category) {
 		boolean temp = flowService.deploy(modelId, category);
 		return R.status(temp);
 	}

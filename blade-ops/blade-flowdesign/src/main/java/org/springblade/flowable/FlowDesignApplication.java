@@ -20,15 +20,13 @@ import org.flowable.ui.common.conf.DevelopmentConfiguration;
 import org.flowable.ui.common.rest.idm.remote.RemoteAccountResource;
 import org.springblade.core.launch.BladeApplication;
 import org.springblade.core.launch.constant.AppConstant;
+import org.springblade.flowable.constant.FlowableConstant;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-
-import static org.springblade.flowable.constant.FlowableConstant.BASE_PACHAGE;
-import static org.springblade.flowable.constant.FlowableConstant.FLOWABLE_BASE_PACKAGE;
 
 /**
  * FlowDesign启动器
@@ -38,13 +36,12 @@ import static org.springblade.flowable.constant.FlowableConstant.FLOWABLE_BASE_P
 @SpringBootApplication(
 	exclude = {
 		SecurityAutoConfiguration.class,
-		SecurityAutoConfiguration.class,
 		UserDetailsServiceAutoConfiguration.class,
 		LiquibaseAutoConfiguration.class
 	}
 )
 @ComponentScan(
-	basePackages = {BASE_PACHAGE, FLOWABLE_BASE_PACKAGE},
+	basePackages = {AppConstant.BASE_PACKAGES, FlowableConstant.FLOWABLE_BASE_PACKAGES},
 	excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {RemoteAccountResource.class, DevelopmentConfiguration.class})
 )
 public class FlowDesignApplication {

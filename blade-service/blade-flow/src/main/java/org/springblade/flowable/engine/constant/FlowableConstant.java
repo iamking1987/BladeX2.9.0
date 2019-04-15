@@ -14,19 +14,18 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.flowable.constant;
+package org.springblade.flowable.engine.constant;
 
 /**
- * Flowable常量
+ * 流程常量.
  *
- * @author Chill
+ * @author zhuangqian
  */
 public interface FlowableConstant {
+
 	String FLOWABLE_BASE_PACKAGES = "org.flowable.ui";
 
-	String css = ".css";
-	String js = ".js";
-	String jpg = ".jpg";
-	String png = ".png";
-	String app = "/app";
+	String suffix = ".bpmn20.xml";
+
+
 }

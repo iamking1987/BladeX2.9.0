@@ -1,6 +1,11 @@
 flowable:
-  async-executor-activate: false
   activity-font-name: \u5B8B\u4F53
   label-font-name: \u5B8B\u4F53
   annotation-font-name: \u5B8B\u4F53
   check-process-definitions: false
+  common:
+    app:
+      idm-url: http://localhost:9999
+      idm-admin:
+        user: admin
+        password: test

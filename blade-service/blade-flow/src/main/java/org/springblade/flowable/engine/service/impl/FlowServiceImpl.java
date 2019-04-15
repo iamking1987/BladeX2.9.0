@@ -18,18 +18,37 @@ package org.springblade.flowable.engine.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.flowable.engine.RepositoryService;
+import org.flowable.engine.repository.Deployment;
+import org.flowable.engine.repository.ProcessDefinition;
+import org.flowable.ui.modeler.domain.Model;
+import org.flowable.ui.modeler.serviceapi.ModelService;
+import org.springblade.core.log.exception.ServiceException;
+import org.springblade.core.tool.utils.StringUtil;
+import org.springblade.flowable.engine.constant.FlowableConstant;
 import org.springblade.flowable.engine.entity.FlowModel;
 import org.springblade.flowable.engine.mapper.FlowMapper;
 import org.springblade.flowable.engine.service.FlowService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * FlowServiceImpl
+ * 工作流服务实现类
  *
  * @author Chill
  */
+@Slf4j
 @Service
+@AllArgsConstructor
 public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implements FlowService {
+
+	private RepositoryService repositoryService;
+	private ModelService modelService;
+
 	@Override
 	public IPage<FlowModel> selectFlowPage(IPage<FlowModel> page, FlowModel flowModel) {
 		return page.setRecords(baseMapper.selectFlowPage(page, flowModel));
@@ -37,6 +56,40 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 
 	@Override
 	public boolean deploy(String modelId, String category) {
-		return false;
+		Model model = modelService.getModel(modelId);
+		byte[] bytes = modelService.getBpmnXML(model);
+
+		String processName = model.getName();
+		if (!StringUtil.endsWithIgnoreCase(processName, FlowableConstant.suffix)) {
+			processName += FlowableConstant.suffix;
+		}
+
+		Deployment deployment = repositoryService.createDeployment()
+			.addBytes(processName, bytes)
+			.name(model.getName())
+			.key(model.getKey())
+			.deploy();
+
+		log.debug("流程部署--------deploy：" + deployment + "  分类---------->" + category);
+
+		List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().deploymentId(deployment.getId()).list();
+
+		StringBuilder logBuilder = new StringBuilder(500);
+		List<Object> logArgs = new ArrayList<>();
+		// 设置流程分类
+		for (ProcessDefinition processDefinition : list) {
+			if (StringUtil.isNotBlank(category)) {
+				repositoryService.setProcessDefinitionCategory(processDefinition.getId(), category);
+			}
+			logBuilder.append("部署成功,流程ID={} \n");
+			logArgs.add(processDefinition.getId());
+		}
+
+		if (list.size() == 0) {
+			throw new ServiceException("部署失败,未找到流程");
+		} else {
+			log.info(logBuilder.toString(), logArgs.toArray());
+			return true;
+		}
 	}
 }
