@@ -28,12 +28,15 @@ import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.Process;
 import org.flowable.editor.language.json.converter.BpmnJsonConverter;
 import org.flowable.engine.RepositoryService;
+import org.flowable.engine.RuntimeService;
 import org.flowable.engine.impl.persistence.entity.ProcessDefinitionEntityImpl;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.repository.ProcessDefinitionQuery;
+import org.flowable.engine.runtime.ProcessInstance;
 import org.springblade.core.log.exception.ServiceException;
 import org.springblade.core.tool.utils.Func;
+import org.springblade.core.tool.utils.StringPool;
 import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.flowable.engine.constant.FlowableConstant;
 import org.springblade.flowable.engine.entity.FlowModel;
@@ -42,6 +45,7 @@ import org.springblade.flowable.engine.mapper.FlowMapper;
 import org.springblade.flowable.engine.service.FlowService;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,11 +60,13 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implements FlowService {
-
+	private static final String IMAGE_NAME = "image";
+	private static final String XML_NAME = "xml";
 	private static BpmnJsonConverter bpmnJsonConverter = new BpmnJsonConverter();
 	private static BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
 	private ObjectMapper objectMapper;
 	private RepositoryService repositoryService;
+	private RuntimeService runtimeService;
 
 	@Override
 	public IPage<FlowModel> selectFlowPage(IPage<FlowModel> page, FlowModel flowModel) {
@@ -69,16 +75,12 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 
 	@Override
 	public IPage<FlowProcess> selectManagerPage(IPage<FlowProcess> page, String category) {
-
 		ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery().latestVersion().orderByProcessDefinitionKey().asc();
-
-		if (StringUtils.isNotEmpty(category)){
+		if (StringUtils.isNotEmpty(category)) {
 			processDefinitionQuery.processDefinitionCategory(category);
 		}
-
 		page.setTotal(processDefinitionQuery.count());
 		List<ProcessDefinition> processDefinitionList = processDefinitionQuery.listPage(Func.toInt(page.getCurrent() - 1), Func.toInt(page.getSize()));
-
 		List<FlowProcess> flowProcessList = new ArrayList<>();
 		for (ProcessDefinition processDefinition : processDefinitionList) {
 			String deploymentId = processDefinition.getDeploymentId();
@@ -90,6 +92,22 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 		}
 		page.setRecords(flowProcessList);
 		return page;
+	}
+
+	@Override
+	public InputStream resource(String processId, String instanceId, String resourceType) {
+		if (StringUtils.isBlank(processId)) {
+			ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(instanceId).singleResult();
+			processId = processInstance.getProcessDefinitionId();
+		}
+		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(processId).singleResult();
+		String resourceName = StringPool.EMPTY;
+		if (resourceType.equals(IMAGE_NAME)) {
+			resourceName = processDefinition.getDiagramResourceName();
+		} else if (resourceType.equals(XML_NAME)) {
+			resourceName = processDefinition.getResourceName();
+		}
+		return repositoryService.getResourceAsStream(processDefinition.getDeploymentId(), resourceName);
 	}
 
 	@Override

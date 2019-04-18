@@ -42,7 +42,6 @@ public class UserHandlerInterceptor implements HandlerInterceptor {
 		if (servletPath.endsWith(css) || servletPath.endsWith(js) || servletPath.endsWith(jpg) || servletPath.endsWith(png)) {
 			return true;
 		}
-		System.out.println(servletPath);
 		if (servletPath.startsWith(app)) {
 			User user = new UserEntityImpl();
 			user.setId("admin");

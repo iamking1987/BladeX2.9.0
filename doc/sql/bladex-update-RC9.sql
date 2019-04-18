@@ -9,9 +9,9 @@ INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`,
 VALUES (@flowid, 'flow_model', '模型管理', 'menu', '/flow/model', NULL, 1, 1, 0, 1, NULL, 0);
 set @modelid = (SELECT LAST_INSERT_ID());
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
-VALUES (@modelid, 'flow_model_create', '新增', 'create', 'http://localhost:9999/index.html', 'plus', 1, 2, 1, 1, NULL, 0);
+VALUES (@modelid, 'flow_model_create', '创建', 'create', 'http://localhost:9999/index.html', 'plus', 1, 2, 1, 1, NULL, 0);
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
-VALUES (@modelid, 'flow_model_update', '修改', 'update', 'http://localhost:9999/index.html#/editor', 'form', 2, 2, 2, 1, NULL, 0);
+VALUES (@modelid, 'flow_model_update', '编辑', 'update', 'http://localhost:9999/index.html#/editor', 'form', 2, 2, 2, 1, NULL, 0);
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
 VALUES (@modelid, 'flow_model_deploy', '部署', 'deploy', '', 'cloud-upload', 3, 2, 2, 1, NULL, 0);
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
@@ -26,9 +26,11 @@ INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`,
 VALUES (@flowid, 'flow_manager', '流程管理', 'menu', '/flow/manager', NULL, 3, 1, 0, 1, NULL, 0);
 set @managerid = (SELECT LAST_INSERT_ID());
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
-VALUES (@managerid, 'flow_manager_pause', '暂停', 'pause', '', 'plus', 1, 2, 3, 1, NULL, 0);
+    VALUES (@managerid, 'flow_manager_image', '流程图', 'image', 'http://localhost:9999/index.html#/processes', 'image', 1, 2, 2, 1, NULL, 0);
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
-VALUES (@managerid, 'flow_model_delete', '删除', 'delete', '', 'delete', 2, 2, 3, 1, NULL, 0);
+VALUES (@managerid, 'flow_manager_pause', '暂停', 'pause', '', 'plus', 2, 2, 2, 1, NULL, 0);
+INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
+VALUES (@managerid, 'flow_model_delete', '删除', 'delete', '', 'delete', 3, 2, 3, 1, NULL, 0);
 
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
 VALUES (@flowid, 'flow_status', '流程状态', 'menu', '/flow/status', NULL, 4, 1, 0, 1, NULL, 0);

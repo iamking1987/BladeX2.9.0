@@ -21,6 +21,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.springblade.flowable.engine.entity.FlowModel;
 import org.springblade.flowable.engine.entity.FlowProcess;
 
+import java.io.InputStream;
+
 /**
  * FlowService
  *
@@ -45,6 +47,17 @@ public interface FlowService extends IService<FlowModel> {
 	 * @return
 	 */
 	IPage<FlowProcess> selectManagerPage(IPage<FlowProcess> page, String category);
+
+
+	/**
+	 * 资源展示
+	 *
+	 * @param processId    流程定义ID
+	 * @param instanceId   流程实例ID
+	 * @param resourceType 资源类型(xml|image)
+	 * @return
+	 */
+	InputStream resource(String processId, String instanceId, String resourceType);
 
 	/**
 	 * 部署流程
