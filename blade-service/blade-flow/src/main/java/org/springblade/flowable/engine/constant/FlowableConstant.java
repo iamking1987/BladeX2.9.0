@@ -25,7 +25,10 @@ public interface FlowableConstant {
 
 	String FLOWABLE_BASE_PACKAGES = "org.flowable.ui";
 
-	String suffix = ".bpmn20.xml";
+	String SUFFIX = ".bpmn20.xml";
 
+	String ACTIVE = "active";
+
+	String SUSPEND = "suspend";
 
 }

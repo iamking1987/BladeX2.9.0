@@ -28,7 +28,7 @@ set @managerid = (SELECT LAST_INSERT_ID());
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
     VALUES (@managerid, 'flow_manager_image', '流程图', 'image', 'http://localhost:9999/index.html#/processes', 'image', 1, 2, 2, 1, NULL, 0);
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
-VALUES (@managerid, 'flow_manager_pause', '暂停', 'pause', '', 'plus', 2, 2, 2, 1, NULL, 0);
+VALUES (@managerid, 'flow_manager_state', '变更状态', 'state', '', 'plus', 2, 2, 2, 1, NULL, 0);
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
 VALUES (@managerid, 'flow_model_delete', '删除', 'delete', '', 'delete', 3, 2, 3, 1, NULL, 0);
 

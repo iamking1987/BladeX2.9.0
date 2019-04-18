@@ -48,11 +48,19 @@ public interface FlowService extends IService<FlowModel> {
 	 */
 	IPage<FlowProcess> selectManagerPage(IPage<FlowProcess> page, String category);
 
+	/**
+	 * 变更流程状态
+	 *
+	 * @param state     状态
+	 * @param processId 流程ID
+	 * @return
+	 */
+	String changeState(String state, String processId);
 
 	/**
 	 * 资源展示
 	 *
-	 * @param processId    流程定义ID
+	 * @param processId    流程ID
 	 * @param instanceId   流程实例ID
 	 * @param resourceType 资源类型(xml|image)
 	 * @return

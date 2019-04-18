@@ -26,9 +26,7 @@ import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.IntegerPool;
 import org.springblade.flowable.engine.entity.FlowProcess;
 import org.springblade.flowable.engine.service.FlowService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
@@ -48,11 +46,24 @@ public class FlowManagerController {
 	/**
 	 * 分页
 	 */
-	@GetMapping("/list")
-	@ApiOperation(value = "分页", notes = "传入notice", position = 1)
+	@GetMapping("list")
+	@ApiOperation(value = "分页", notes = "传入流程类型", position = 1)
 	public R<IPage<FlowProcess>> list(@ApiParam("流程类型") String category, Query query) {
 		IPage<FlowProcess> pages = flowService.selectManagerPage(Condition.getPage(query), category);
 		return R.data(pages);
+	}
+
+	/**
+	 * 变更流程状态
+	 *
+	 * @param state     状态
+	 * @param processId 流程id
+	 */
+	@PostMapping("changeState")
+	@ApiOperation(value = "变更流程状态", notes = "传入state,processId", position = 2)
+	public R changeState(@RequestParam String state, @RequestParam String processId) {
+		String msg = flowService.changeState(state, processId);
+		return R.success(msg);
 	}
 
 	/**
@@ -63,8 +74,8 @@ public class FlowManagerController {
 	 * @param resourceType 资源类型
 	 * @param response     响应
 	 */
-	@GetMapping("/resource")
-	@ApiOperation(value = "分页", notes = "传入notice", position = 2)
+	@GetMapping("resource")
+	@ApiOperation(value = "资源展示", notes = "传入processId,instanceId,resourceType", position = 3)
 	public void resource(String processId, String instanceId, String resourceType, HttpServletResponse response) throws Exception {
 		InputStream resourceAsStream = flowService.resource(processId, instanceId, resourceType);
 		byte[] b = new byte[1024];

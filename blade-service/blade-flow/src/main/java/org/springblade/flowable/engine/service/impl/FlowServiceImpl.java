@@ -95,6 +95,19 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 	}
 
 	@Override
+	public String changeState(String state, String processId) {
+		if (state.equals(FlowableConstant.ACTIVE)) {
+			repositoryService.activateProcessDefinitionById(processId, true, null);
+			return StringUtil.format("激活ID为 [{}] 的流程成功", processId);
+		} else if (state.equals(FlowableConstant.SUSPEND)) {
+			repositoryService.suspendProcessDefinitionById(processId, true, null);
+			return StringUtil.format("挂起ID为 [{}] 的流程成功", processId);
+		} else {
+			return "暂无流程变更";
+		}
+	}
+
+	@Override
 	public InputStream resource(String processId, String instanceId, String resourceType) {
 		if (StringUtils.isBlank(processId)) {
 			ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(instanceId).singleResult();
@@ -112,30 +125,18 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 
 	@Override
 	public boolean deploy(String modelId, String category) {
-
 		FlowModel model = this.getById(modelId);
-
 		if (model == null) {
 			throw new ServiceException("No model found with the given id: " + modelId);
 		}
-
 		byte[] bytes = getBpmnXML(model);
-
 		String processName = model.getName();
-		if (!StringUtil.endsWithIgnoreCase(processName, FlowableConstant.suffix)) {
-			processName += FlowableConstant.suffix;
+		if (!StringUtil.endsWithIgnoreCase(processName, FlowableConstant.SUFFIX)) {
+			processName += FlowableConstant.SUFFIX;
 		}
-
-		Deployment deployment = repositoryService.createDeployment()
-			.addBytes(processName, bytes)
-			.name(model.getName())
-			.key(model.getModelKey())
-			.deploy();
-
+		Deployment deployment = repositoryService.createDeployment().addBytes(processName, bytes).name(model.getName()).key(model.getModelKey()).deploy();
 		log.debug("流程部署--------deploy：" + deployment + "  分类---------->" + category);
-
 		List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().deploymentId(deployment.getId()).list();
-
 		StringBuilder logBuilder = new StringBuilder(500);
 		List<Object> logArgs = new ArrayList<>();
 		// 设置流程分类
@@ -146,7 +147,6 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 			logBuilder.append("部署成功,流程ID={} \n");
 			logArgs.add(processDefinition.getId());
 		}
-
 		if (list.size() == 0) {
 			throw new ServiceException("部署失败,未找到流程");
 		} else {
@@ -176,7 +176,7 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 	}
 
 	private BpmnModel getBpmnModel(FlowModel model) {
-		BpmnModel bpmnModel = null;
+		BpmnModel bpmnModel;
 		try {
 			Map<String, FlowModel> formMap = new HashMap<>(16);
 			Map<String, FlowModel> decisionTableMap = new HashMap<>(16);
