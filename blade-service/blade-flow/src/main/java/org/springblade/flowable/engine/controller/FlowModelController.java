@@ -63,7 +63,7 @@ public class FlowModelController {
 	 * 删除
 	 */
 	@PostMapping("/remove")
-	@ApiOperation(value = "删除", notes = "传入主键集合", position = 7)
+	@ApiOperation(value = "删除", notes = "传入主键集合", position = 2)
 	public R remove(@ApiParam(value = "主键集合") @RequestParam String ids) {
 		boolean temp = flowService.removeByIds(Func.toStrList(ids));
 		return R.status(temp);
@@ -73,9 +73,9 @@ public class FlowModelController {
 	 * 部署
 	 */
 	@PostMapping("/deploy")
-	@ApiOperation(value = "部署", notes = "传入模型id和分类", position = 7)
+	@ApiOperation(value = "部署", notes = "传入模型id和分类", position = 3)
 	public R deploy(@ApiParam(value = "模型id") @RequestParam String modelId, @ApiParam(value = "工作流分类") @RequestParam String category) {
-		boolean temp = flowService.deploy(modelId, category);
+		boolean temp = flowService.deployModel(modelId, category);
 		return R.status(temp);
 	}
 

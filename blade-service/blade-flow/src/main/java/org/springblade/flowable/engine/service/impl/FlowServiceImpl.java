@@ -44,7 +44,9 @@ import org.springblade.flowable.engine.entity.FlowProcess;
 import org.springblade.flowable.engine.mapper.FlowMapper;
 import org.springblade.flowable.engine.service.FlowService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,7 +87,6 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 		for (ProcessDefinition processDefinition : processDefinitionList) {
 			String deploymentId = processDefinition.getDeploymentId();
 			Deployment deployment = repositoryService.createDeploymentQuery().deploymentId(deploymentId).singleResult();
-
 			FlowProcess flowProcess = new FlowProcess((ProcessDefinitionEntityImpl) processDefinition);
 			flowProcess.setDeploymentTime(deployment.getDeploymentTime());
 			flowProcessList.add(flowProcess);
@@ -108,6 +109,12 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 	}
 
 	@Override
+	public boolean deleteDeployment(String deploymentIds) {
+		Func.toStrList(deploymentIds).forEach(deploymentId -> repositoryService.deleteDeployment(deploymentId, true));
+		return true;
+	}
+
+	@Override
 	public InputStream resource(String processId, String instanceId, String resourceType) {
 		if (StringUtils.isBlank(processId)) {
 			ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(instanceId).singleResult();
@@ -124,7 +131,22 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 	}
 
 	@Override
-	public boolean deploy(String modelId, String category) {
+	public boolean deployUpload(List<MultipartFile> files, String category) {
+		files.forEach(file -> {
+			try {
+				String fileName = file.getOriginalFilename();
+				InputStream fileInputStream = file.getInputStream();
+				Deployment deployment = repositoryService.createDeployment().addInputStream(fileName, fileInputStream).deploy();
+				deploy(deployment, category);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+		return true;
+	}
+
+	@Override
+	public boolean deployModel(String modelId, String category) {
 		FlowModel model = this.getById(modelId);
 		if (model == null) {
 			throw new ServiceException("No model found with the given id: " + modelId);
@@ -135,7 +157,11 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 			processName += FlowableConstant.SUFFIX;
 		}
 		Deployment deployment = repositoryService.createDeployment().addBytes(processName, bytes).name(model.getName()).key(model.getModelKey()).deploy();
-		log.debug("流程部署--------deploy：" + deployment + "  分类---------->" + category);
+		return deploy(deployment, category);
+	}
+
+	private boolean deploy(Deployment deployment, String category) {
+		log.debug("流程部署--------deploy:  " + deployment + "  分类---------->" + category);
 		List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().deploymentId(deployment.getId()).list();
 		StringBuilder logBuilder = new StringBuilder(500);
 		List<Object> logArgs = new ArrayList<>();
@@ -155,18 +181,15 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 		}
 	}
 
-
 	private byte[] getBpmnXML(FlowModel model) {
 		BpmnModel bpmnModel = getBpmnModel(model);
 		return getBpmnXML(bpmnModel);
 	}
 
-
 	private byte[] getBpmnXML(BpmnModel bpmnModel) {
 		for (Process process : bpmnModel.getProcesses()) {
 			if (StringUtils.isNotEmpty(process.getId())) {
 				char firstCharacter = process.getId().charAt(0);
-				// no digit is allowed as first character
 				if (Character.isDigit(firstCharacter)) {
 					process.setId("a" + process.getId());
 				}
@@ -190,14 +213,11 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 					decisionTableMap.put(childModel.getId(), childModel);
 				}
 			}
-
 			bpmnModel = getBpmnModel(model, formMap, decisionTableMap);
-
 		} catch (Exception e) {
 			log.error("Could not generate BPMN 2.0 model for {}", model.getId(), e);
 			throw new ServiceException("Could not generate BPMN 2.0 model");
 		}
-
 		return bpmnModel;
 	}
 
@@ -208,14 +228,11 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 			for (FlowModel formModel : formMap.values()) {
 				formKeyMap.put(formModel.getId(), formModel.getModelKey());
 			}
-
 			Map<String, String> decisionTableKeyMap = new HashMap<>(16);
 			for (FlowModel decisionTableModel : decisionTableMap.values()) {
 				decisionTableKeyMap.put(decisionTableModel.getId(), decisionTableModel.getModelKey());
 			}
-
 			return bpmnJsonConverter.convertToBpmnModel(editorJsonNode, formKeyMap, decisionTableKeyMap);
-
 		} catch (Exception e) {
 			log.error("Could not generate BPMN 2.0 model for {}", model.getId(), e);
 			throw new ServiceException("Could not generate BPMN 2.0 model");

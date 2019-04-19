@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 
 /**
- * 流程部署
+ * 流程
  *
  * @author Chill
  */
@@ -41,6 +41,9 @@ public class ProcessController {
 	 */
 	@GetMapping("resource")
 	public void resource(@RequestParam String processId, String instanceId, @RequestParam(defaultValue = IMAGE_NAME) String resourceType, HttpServletResponse response) throws Exception {
+		if (StringUtils.isAllBlank(processId, instanceId)) {
+			return;
+		}
 		if (StringUtils.isBlank(processId)) {
 			ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(instanceId).singleResult();
 			processId = processInstance.getProcessDefinitionId();

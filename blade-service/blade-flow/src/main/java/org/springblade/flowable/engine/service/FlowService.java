@@ -20,8 +20,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springblade.flowable.engine.entity.FlowModel;
 import org.springblade.flowable.engine.entity.FlowProcess;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * FlowService
@@ -58,6 +60,14 @@ public interface FlowService extends IService<FlowModel> {
 	String changeState(String state, String processId);
 
 	/**
+	 * 删除部署流程
+	 *
+	 * @param deploymentIds 部署流程id集合
+	 * @return
+	 */
+	boolean deleteDeployment(String deploymentIds);
+
+	/**
 	 * 资源展示
 	 *
 	 * @param processId    流程ID
@@ -68,11 +78,20 @@ public interface FlowService extends IService<FlowModel> {
 	InputStream resource(String processId, String instanceId, String resourceType);
 
 	/**
+	 * 上传部署流程
+	 *
+	 * @param files    流程配置文件
+	 * @param category 流程分类
+	 * @return
+	 */
+	boolean deployUpload(List<MultipartFile> files, String category);
+
+	/**
 	 * 部署流程
 	 *
 	 * @param modelId  模型id
 	 * @param category 分类
 	 * @return
 	 */
-	boolean deploy(String modelId, String category);
+	boolean deployModel(String modelId, String category);
 }

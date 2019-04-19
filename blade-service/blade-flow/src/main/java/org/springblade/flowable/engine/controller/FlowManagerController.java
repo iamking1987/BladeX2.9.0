@@ -27,9 +27,11 @@ import org.springblade.core.tool.utils.IntegerPool;
 import org.springblade.flowable.engine.entity.FlowProcess;
 import org.springblade.flowable.engine.service.FlowService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * 流程管理接口
@@ -59,11 +61,34 @@ public class FlowManagerController {
 	 * @param state     状态
 	 * @param processId 流程id
 	 */
-	@PostMapping("changeState")
+	@PostMapping("change-state")
 	@ApiOperation(value = "变更流程状态", notes = "传入state,processId", position = 2)
 	public R changeState(@RequestParam String state, @RequestParam String processId) {
 		String msg = flowService.changeState(state, processId);
 		return R.success(msg);
+	}
+
+	/**
+	 * 删除部署流程
+	 *
+	 * @param deploymentIds 部署流程id集合
+	 */
+	@PostMapping("delete-deployment")
+	@ApiOperation(value = "删除部署流程", notes = "部署流程id集合", position = 3)
+	public R deleteDeployment(String deploymentIds) {
+		return R.status(flowService.deleteDeployment(deploymentIds));
+	}
+
+	/**
+	 * 上传部署流程文件
+	 *
+	 * @param files    流程文件
+	 * @param category 类型
+	 */
+	@PostMapping("deploy-upload")
+	@ApiOperation(value = "上传部署流程文件", notes = "传入文件", position = 4)
+	public R deployUpload(@RequestParam List<MultipartFile> files, @RequestParam String category) {
+		return R.status(flowService.deployUpload(files, category));
 	}
 
 	/**
@@ -75,7 +100,7 @@ public class FlowManagerController {
 	 * @param response     响应
 	 */
 	@GetMapping("resource")
-	@ApiOperation(value = "资源展示", notes = "传入processId,instanceId,resourceType", position = 3)
+	@ApiOperation(value = "资源展示", notes = "传入processId,instanceId,resourceType", position = 4)
 	public void resource(String processId, String instanceId, String resourceType, HttpServletResponse response) throws Exception {
 		InputStream resourceAsStream = flowService.resource(processId, instanceId, resourceType);
 		byte[] b = new byte[1024];
