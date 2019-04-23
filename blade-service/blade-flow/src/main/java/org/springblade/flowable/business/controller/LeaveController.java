@@ -41,8 +41,8 @@ import java.util.List;
  */
 @Controller
 @AllArgsConstructor
-@RequestMapping(value = "expense")
-public class ExpenseController {
+@RequestMapping(value = "leave")
+public class LeaveController {
 
 	private RuntimeService runtimeService;
 
