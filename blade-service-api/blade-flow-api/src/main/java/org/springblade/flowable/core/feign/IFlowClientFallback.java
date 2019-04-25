@@ -14,51 +14,22 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.desk.entity;
+package org.springblade.flowable.core.feign;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.springblade.core.mp.base.BaseEntity;
+import org.springblade.flowable.core.entity.BladeFlow;
+import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.util.Map;
 
 /**
- * 实体类
+ * 流程远程调用失败处理类
  *
  * @author Chill
  */
-@Data
-@TableName("blade_notice")
-@EqualsAndHashCode(callSuper = true)
-public class Notice extends BaseEntity {
-
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * 标题
-	 */
-	@ApiModelProperty(value = "标题")
-	private String title;
-
-	/**
-	 * 通知类型
-	 */
-	@ApiModelProperty(value = "通知类型")
-	private Integer category;
-
-	/**
-	 * 发布日期
-	 */
-	@ApiModelProperty(value = "发布日期")
-	private Date releaseTime;
-
-	/**
-	 * 内容
-	 */
-	@ApiModelProperty(value = "内容")
-	private String content;
-
-
+@Component
+public class IFlowClientFallback implements IFlowClient {
+	@Override
+	public BladeFlow startProcessInstanceById(String processDefinitionId, String businessKey, Map<String, Object> variables) {
+		return null;
+	}
 }

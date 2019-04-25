@@ -14,51 +14,18 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.desk.entity;
-
-import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.springblade.core.mp.base.BaseEntity;
-
-import java.util.Date;
+package org.springblade.flowable.core.constant;
 
 /**
- * 实体类
+ * 流程常量.
  *
  * @author Chill
  */
-@Data
-@TableName("blade_notice")
-@EqualsAndHashCode(callSuper = true)
-public class Notice extends BaseEntity {
-
-	private static final long serialVersionUID = 1L;
+public interface ProcessConstant {
 
 	/**
-	 * 标题
+	 * 请假流程标识
 	 */
-	@ApiModelProperty(value = "标题")
-	private String title;
-
-	/**
-	 * 通知类型
-	 */
-	@ApiModelProperty(value = "通知类型")
-	private Integer category;
-
-	/**
-	 * 发布日期
-	 */
-	@ApiModelProperty(value = "发布日期")
-	private Date releaseTime;
-
-	/**
-	 * 内容
-	 */
-	@ApiModelProperty(value = "内容")
-	private String content;
-
+	String LEAVE_KEY = "Leave";
 
 }

@@ -17,48 +17,51 @@
 package org.springblade.desk.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springblade.core.mp.base.BaseEntity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
- * 实体类
+ * 请假流程实体类
  *
  * @author Chill
  */
 @Data
-@TableName("blade_notice")
+@TableName("blade_process_leave")
 @EqualsAndHashCode(callSuper = true)
-public class Notice extends BaseEntity {
+public class ProcessLeave extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 标题
+	 * 流程定义id
 	 */
-	@ApiModelProperty(value = "标题")
-	private String title;
-
+	private String processId;
 	/**
-	 * 通知类型
+	 * 流程实例id
 	 */
-	@ApiModelProperty(value = "通知类型")
-	private Integer category;
-
+	private String instanceId;
 	/**
-	 * 发布日期
+	 * 请假开始时间
 	 */
-	@ApiModelProperty(value = "发布日期")
-	private Date releaseTime;
-
+	private LocalDateTime startTime;
 	/**
-	 * 内容
+	 * 请假结束时间
 	 */
-	@ApiModelProperty(value = "内容")
-	private String content;
-
+	private LocalDateTime endTime;
+	/**
+	 * 请假理由
+	 */
+	private String reason;
+	/**
+	 * 批复
+	 */
+	private String comment;
+	/**
+	 * 流程申请时间
+	 */
+	private LocalDateTime applyTime;
 
 }
