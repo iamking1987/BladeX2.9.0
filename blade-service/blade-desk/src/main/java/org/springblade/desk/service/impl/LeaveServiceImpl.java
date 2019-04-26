@@ -56,10 +56,12 @@ public class LeaveServiceImpl extends BaseServiceImpl<LeaveMapper, ProcessLeave>
 			leave.setApplyTime(LocalDateTime.now());
 			save(leave);
 			// 启动流程
-			variables.put("taskUser", SecureUtil.getUser().getUserId());
-			variables.put("days", Duration.between(leave.getEndTime(), leave.getStartTime()).toDays());
+			variables.put("businessId", leave.getId());
+			variables.put("taskUser", SecureUtil.getUserAccount());
+			variables.put("days", Duration.between(leave.getStartTime(), leave.getEndTime()).toDays());
 			BladeFlow bladeFlow = flowClient.startProcessInstanceById(leave.getProcessId(), FlowUtil.getBusinessKey(businessTable, String.valueOf(leave.getId())), variables);
 			log.debug("流程已启动,流程ID:" + bladeFlow.getProcessInstanceId());
+			// 返回流程id写入leave
 			leave.setInstanceId(bladeFlow.getProcessInstanceId());
 			updateById(leave);
 		} else {

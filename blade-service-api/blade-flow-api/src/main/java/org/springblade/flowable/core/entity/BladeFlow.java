@@ -20,6 +20,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * 工作流通用实体类
@@ -50,7 +51,26 @@ public class BladeFlow implements Serializable {
 	 * 任务执行人名称
 	 */
 	private String assigneeName;
-
+	/**
+	 * 流程分类
+	 */
+	private String category;
+	/**
+	 * 流程分类名
+	 */
+	private String categoryName;
+	/**
+	 * 创建时间
+	 */
+	private Date createTime;
+	/**
+	 * 结束时间
+	 */
+	private Date endTime;
+	/**
+	 * 签收时间
+	 */
+	private Date claimTime;
 	/**
 	 * 历史任务结束时间
 	 */
@@ -70,7 +90,6 @@ public class BladeFlow implements Serializable {
 	private String processDefinitionDesc;
 	private String processDefinitionDiagramResName;
 	private String processDefinitionResName;
-
 	/**
 	 * 已办任务流程实例ID 查看流程图会用到
 	 */
@@ -79,7 +98,6 @@ public class BladeFlow implements Serializable {
 	 * 流程实例是否结束(true:结束，false:未结束)
 	 */
 	private String processIsFinished;
-
 	/**
 	 * 历史活动流程
 	 */
@@ -88,7 +106,6 @@ public class BladeFlow implements Serializable {
 	 * 历史活动耗时
 	 */
 	private String hisActInsDuTime;
-
 	/**
 	 * 业务绑定Table
 	 */
@@ -117,4 +134,8 @@ public class BladeFlow implements Serializable {
 	 * 结束查询日期
 	 */
 	private Date endDate;
+	/**
+	 * 流程参数
+	 */
+	private Map<String, Object> variables;
 }

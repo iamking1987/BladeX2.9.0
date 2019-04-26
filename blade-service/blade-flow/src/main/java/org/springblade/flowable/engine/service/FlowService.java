@@ -48,7 +48,7 @@ public interface FlowService extends IService<FlowModel> {
 	 * @param category 分类
 	 * @return
 	 */
-	IPage<FlowProcess> selectManagerPage(IPage<FlowProcess> page, String category);
+	IPage<FlowProcess> selectProcessPage(IPage<FlowProcess> page, String category);
 
 	/**
 	 * 变更流程状态

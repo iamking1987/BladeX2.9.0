@@ -17,9 +17,10 @@
 package org.springblade.flowable.business.feign;
 
 import lombok.AllArgsConstructor;
+import org.flowable.engine.IdentityService;
 import org.flowable.engine.RuntimeService;
-import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.springblade.core.secure.utils.SecureUtil;
 import org.springblade.flowable.core.entity.BladeFlow;
 import org.springblade.flowable.core.feign.IFlowClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,12 +39,12 @@ import java.util.Map;
 public class FlowClient implements IFlowClient {
 
 	private RuntimeService runtimeService;
-
-	private TaskService taskService;
+	private IdentityService identityService;
 
 	@Override
 	@PostMapping(START_PROCESS_INSTANCE_BY_Id)
 	public BladeFlow startProcessInstanceById(String processDefinitionId, String businessKey, @RequestBody Map<String, Object> variables) {
+		identityService.setAuthenticatedUserId(SecureUtil.getUserAccount());
 		ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefinitionId, businessKey, variables);
 		BladeFlow flow = new BladeFlow();
 		flow.setProcessInstanceId(processInstance.getId());

@@ -31,4 +31,18 @@ public interface FlowableConstant {
 
 	String SUSPEND = "suspend";
 
+	String STATUS_TODO = "todo";
+
+	String STATUS_CLAIM = "claim";
+
+	String STATUS_SEND = "send";
+
+	String STATUS_DONE = "done";
+
+	String STATUS_FINISHED = "finished";
+
+	String STATUS_UNFINISHED = "unfinished";
+
+	String STATUS_FINISH = "finish";
+
 }

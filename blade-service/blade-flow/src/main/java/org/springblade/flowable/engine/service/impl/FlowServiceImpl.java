@@ -76,12 +76,11 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 	}
 
 	@Override
-	public IPage<FlowProcess> selectManagerPage(IPage<FlowProcess> page, String category) {
+	public IPage<FlowProcess> selectProcessPage(IPage<FlowProcess> page, String category) {
 		ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery().latestVersion().orderByProcessDefinitionKey().asc();
 		if (StringUtils.isNotEmpty(category)) {
 			processDefinitionQuery.processDefinitionCategory(category);
 		}
-		page.setTotal(processDefinitionQuery.count());
 		List<ProcessDefinition> processDefinitionList = processDefinitionQuery.listPage(Func.toInt(page.getCurrent() - 1), Func.toInt(page.getSize()));
 		List<FlowProcess> flowProcessList = new ArrayList<>();
 		for (ProcessDefinition processDefinition : processDefinitionList) {
@@ -91,6 +90,7 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 			flowProcess.setDeploymentTime(deployment.getDeploymentTime());
 			flowProcessList.add(flowProcess);
 		}
+		page.setTotal(processDefinitionQuery.count());
 		page.setRecords(flowProcessList);
 		return page;
 	}

@@ -17,6 +17,7 @@
 package org.springblade.flowable.engine.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,7 @@ import java.util.List;
 @RestController
 @RequestMapping("manager")
 @AllArgsConstructor
+@Api(value = "流程管理接口", tags = "流程管理接口")
 public class FlowManagerController {
 
 	private FlowService flowService;
@@ -51,7 +53,7 @@ public class FlowManagerController {
 	@GetMapping("list")
 	@ApiOperation(value = "分页", notes = "传入流程类型", position = 1)
 	public R<IPage<FlowProcess>> list(@ApiParam("流程类型") String category, Query query) {
-		IPage<FlowProcess> pages = flowService.selectManagerPage(Condition.getPage(query), category);
+		IPage<FlowProcess> pages = flowService.selectProcessPage(Condition.getPage(query), category);
 		return R.data(pages);
 	}
 
