@@ -122,11 +122,11 @@ public class BladeFlow implements Serializable {
 	/**
 	 * 历史活动流程
 	 */
-	private String hisActInsActName;
+	private String historyActivityName;
 	/**
 	 * 历史活动耗时
 	 */
-	private String hisActInsDuTime;
+	private String historyActivityDurationTime;
 	/**
 	 * 业务绑定Table
 	 */
@@ -159,4 +159,5 @@ public class BladeFlow implements Serializable {
 	 * 流程参数
 	 */
 	private Map<String, Object> variables;
+
 }

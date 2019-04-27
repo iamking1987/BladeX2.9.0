@@ -19,9 +19,12 @@ package org.springblade.flowable.engine.utils;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.springblade.core.cache.utils.CacheUtil;
+import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.SpringUtil;
 import org.springblade.core.tool.utils.StringPool;
+import org.springblade.system.user.entity.User;
+import org.springblade.system.user.feign.IUserClient;
 import org.springblade.system.utils.DictUtil;
 
 /**
@@ -32,26 +35,30 @@ import org.springblade.system.utils.DictUtil;
 public class FlowCache {
 
 	private static final String FLOW_CACHE = "flow:process";
-	private static final String FLOW_CACHE_PD_ID_ = "definition_id_";
+	private static final String FLOW_CACHE_ID_ = "definition:id";
+	private static final String USER_CACHE = "blade:user";
+	private static final String USER_CACHE_ID_ = "user:id";
 
 	private static RepositoryService repositoryService;
+	private static IUserClient userClient;
 
 	static {
 		repositoryService = SpringUtil.getBean(RepositoryService.class);
+		userClient = SpringUtil.getBean(IUserClient.class);
 	}
 
 	/**
 	 * 获得流程定义对象
 	 *
-	 * @param procDefId 流程对象id
+	 * @param processDefinitionId 流程对象id
 	 * @return
 	 */
-	public static ProcessDefinition getProcessDefinition(String procDefId) {
-		ProcessDefinition pd = CacheUtil.get(FLOW_CACHE, FLOW_CACHE_PD_ID_ + procDefId, ProcessDefinition.class);
+	public static ProcessDefinition getProcessDefinition(String processDefinitionId) {
+		ProcessDefinition pd = CacheUtil.get(FLOW_CACHE, FLOW_CACHE_ID_ + processDefinitionId, ProcessDefinition.class);
 		if (Func.isEmpty(pd)) {
-			pd = repositoryService.createProcessDefinitionQuery().processDefinitionId(procDefId).singleResult();
+			pd = repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult();
 			if (Func.isNotEmpty(pd)) {
-				CacheUtil.put(FLOW_CACHE, FLOW_CACHE_PD_ID_ + procDefId, pd);
+				CacheUtil.put(FLOW_CACHE, FLOW_CACHE_ID_ + processDefinitionId, pd);
 			}
 		}
 		return pd;
@@ -68,6 +75,26 @@ public class FlowCache {
 			return StringPool.EMPTY;
 		}
 		return DictUtil.getValue(category.split(StringPool.UNDERSCORE)[0], Func.toInt(category.split(StringPool.UNDERSCORE)[1]));
+	}
+
+	/**
+	 * 获取用户名
+	 *
+	 * @param userId 用户id
+	 * @return
+	 */
+	public static User getUser(Integer userId) {
+		User user = CacheUtil.get(USER_CACHE, USER_CACHE_ID_ + userId, User.class);
+		if (Func.isEmpty(user)) {
+			R<User> result = userClient.userInfoById(userId);
+			if (result.isSuccess()) {
+				user = result.getData();
+				if (Func.isNotEmpty(user)) {
+					CacheUtil.put(USER_CACHE, USER_CACHE_ID_ + userId, user);
+				}
+			}
+		}
+		return user;
 	}
 
 }

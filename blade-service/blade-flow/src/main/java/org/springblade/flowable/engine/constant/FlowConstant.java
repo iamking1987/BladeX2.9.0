@@ -21,7 +21,7 @@ package org.springblade.flowable.engine.constant;
  *
  * @author zhuangqian
  */
-public interface FlowableConstant {
+public interface FlowConstant {
 
 	String FLOWABLE_BASE_PACKAGES = "org.flowable.ui";
 
@@ -44,5 +44,9 @@ public interface FlowableConstant {
 	String STATUS_UNFINISHED = "unfinished";
 
 	String STATUS_FINISH = "finish";
+
+	String START_EVENT = "startEvent";
+
+	String END_EVENT = "endEvent";
 
 }

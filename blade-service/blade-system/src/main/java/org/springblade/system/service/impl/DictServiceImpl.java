@@ -34,8 +34,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static org.springblade.common.cache.CacheNames.DICT_LIST;
-import static org.springblade.common.cache.CacheNames.DICT_VALUE;
+import static org.springblade.core.cache.constant.CacheConstant.DICT_VALUE;
+import static org.springblade.core.cache.constant.CacheConstant.DICT_LIST;
+
 
 /**
  * 服务实现类

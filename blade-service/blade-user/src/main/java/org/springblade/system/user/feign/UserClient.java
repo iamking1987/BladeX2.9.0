@@ -18,6 +18,7 @@ package org.springblade.system.user.feign;
 
 import lombok.AllArgsConstructor;
 import org.springblade.core.tool.api.R;
+import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserInfo;
 import org.springblade.system.user.service.IUserService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +36,13 @@ public class UserClient implements IUserClient {
 	IUserService service;
 
 	@Override
-	@GetMapping(API_PREFIX + "/user-info")
+	@GetMapping(USER_INFO_BY_ID)
+	public R<User> userInfoById(Integer userId) {
+		return R.data(service.getById(userId));
+	}
+
+	@Override
+	@GetMapping(USER_INFO)
 	public R<UserInfo> userInfo(String tenantCode, String account) {
 		return R.data(service.userInfo(tenantCode, account));
 	}

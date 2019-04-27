@@ -23,11 +23,6 @@ package org.springblade.common.cache;
  */
 public interface CacheNames {
 
-	String NOTICE_ONE = "blade_notice:one";
-
-	String DICT_VALUE = "blade_dict:value";
-	String DICT_LIST = "blade_dict:list";
-
-	String AUTH_ROUTES = "blade_menu:auth_routes";
+	String NOTICE_ONE = "blade:notice:one";
 
 }

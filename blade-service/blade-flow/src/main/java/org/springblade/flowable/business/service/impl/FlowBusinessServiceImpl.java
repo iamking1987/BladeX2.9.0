@@ -19,6 +19,7 @@ package org.springblade.flowable.business.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
 import org.flowable.engine.HistoryService;
+import org.flowable.engine.RepositoryService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.history.HistoricProcessInstanceQuery;
@@ -31,7 +32,7 @@ import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringPool;
 import org.springblade.flowable.business.service.FlowBusinessService;
 import org.springblade.flowable.core.entity.BladeFlow;
-import org.springblade.flowable.engine.constant.FlowableConstant;
+import org.springblade.flowable.engine.constant.FlowConstant;
 import org.springblade.flowable.engine.utils.FlowCache;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FlowBusinessServiceImpl implements FlowBusinessService {
 
+	private RepositoryService repositoryService;
 	private TaskService taskService;
 	private HistoryService historyService;
 
@@ -60,7 +62,7 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 			.includeProcessVariables().active().orderByTaskCreateTime().desc();
 
 		// 构建列表数据
-		buildFlowTaskList(bladeFlow, flowList, claimQuery, FlowableConstant.STATUS_CLAIM);
+		buildFlowTaskList(bladeFlow, flowList, claimQuery, FlowConstant.STATUS_CLAIM);
 
 		// 计算总数
 		long count = claimQuery.count();
@@ -83,7 +85,7 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 			.includeProcessVariables().orderByTaskCreateTime().desc();
 
 		// 构建列表数据
-		buildFlowTaskList(bladeFlow, flowList, todoQuery, FlowableConstant.STATUS_TODO);
+		buildFlowTaskList(bladeFlow, flowList, todoQuery, FlowConstant.STATUS_TODO);
 
 		// 计算总数
 		long count = todoQuery.count();
@@ -116,7 +118,7 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 				flow.setBusinessTable(businessKey[0]);
 				flow.setBusinessId(businessKey[1]);
 			}
-			flow.setHisActInsActName(historicProcessInstance.getName());
+			flow.setHistoryActivityName(historicProcessInstance.getName());
 			flow.setProcessInstanceId(historicProcessInstance.getId());
 			flow.setHistoryProcessInstanceId(historicProcessInstance.getId());
 			// ProcessDefinition
@@ -133,11 +135,11 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 			flow.setTaskDefinitionKey(historyTask.getTaskDefinitionKey());
 			// Status
 			if (historicProcessInstance.getEndActivityId() != null) {
-				flow.setProcessIsFinished(FlowableConstant.STATUS_FINISHED);
+				flow.setProcessIsFinished(FlowConstant.STATUS_FINISHED);
 			} else {
-				flow.setProcessIsFinished(FlowableConstant.STATUS_UNFINISHED);
+				flow.setProcessIsFinished(FlowConstant.STATUS_UNFINISHED);
 			}
-			flow.setStatus(FlowableConstant.STATUS_FINISH);
+			flow.setStatus(FlowConstant.STATUS_FINISH);
 			flowList.add(flow);
 		});
 
@@ -191,17 +193,14 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 				flow.setBusinessTable(businessKey[0]);
 				flow.setBusinessId(businessKey[1]);
 				if (historicProcessInstance.getEndActivityId() != null) {
-					flow.setProcessIsFinished(FlowableConstant.STATUS_FINISHED);
+					flow.setProcessIsFinished(FlowConstant.STATUS_FINISHED);
 				} else {
-					flow.setProcessIsFinished(FlowableConstant.STATUS_UNFINISHED);
+					flow.setProcessIsFinished(FlowConstant.STATUS_UNFINISHED);
 				}
 			}
-			flow.setStatus(FlowableConstant.STATUS_FINISH);
-
+			flow.setStatus(FlowConstant.STATUS_FINISH);
 			flowList.add(flow);
 		});
-
-
 		// 计算总数
 		long count = doneQuery.count();
 		// 设置总数
@@ -235,8 +234,10 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 			flow.setClaimTime(task.getClaimTime());
 			flow.setExecutionId(task.getExecutionId());
 			flow.setVariables(task.getProcessVariables());
-			flow.setCategory(task.getCategory());
-			flow.setCategoryName(FlowCache.getCategoryName(task.getCategory()));
+
+			ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(task.getProcessDefinitionId()).singleResult();
+			flow.setCategory(processDefinition.getCategory());
+			flow.setCategoryName(FlowCache.getCategoryName(processDefinition.getCategory()));
 
 			HistoricProcessInstance historicProcessInstance = getHistoricProcessInstance(task.getProcessInstanceId());
 			if (Func.isNotEmpty(historicProcessInstance)) {

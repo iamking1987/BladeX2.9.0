@@ -18,6 +18,7 @@ package org.springblade.flowable.engine.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springblade.flowable.core.entity.BladeFlow;
 import org.springblade.flowable.engine.entity.FlowModel;
 import org.springblade.flowable.engine.entity.FlowProcess;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,6 +50,16 @@ public interface FlowService extends IService<FlowModel> {
 	 * @return
 	 */
 	IPage<FlowProcess> selectProcessPage(IPage<FlowProcess> page, String category);
+
+	/**
+	 * 获取流转历史列表
+	 *
+	 * @param processId       流程实例id
+	 * @param startActivityId 开始节点id
+	 * @param endActivityId   结束节点id
+	 * @return
+	 */
+	List<BladeFlow> historyFlowList(String processId, String startActivityId, String endActivityId);
 
 	/**
 	 * 变更流程状态

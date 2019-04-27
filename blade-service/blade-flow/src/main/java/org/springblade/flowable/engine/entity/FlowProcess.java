@@ -18,10 +18,7 @@ package org.springblade.flowable.engine.entity;
 
 import lombok.Data;
 import org.flowable.engine.impl.persistence.entity.ProcessDefinitionEntityImpl;
-import org.springblade.core.tool.utils.Func;
-import org.springblade.core.tool.utils.StringPool;
 import org.springblade.flowable.engine.utils.FlowCache;
-import org.springblade.system.utils.DictUtil;
 
 import java.io.Serializable;
 import java.util.Date;

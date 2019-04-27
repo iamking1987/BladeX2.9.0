@@ -27,31 +27,37 @@ import org.flowable.bpmn.converter.BpmnXMLConverter;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.Process;
 import org.flowable.editor.language.json.converter.BpmnJsonConverter;
+import org.flowable.engine.HistoryService;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
+import org.flowable.engine.TaskService;
+import org.flowable.engine.history.HistoricActivityInstance;
+import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.impl.persistence.entity.ProcessDefinitionEntityImpl;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.repository.ProcessDefinitionQuery;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.engine.task.Comment;
 import org.springblade.core.log.exception.ServiceException;
+import org.springblade.core.tool.utils.DateUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringPool;
 import org.springblade.core.tool.utils.StringUtil;
-import org.springblade.flowable.engine.constant.FlowableConstant;
+import org.springblade.flowable.core.entity.BladeFlow;
+import org.springblade.flowable.engine.constant.FlowConstant;
 import org.springblade.flowable.engine.entity.FlowModel;
 import org.springblade.flowable.engine.entity.FlowProcess;
 import org.springblade.flowable.engine.mapper.FlowMapper;
 import org.springblade.flowable.engine.service.FlowService;
+import org.springblade.flowable.engine.utils.FlowCache;
+import org.springblade.system.user.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 工作流服务实现类
@@ -69,6 +75,8 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 	private ObjectMapper objectMapper;
 	private RepositoryService repositoryService;
 	private RuntimeService runtimeService;
+	private HistoryService historyService;
+	private TaskService taskService;
 
 	@Override
 	public IPage<FlowModel> selectFlowPage(IPage<FlowModel> page, FlowModel flowModel) {
@@ -96,11 +104,93 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 	}
 
 	@Override
+	public List<BladeFlow> historyFlowList(String processId, String startActivityId, String endActivityId) {
+		List<BladeFlow> flowList = new LinkedList<>();
+		List<HistoricActivityInstance> historicActivityInstanceList = historyService.createHistoricActivityInstanceQuery().processInstanceId(processId).orderByHistoricActivityInstanceStartTime().asc().orderByHistoricActivityInstanceEndTime().asc().list();
+		boolean start = false;
+		Map<String, Integer> activityMap = new HashMap<>(16);
+		for (int i = 0; i < historicActivityInstanceList.size(); i++) {
+			HistoricActivityInstance historicActivityInstance = historicActivityInstanceList.get(i);
+			// 过滤开始节点前的节点
+			if (StringUtil.isNotBlank(startActivityId) && startActivityId.equals(historicActivityInstance.getActivityId())) {
+				start = true;
+			}
+			if (StringUtil.isNotBlank(startActivityId) && !start) {
+				continue;
+			}
+			// 显示开始节点和结束节点，并且执行人不为空的任务
+			if (StringUtils.isNotBlank(historicActivityInstance.getAssignee())
+				|| FlowConstant.START_EVENT.equals(historicActivityInstance.getActivityType())
+				|| FlowConstant.END_EVENT.equals(historicActivityInstance.getActivityType())) {
+				// 给节点增加序号
+				Integer activityNum = activityMap.get(historicActivityInstance.getActivityId());
+				if (activityNum == null) {
+					activityMap.put(historicActivityInstance.getActivityId(), activityMap.size());
+				}
+				BladeFlow flow = new BladeFlow();
+				flow.setHistoryActivityName(historicActivityInstance.getActivityName());
+				flow.setCreateTime(historicActivityInstance.getStartTime());
+				flow.setEndTime(historicActivityInstance.getEndTime());
+				flow.setHistoryActivityDurationTime(DateUtil.secondToTime(historicActivityInstance.getDurationInMillis()));
+				// 获取流程发起人名称
+				if (FlowConstant.START_EVENT.equals(historicActivityInstance.getActivityType())) {
+					List<HistoricProcessInstance> processInstanceList = historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).orderByProcessInstanceStartTime().asc().list();
+					if (processInstanceList.size() > 0) {
+						if (StringUtil.isNotBlank(processInstanceList.get(0).getStartUserId())) {
+							String userId = processInstanceList.get(0).getStartUserId();
+							User user = FlowCache.getUser(Func.toInt(userId));
+							if (user != null) {
+								flow.setAssignee(historicActivityInstance.getAssignee());
+								flow.setAssigneeName(user.getName());
+							}
+						}
+					}
+				}
+				// 获取任务执行人名称
+				if (StringUtil.isNotBlank(historicActivityInstance.getAssignee())) {
+					User user = FlowCache.getUser(Func.toInt(historicActivityInstance.getAssignee()));
+					if (user != null) {
+						flow.setAssignee(historicActivityInstance.getAssignee());
+						flow.setAssigneeName(user.getName());
+					}
+				}
+				// 获取意见评论内容
+				if (StringUtil.isNotBlank(historicActivityInstance.getTaskId())) {
+					List<Comment> commentList = taskService.getTaskComments(historicActivityInstance.getTaskId());
+					if (commentList.size() > 0) {
+						flow.setComment(commentList.get(0).getFullMessage());
+					}
+				}
+				flowList.add(flow);
+			}
+			// 过滤结束节点后的节点
+			if (StringUtils.isNotBlank(endActivityId) && endActivityId.equals(historicActivityInstance.getActivityId())) {
+				boolean temp = false;
+				Integer activityNum = activityMap.get(historicActivityInstance.getActivityId());
+				// 该活动节点，后续节点是否在结束节点之前，在后续节点中是否存在
+				for (int j = i + 1; j < historicActivityInstanceList.size(); j++) {
+					HistoricActivityInstance hi = historicActivityInstanceList.get(j);
+					Integer activityNumA = activityMap.get(hi.getActivityId());
+					boolean numberTemp = activityNumA != null && activityNumA < activityNum;
+					boolean equalsTemp = StringUtils.equals(hi.getActivityId(), historicActivityInstance.getActivityId());
+					if (numberTemp || equalsTemp) {
+						temp = true;
+					}
+				}
+				if (!temp) {
+					break;
+				}
+			}
+		}
+		return flowList;
+	}
+
+	@Override
 	public String changeState(String state, String processId) {
-		if (state.equals(FlowableConstant.ACTIVE)) {
+		if (state.equals(FlowConstant.ACTIVE)) {
 			repositoryService.activateProcessDefinitionById(processId, true, null);
 			return StringUtil.format("激活ID为 [{}] 的流程成功", processId);
-		} else if (state.equals(FlowableConstant.SUSPEND)) {
+		} else if (state.equals(FlowConstant.SUSPEND)) {
 			repositoryService.suspendProcessDefinitionById(processId, true, null);
 			return StringUtil.format("挂起ID为 [{}] 的流程成功", processId);
 		} else {
@@ -153,8 +243,8 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 		}
 		byte[] bytes = getBpmnXML(model);
 		String processName = model.getName();
-		if (!StringUtil.endsWithIgnoreCase(processName, FlowableConstant.SUFFIX)) {
-			processName += FlowableConstant.SUFFIX;
+		if (!StringUtil.endsWithIgnoreCase(processName, FlowConstant.SUFFIX)) {
+			processName += FlowConstant.SUFFIX;
 		}
 		Deployment deployment = repositoryService.createDeployment().addBytes(processName, bytes).name(model.getName()).key(model.getModelKey()).deploy();
 		return deploy(deployment, category);
