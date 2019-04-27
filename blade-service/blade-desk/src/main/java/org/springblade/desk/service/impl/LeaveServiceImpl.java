@@ -19,6 +19,7 @@ package org.springblade.desk.service.impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.mp.base.BaseServiceImpl;
+import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.desk.entity.ProcessLeave;
 import org.springblade.desk.mapper.LeaveMapper;
@@ -31,8 +32,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 服务实现类
@@ -49,15 +48,15 @@ public class LeaveServiceImpl extends BaseServiceImpl<LeaveMapper, ProcessLeave>
 	@Override
 	public boolean start(ProcessLeave leave) {
 		String businessTable = FlowUtil.getBusinessTable(ProcessConstant.LEAVE_KEY);
-		Map<String, Object> variables = new HashMap<>(16);
+		//Map<String, Object> variables = new HashMap<>(16);
 		if (Func.isEmpty(leave.getId())) {
 			// 保存leave
 			leave.setApplyTime(LocalDateTime.now());
 			save(leave);
 			// 启动流程
-			variables.put("businessId", leave.getId());
-			variables.put("taskUser", leave.getTaskUser());
-			variables.put("days", Duration.between(leave.getStartTime(), leave.getEndTime()).toDays());
+			Kv variables = Kv.create().set("businessId", leave.getId())
+				.set("taskUser", leave.getTaskUser())
+				.set("days", Duration.between(leave.getStartTime(), leave.getEndTime()).toDays());
 			BladeFlow bladeFlow = flowClient.startProcessInstanceById(leave.getProcessId(), FlowUtil.getBusinessKey(businessTable, String.valueOf(leave.getId())), variables);
 			log.debug("流程已启动,流程ID:" + bladeFlow.getProcessInstanceId());
 			// 返回流程id写入leave

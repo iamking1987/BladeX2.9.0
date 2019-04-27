@@ -105,35 +105,35 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 		List<HistoricProcessInstance> historyList = historyQuery.listPage(Func.toInt(page.getCurrent() - 1), Func.toInt(page.getSize()));
 
 		historyList.forEach(historicProcessInstance -> {
-			BladeFlow bf = new BladeFlow();
+			BladeFlow flow = new BladeFlow();
 			// historicProcessInstance
-			bf.setCreateTime(historicProcessInstance.getStartTime());
-			bf.setEndTime(historicProcessInstance.getEndTime());
-			bf.setVariables(historicProcessInstance.getProcessVariables());
-			bf.setBusinessId(historicProcessInstance.getBusinessKey());
-			bf.setHisActInsActName(historicProcessInstance.getName());
-			bf.setProcessInstanceId(historicProcessInstance.getId());
-			bf.setHistoryProcessInstanceId(historicProcessInstance.getId());
+			flow.setCreateTime(historicProcessInstance.getStartTime());
+			flow.setEndTime(historicProcessInstance.getEndTime());
+			flow.setVariables(historicProcessInstance.getProcessVariables());
+			flow.setBusinessId(historicProcessInstance.getBusinessKey());
+			flow.setHisActInsActName(historicProcessInstance.getName());
+			flow.setProcessInstanceId(historicProcessInstance.getId());
+			flow.setHistoryProcessInstanceId(historicProcessInstance.getId());
 			// ProcessDefinition
 			ProcessDefinition pd = FlowCache.getProcessDefinition(historicProcessInstance.getProcessDefinitionId());
-			bf.setProcessDefinitionId(pd.getId());
-			bf.setProcessDefinitionName(pd.getName());
-			bf.setProcessDefinitionKey(pd.getKey());
-			bf.setProcessDefinitionVersion(pd.getVersion());
-			bf.setProcessInstanceId(historicProcessInstance.getId());
+			flow.setProcessDefinitionId(pd.getId());
+			flow.setProcessDefinitionName(pd.getName());
+			flow.setProcessDefinitionKey(pd.getKey());
+			flow.setProcessDefinitionVersion(pd.getVersion());
+			flow.setProcessInstanceId(historicProcessInstance.getId());
 			// HistoricTaskInstance
 			HistoricTaskInstance historyTask = historyService.createHistoricTaskInstanceQuery().processInstanceId(historicProcessInstance.getId()).orderByHistoricTaskInstanceEndTime().desc().list().get(0);
-			bf.setTaskId(historyTask.getId());
-			bf.setTaskName(historyTask.getName());
-			bf.setTaskDefinitionKey(historyTask.getTaskDefinitionKey());
+			flow.setTaskId(historyTask.getId());
+			flow.setTaskName(historyTask.getName());
+			flow.setTaskDefinitionKey(historyTask.getTaskDefinitionKey());
 			// Status
 			if (historicProcessInstance.getEndActivityId() != null) {
-				bf.setProcessIsFinished(FlowableConstant.STATUS_FINISHED);
+				flow.setProcessIsFinished(FlowableConstant.STATUS_FINISHED);
 			} else {
-				bf.setProcessIsFinished(FlowableConstant.STATUS_UNFINISHED);
+				flow.setProcessIsFinished(FlowableConstant.STATUS_UNFINISHED);
 			}
-			bf.setStatus(FlowableConstant.STATUS_FINISH);
-			flowList.add(bf);
+			flow.setStatus(FlowableConstant.STATUS_FINISH);
+			flowList.add(flow);
 		});
 
 		// 计算总数
@@ -162,33 +162,33 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 		// 查询列表
 		List<HistoricTaskInstance> doneList = doneQuery.listPage(Func.toInt(page.getCurrent() - 1), Func.toInt(page.getSize()));
 		doneList.forEach(historicTaskInstance -> {
-			BladeFlow bf = new BladeFlow();
-			bf.setTaskId(historicTaskInstance.getId());
-			bf.setTaskDefinitionKey(historicTaskInstance.getTaskDefinitionKey());
-			bf.setTaskName(historicTaskInstance.getName());
-			bf.setAssignee(historicTaskInstance.getAssignee());
-			bf.setCreateTime(historicTaskInstance.getCreateTime());
-			bf.setExecutionId(historicTaskInstance.getExecutionId());
-			bf.setHistoryTaskEndTime(historicTaskInstance.getEndTime());
-			bf.setVariables(historicTaskInstance.getProcessVariables());
+			BladeFlow flow = new BladeFlow();
+			flow.setTaskId(historicTaskInstance.getId());
+			flow.setTaskDefinitionKey(historicTaskInstance.getTaskDefinitionKey());
+			flow.setTaskName(historicTaskInstance.getName());
+			flow.setAssignee(historicTaskInstance.getAssignee());
+			flow.setCreateTime(historicTaskInstance.getCreateTime());
+			flow.setExecutionId(historicTaskInstance.getExecutionId());
+			flow.setHistoryTaskEndTime(historicTaskInstance.getEndTime());
+			flow.setVariables(historicTaskInstance.getProcessVariables());
 
 			ProcessDefinition pd = FlowCache.getProcessDefinition(historicTaskInstance.getProcessDefinitionId());
-			bf.setProcessDefinitionId(pd.getId());
-			bf.setProcessDefinitionName(pd.getName());
-			bf.setProcessDefinitionKey(pd.getKey());
-			bf.setProcessDefinitionVersion(pd.getVersion());
+			flow.setProcessDefinitionId(pd.getId());
+			flow.setProcessDefinitionName(pd.getName());
+			flow.setProcessDefinitionKey(pd.getKey());
+			flow.setProcessDefinitionVersion(pd.getVersion());
 
-			bf.setProcessInstanceId(historicTaskInstance.getProcessInstanceId());
-			bf.setHistoryProcessInstanceId(historicTaskInstance.getProcessInstanceId());
+			flow.setProcessInstanceId(historicTaskInstance.getProcessInstanceId());
+			flow.setHistoryProcessInstanceId(historicTaskInstance.getProcessInstanceId());
 			HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(historicTaskInstance.getProcessInstanceId()).singleResult();
 			if (historicProcessInstance.getEndActivityId() != null) {
-				bf.setProcessIsFinished(FlowableConstant.STATUS_FINISHED);
+				flow.setProcessIsFinished(FlowableConstant.STATUS_FINISHED);
 			} else {
-				bf.setProcessIsFinished(FlowableConstant.STATUS_UNFINISHED);
+				flow.setProcessIsFinished(FlowableConstant.STATUS_UNFINISHED);
 			}
-			bf.setStatus(FlowableConstant.STATUS_FINISH);
+			flow.setStatus(FlowableConstant.STATUS_FINISH);
 
-			flowList.add(bf);
+			flowList.add(flow);
 		});
 
 
@@ -208,25 +208,25 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 			taskQuery.taskCreatedBefore(bladeFlow.getEndDate());
 		}
 		taskQuery.list().forEach(task -> {
-			BladeFlow bf = new BladeFlow();
-			bf.setTaskId(task.getId());
-			bf.setTaskDefinitionKey(task.getTaskDefinitionKey());
-			bf.setTaskName(task.getName());
-			bf.setAssignee(task.getAssignee());
-			bf.setCreateTime(task.getCreateTime());
-			bf.setClaimTime(task.getClaimTime());
-			bf.setExecutionId(task.getExecutionId());
-			bf.setVariables(task.getProcessVariables());
-			bf.setCategory(task.getCategory());
-			bf.setCategoryName(FlowCache.getCategoryName(task.getCategory()));
+			BladeFlow flow = new BladeFlow();
+			flow.setTaskId(task.getId());
+			flow.setTaskDefinitionKey(task.getTaskDefinitionKey());
+			flow.setTaskName(task.getName());
+			flow.setAssignee(task.getAssignee());
+			flow.setCreateTime(task.getCreateTime());
+			flow.setClaimTime(task.getClaimTime());
+			flow.setExecutionId(task.getExecutionId());
+			flow.setVariables(task.getProcessVariables());
+			flow.setCategory(task.getCategory());
+			flow.setCategoryName(FlowCache.getCategoryName(task.getCategory()));
 			ProcessDefinition pd = FlowCache.getProcessDefinition(task.getProcessDefinitionId());
-			bf.setProcessDefinitionId(pd.getId());
-			bf.setProcessDefinitionName(pd.getName());
-			bf.setProcessDefinitionKey(pd.getKey());
-			bf.setProcessDefinitionVersion(pd.getVersion());
-			bf.setProcessInstanceId(task.getProcessInstanceId());
-			bf.setStatus(status);
-			flowList.add(bf);
+			flow.setProcessDefinitionId(pd.getId());
+			flow.setProcessDefinitionName(pd.getName());
+			flow.setProcessDefinitionKey(pd.getKey());
+			flow.setProcessDefinitionVersion(pd.getVersion());
+			flow.setProcessInstanceId(task.getProcessInstanceId());
+			flow.setStatus(status);
+			flowList.add(flow);
 		});
 	}
 
