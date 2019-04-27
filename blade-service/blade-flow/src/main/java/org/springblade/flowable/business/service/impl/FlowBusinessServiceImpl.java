@@ -19,7 +19,6 @@ package org.springblade.flowable.business.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
 import org.flowable.engine.HistoryService;
-import org.flowable.engine.RepositoryService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.history.HistoricProcessInstanceQuery;
@@ -47,13 +46,12 @@ import java.util.List;
 @AllArgsConstructor
 public class FlowBusinessServiceImpl implements FlowBusinessService {
 
-	private RepositoryService repositoryService;
 	private TaskService taskService;
 	private HistoryService historyService;
 
 	@Override
 	public IPage<BladeFlow> selectClaimPage(IPage<BladeFlow> page, BladeFlow bladeFlow) {
-		String taskUser = SecureUtil.getUserAccount();
+		String taskUser = String.valueOf(SecureUtil.getUserId());
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		// 等待签收的任务
@@ -71,12 +69,12 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 		page.setTotal(count);
 		// 设置数据
 		page.setRecords(flowList);
-		return null;
+		return page;
 	}
 
 	@Override
 	public IPage<BladeFlow> selectTodoPage(IPage<BladeFlow> page, BladeFlow bladeFlow) {
-		String taskUser = SecureUtil.getUserAccount();
+		String taskUser = String.valueOf(SecureUtil.getUserId());
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		// 已签收的任务
@@ -99,7 +97,7 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 
 	@Override
 	public IPage<BladeFlow> selectSendPage(IPage<BladeFlow> page, BladeFlow bladeFlow) {
-		String taskUser = SecureUtil.getUserAccount();
+		String taskUser = String.valueOf(SecureUtil.getUserId());
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		HistoricProcessInstanceQuery historyQuery = historyService.createHistoricProcessInstanceQuery().startedBy(taskUser).orderByProcessInstanceStartTime().desc();
@@ -148,7 +146,7 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 
 	@Override
 	public IPage<BladeFlow> selectDonePage(IPage<BladeFlow> page, BladeFlow bladeFlow) {
-		String taskUser = SecureUtil.getUserAccount();
+		String taskUser = String.valueOf(SecureUtil.getUserId());
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		HistoricTaskInstanceQuery doneQuery = historyService.createHistoricTaskInstanceQuery().taskAssignee(taskUser).finished()

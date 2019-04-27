@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -128,10 +129,23 @@ public class UserController {
 	}
 
 	@PostMapping("/reset-password")
-	@ApiOperation(value = "初始化密码", notes = "传入userId集合", position = 5)
+	@ApiOperation(value = "初始化密码", notes = "传入userId集合", position = 6)
 	public R resetPassword(@ApiParam(value = "userId集合", required = true) @RequestParam String userIds) {
 		boolean temp = userService.resetPassword(userIds);
 		return R.status(temp);
+	}
+
+	/**
+	 * 用户列表
+	 *
+	 * @param user
+	 * @return
+	 */
+	@GetMapping("/user-list")
+	@ApiOperation(value = "用户列表", notes = "传入user", position = 7)
+	public R<List<User>> userList(User user) {
+		List<User> list = userService.list(Condition.getQueryWrapper(user));
+		return R.data(list);
 	}
 
 }

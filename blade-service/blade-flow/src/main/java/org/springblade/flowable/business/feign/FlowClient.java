@@ -42,10 +42,26 @@ public class FlowClient implements IFlowClient {
 	private IdentityService identityService;
 
 	@Override
-	@PostMapping(START_PROCESS_INSTANCE_BY_Id)
+	@PostMapping(START_PROCESS_INSTANCE_BY_ID)
 	public BladeFlow startProcessInstanceById(String processDefinitionId, String businessKey, @RequestBody Map<String, Object> variables) {
-		identityService.setAuthenticatedUserId(SecureUtil.getUserAccount());
+		// 设置流程启动用户
+		identityService.setAuthenticatedUserId(String.valueOf(SecureUtil.getUserId()));
+		// 开启流程
 		ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefinitionId, businessKey, variables);
+		// 组装流程通用类
+		BladeFlow flow = new BladeFlow();
+		flow.setProcessInstanceId(processInstance.getId());
+		return flow;
+	}
+
+	@Override
+	@PostMapping(START_PROCESS_INSTANCE_BY_KEY)
+	public BladeFlow startProcessInstanceByKey(String processDefinitionKey, String businessKey, Map<String, Object> variables) {
+		// 设置流程启动用户
+		identityService.setAuthenticatedUserId(String.valueOf(SecureUtil.getUserId()));
+		// 开启流程
+		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey, variables);
+		// 组装流程通用类
 		BladeFlow flow = new BladeFlow();
 		flow.setProcessInstanceId(processInstance.getId());
 		return flow;

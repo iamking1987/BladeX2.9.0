@@ -19,7 +19,6 @@ package org.springblade.desk.service.impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.mp.base.BaseServiceImpl;
-import org.springblade.core.secure.utils.SecureUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.desk.entity.ProcessLeave;
 import org.springblade.desk.mapper.LeaveMapper;
@@ -57,7 +56,7 @@ public class LeaveServiceImpl extends BaseServiceImpl<LeaveMapper, ProcessLeave>
 			save(leave);
 			// 启动流程
 			variables.put("businessId", leave.getId());
-			variables.put("taskUser", SecureUtil.getUserAccount());
+			variables.put("taskUser", leave.getTaskUser());
 			variables.put("days", Duration.between(leave.getStartTime(), leave.getEndTime()).toDays());
 			BladeFlow bladeFlow = flowClient.startProcessInstanceById(leave.getProcessId(), FlowUtil.getBusinessKey(businessTable, String.valueOf(leave.getId())), variables);
 			log.debug("流程已启动,流程ID:" + bladeFlow.getProcessInstanceId());

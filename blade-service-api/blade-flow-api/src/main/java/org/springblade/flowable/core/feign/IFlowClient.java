@@ -37,7 +37,8 @@ import java.util.Map;
 public interface IFlowClient {
 
 	String API_PREFIX = "/client";
-	String START_PROCESS_INSTANCE_BY_Id = API_PREFIX + "start-process-instance-by-id";
+	String START_PROCESS_INSTANCE_BY_ID = API_PREFIX + "start-process-instance-by-id";
+	String START_PROCESS_INSTANCE_BY_KEY = API_PREFIX + "start-process-instance-by-key";
 
 	/**
 	 * 开启流程
@@ -47,7 +48,18 @@ public interface IFlowClient {
 	 * @param variables           参数
 	 * @return BladeFlow
 	 */
-	@PostMapping(START_PROCESS_INSTANCE_BY_Id)
+	@PostMapping(START_PROCESS_INSTANCE_BY_ID)
 	BladeFlow startProcessInstanceById(@RequestParam("processDefinitionId") String processDefinitionId, @RequestParam("businessKey") String businessKey, @RequestBody Map<String, Object> variables);
+
+	/**
+	 * 开启流程
+	 *
+	 * @param processDefinitionKey 流程标识
+	 * @param businessKey          业务key
+	 * @param variables            参数
+	 * @return BladeFlow
+	 */
+	@PostMapping(START_PROCESS_INSTANCE_BY_KEY)
+	BladeFlow startProcessInstanceByKey(@RequestParam("processDefinitionKey") String processDefinitionKey, @RequestParam("businessKey") String businessKey, @RequestBody Map<String, Object> variables);
 
 }

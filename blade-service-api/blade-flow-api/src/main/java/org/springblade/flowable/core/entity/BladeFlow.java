@@ -75,27 +75,48 @@ public class BladeFlow implements Serializable {
 	 * 历史任务结束时间
 	 */
 	private Date historyTaskEndTime;
+	/**
+	 * 执行ID
+	 */
 	private String executionId;
 	/**
 	 * 流程实例ID
 	 */
 	private String processInstanceId;
 	/**
-	 * 流程信息
+	 * 流程ID
 	 */
 	private String processDefinitionId;
+	/**
+	 * 流程标识
+	 */
 	private String processDefinitionKey;
+	/**
+	 * 流程名
+	 */
 	private String processDefinitionName;
+	/**
+	 * 流程版本
+	 */
 	private int processDefinitionVersion;
+	/**
+	 * 流程说明
+	 */
 	private String processDefinitionDesc;
+	/**
+	 * 流程简图名
+	 */
 	private String processDefinitionDiagramResName;
+	/**
+	 * 流程重命名
+	 */
 	private String processDefinitionResName;
 	/**
-	 * 已办任务流程实例ID 查看流程图会用到
+	 * 历史任务流程实例ID 查看流程图会用到
 	 */
 	private String historyProcessInstanceId;
 	/**
-	 * 流程实例是否结束(true:结束，false:未结束)
+	 * 流程实例是否结束
 	 */
 	private String processIsFinished;
 	/**

@@ -32,4 +32,9 @@ public class IFlowClientFallback implements IFlowClient {
 	public BladeFlow startProcessInstanceById(String processDefinitionId, String businessKey, Map<String, Object> variables) {
 		return null;
 	}
+
+	@Override
+	public BladeFlow startProcessInstanceByKey(String processDefinitionKey, String businessKey, Map<String, Object> variables) {
+		return null;
+	}
 }

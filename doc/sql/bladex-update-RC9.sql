@@ -102,6 +102,20 @@ INSERT INTO `bladex`.`blade_dict`(`parent_id`, `code`, `dict_key`, `dict_value`,
 VALUES (@dictid, 'flow', 2, '报销流程', 2, NULL, 0);
 
 -- ----------------------------
+-- 用户数据增加
+-- ----------------------------
+INSERT INTO `bladex`.`blade_user`(`tenant_code`, `account`, `password`, `name`, `real_name`, `email`, `phone`, `birthday`, `sex`, `role_id`, `dept_id`, `create_user`, `create_time`, `update_user`, `update_time`, `status`, `is_deleted`) VALUES ('000000', 'hr', '5e79b90f7bba52d54115f086e48f539016a27ec6', '人事', '人事', NULL, NULL, NULL, NULL, '3', '1', 1, '2019-04-27 17:03:10', 1, '2019-04-27 17:03:10', 1, 0);
+INSERT INTO `bladex`.`blade_user`(`tenant_code`, `account`, `password`, `name`, `real_name`, `email`, `phone`, `birthday`, `sex`, `role_id`, `dept_id`, `create_user`, `create_time`, `update_user`, `update_time`, `status`, `is_deleted`) VALUES ('000000', 'manager', 'dfbaa3b61caa3a319f463cc165085aa8c822d2ce', '经理', '经理', NULL, NULL, NULL, NULL, '4', '1', 1, '2019-04-27 17:03:38', 1, '2019-04-27 17:03:38', 1, 0);
+INSERT INTO `bladex`.`blade_user`(`tenant_code`, `account`, `password`, `name`, `real_name`, `email`, `phone`, `birthday`, `sex`, `role_id`, `dept_id`, `create_user`, `create_time`, `update_user`, `update_time`, `status`, `is_deleted`) VALUES ('000000', 'boss', 'abe57d23e18f7ad8ea99c86e430c90a05119a9d3', '老板', '老板', NULL, NULL, NULL, NULL, '5', '1', 1, '2019-04-27 17:03:55', 1, '2019-04-27 17:03:55', 1, 0);
+
+-- ----------------------------
+-- 角色数据增加
+-- ----------------------------
+INSERT INTO `bladex`.`blade_role`(`tenant_code`, `parent_id`, `role_name`, `sort`, `role_alias`, `is_deleted`) VALUES ('000000', 2, '人事', 1, 'hr', 0);
+INSERT INTO `bladex`.`blade_role`(`tenant_code`, `parent_id`, `role_name`, `sort`, `role_alias`, `is_deleted`) VALUES ('000000', 2, '经理', 2, 'manager', 0);
+INSERT INTO `bladex`.`blade_role`(`tenant_code`, `parent_id`, `role_name`, `sort`, `role_alias`, `is_deleted`) VALUES ('000000', 2, '老板', 3, 'boss', 0);
+
+-- ----------------------------
 -- 增加业务流程表
 -- ----------------------------
 DROP TABLE IF EXISTS `blade_process_leave`;
@@ -112,6 +126,7 @@ CREATE TABLE `blade_process_leave`  (
 `start_time` datetime(0) NULL DEFAULT NULL COMMENT '开始时间',
 `end_time` datetime(0) NULL DEFAULT NULL COMMENT '结束时间',
 `reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '请假理由',
+`task_user` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '审批人',
 `comment` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '领导意见',
 `apply_time` datetime(0) NULL DEFAULT NULL COMMENT '申请时间',
 `create_user` int(11) NULL DEFAULT NULL COMMENT '创建人',

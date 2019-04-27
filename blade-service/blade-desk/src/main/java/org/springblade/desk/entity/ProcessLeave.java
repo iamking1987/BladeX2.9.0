@@ -56,6 +56,10 @@ public class ProcessLeave extends BaseEntity {
 	 */
 	private String reason;
 	/**
+	 * 审批人
+	 */
+	private String taskUser;
+	/**
 	 * 批复
 	 */
 	private String comment;
