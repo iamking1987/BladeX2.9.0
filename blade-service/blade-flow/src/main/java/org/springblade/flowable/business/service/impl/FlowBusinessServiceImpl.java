@@ -28,6 +28,7 @@ import org.flowable.task.api.history.HistoricTaskInstance;
 import org.flowable.task.api.history.HistoricTaskInstanceQuery;
 import org.springblade.core.secure.utils.SecureUtil;
 import org.springblade.core.tool.utils.Func;
+import org.springblade.core.tool.utils.StringPool;
 import org.springblade.flowable.business.service.FlowBusinessService;
 import org.springblade.flowable.core.entity.BladeFlow;
 import org.springblade.flowable.engine.constant.FlowableConstant;
@@ -110,7 +111,11 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 			flow.setCreateTime(historicProcessInstance.getStartTime());
 			flow.setEndTime(historicProcessInstance.getEndTime());
 			flow.setVariables(historicProcessInstance.getProcessVariables());
-			flow.setBusinessId(historicProcessInstance.getBusinessKey());
+			String[] businessKey = Func.toStrArray(StringPool.COLON, historicProcessInstance.getBusinessKey());
+			if (businessKey.length > 1) {
+				flow.setBusinessTable(businessKey[0]);
+				flow.setBusinessId(businessKey[1]);
+			}
 			flow.setHisActInsActName(historicProcessInstance.getName());
 			flow.setProcessInstanceId(historicProcessInstance.getId());
 			flow.setHistoryProcessInstanceId(historicProcessInstance.getId());
@@ -180,11 +185,16 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 
 			flow.setProcessInstanceId(historicTaskInstance.getProcessInstanceId());
 			flow.setHistoryProcessInstanceId(historicTaskInstance.getProcessInstanceId());
-			HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(historicTaskInstance.getProcessInstanceId()).singleResult();
-			if (historicProcessInstance.getEndActivityId() != null) {
-				flow.setProcessIsFinished(FlowableConstant.STATUS_FINISHED);
-			} else {
-				flow.setProcessIsFinished(FlowableConstant.STATUS_UNFINISHED);
+			HistoricProcessInstance historicProcessInstance = getHistoricProcessInstance((historicTaskInstance.getProcessInstanceId()));
+			if (Func.isNotEmpty(historicProcessInstance)) {
+				String[] businessKey = Func.toStrArray(StringPool.COLON, historicProcessInstance.getBusinessKey());
+				flow.setBusinessTable(businessKey[0]);
+				flow.setBusinessId(businessKey[1]);
+				if (historicProcessInstance.getEndActivityId() != null) {
+					flow.setProcessIsFinished(FlowableConstant.STATUS_FINISHED);
+				} else {
+					flow.setProcessIsFinished(FlowableConstant.STATUS_UNFINISHED);
+				}
 			}
 			flow.setStatus(FlowableConstant.STATUS_FINISH);
 
@@ -200,6 +210,14 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 		return page;
 	}
 
+	/**
+	 * 构建流程
+	 *
+	 * @param bladeFlow 流程通用类
+	 * @param flowList  流程列表
+	 * @param taskQuery 任务查询类
+	 * @param status    状态
+	 */
 	private void buildFlowTaskList(BladeFlow bladeFlow, List<BladeFlow> flowList, TaskQuery taskQuery, String status) {
 		if (bladeFlow.getBeginDate() != null) {
 			taskQuery.taskCreatedAfter(bladeFlow.getBeginDate());
@@ -219,6 +237,14 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 			flow.setVariables(task.getProcessVariables());
 			flow.setCategory(task.getCategory());
 			flow.setCategoryName(FlowCache.getCategoryName(task.getCategory()));
+
+			HistoricProcessInstance historicProcessInstance = getHistoricProcessInstance(task.getProcessInstanceId());
+			if (Func.isNotEmpty(historicProcessInstance)) {
+				String[] businessKey = Func.toStrArray(StringPool.COLON, historicProcessInstance.getBusinessKey());
+				flow.setBusinessTable(businessKey[0]);
+				flow.setBusinessId(businessKey[1]);
+			}
+
 			ProcessDefinition pd = FlowCache.getProcessDefinition(task.getProcessDefinitionId());
 			flow.setProcessDefinitionId(pd.getId());
 			flow.setProcessDefinitionName(pd.getName());
@@ -228,6 +254,16 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 			flow.setStatus(status);
 			flowList.add(flow);
 		});
+	}
+
+	/**
+	 * 获取历史流程
+	 *
+	 * @param processInstanceId 流程实例id
+	 * @return HistoricProcessInstance
+	 */
+	private HistoricProcessInstance getHistoricProcessInstance(String processInstanceId) {
+		return historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
 	}
 
 }

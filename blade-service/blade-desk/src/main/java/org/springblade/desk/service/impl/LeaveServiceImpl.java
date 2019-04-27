@@ -48,13 +48,12 @@ public class LeaveServiceImpl extends BaseServiceImpl<LeaveMapper, ProcessLeave>
 	@Override
 	public boolean start(ProcessLeave leave) {
 		String businessTable = FlowUtil.getBusinessTable(ProcessConstant.LEAVE_KEY);
-		//Map<String, Object> variables = new HashMap<>(16);
 		if (Func.isEmpty(leave.getId())) {
 			// 保存leave
 			leave.setApplyTime(LocalDateTime.now());
 			save(leave);
 			// 启动流程
-			Kv variables = Kv.create().set("businessId", leave.getId())
+			Kv variables = Kv.create()
 				.set("taskUser", leave.getTaskUser())
 				.set("days", Duration.between(leave.getStartTime(), leave.getEndTime()).toDays());
 			BladeFlow bladeFlow = flowClient.startProcessInstanceById(leave.getProcessId(), FlowUtil.getBusinessKey(businessTable, String.valueOf(leave.getId())), variables);
