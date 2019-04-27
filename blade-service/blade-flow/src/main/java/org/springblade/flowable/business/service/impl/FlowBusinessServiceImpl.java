@@ -235,10 +235,6 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 			flow.setExecutionId(task.getExecutionId());
 			flow.setVariables(task.getProcessVariables());
 
-			ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(task.getProcessDefinitionId()).singleResult();
-			flow.setCategory(processDefinition.getCategory());
-			flow.setCategoryName(FlowCache.getCategoryName(processDefinition.getCategory()));
-
 			HistoricProcessInstance historicProcessInstance = getHistoricProcessInstance(task.getProcessInstanceId());
 			if (Func.isNotEmpty(historicProcessInstance)) {
 				String[] businessKey = Func.toStrArray(StringPool.COLON, historicProcessInstance.getBusinessKey());
@@ -246,11 +242,13 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 				flow.setBusinessId(businessKey[1]);
 			}
 
-			ProcessDefinition pd = FlowCache.getProcessDefinition(task.getProcessDefinitionId());
-			flow.setProcessDefinitionId(pd.getId());
-			flow.setProcessDefinitionName(pd.getName());
-			flow.setProcessDefinitionKey(pd.getKey());
-			flow.setProcessDefinitionVersion(pd.getVersion());
+			ProcessDefinition processDefinition = FlowCache.getProcessDefinition(task.getProcessDefinitionId());
+			flow.setCategory(processDefinition.getCategory());
+			flow.setCategoryName(FlowCache.getCategoryName(processDefinition.getCategory()));
+			flow.setProcessDefinitionId(processDefinition.getId());
+			flow.setProcessDefinitionName(processDefinition.getName());
+			flow.setProcessDefinitionKey(processDefinition.getKey());
+			flow.setProcessDefinitionVersion(processDefinition.getVersion());
 			flow.setProcessInstanceId(task.getProcessInstanceId());
 			flow.setStatus(status);
 			flowList.add(flow);

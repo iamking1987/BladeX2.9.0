@@ -54,14 +54,14 @@ public class FlowCache {
 	 * @return
 	 */
 	public static ProcessDefinition getProcessDefinition(String processDefinitionId) {
-		ProcessDefinition pd = CacheUtil.get(FLOW_CACHE, FLOW_CACHE_ID_ + processDefinitionId, ProcessDefinition.class);
-		if (Func.isEmpty(pd)) {
-			pd = repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult();
-			if (Func.isNotEmpty(pd)) {
-				CacheUtil.put(FLOW_CACHE, FLOW_CACHE_ID_ + processDefinitionId, pd);
+		ProcessDefinition processDefinition = CacheUtil.get(FLOW_CACHE, FLOW_CACHE_ID_ + processDefinitionId, ProcessDefinition.class);
+		if (Func.isEmpty(processDefinition)) {
+			processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult();
+			if (Func.isNotEmpty(processDefinition)) {
+				CacheUtil.put(FLOW_CACHE, FLOW_CACHE_ID_ + processDefinitionId, processDefinition);
 			}
 		}
-		return pd;
+		return processDefinition;
 	}
 
 	/**
