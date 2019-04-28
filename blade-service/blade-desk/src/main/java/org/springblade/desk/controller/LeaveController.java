@@ -22,6 +22,7 @@ import org.springblade.core.boot.ctrl.BladeController;
 import org.springblade.core.tool.api.R;
 import org.springblade.desk.entity.ProcessLeave;
 import org.springblade.desk.service.ILeaveService;
+import org.springblade.flowable.core.entity.BladeFlow;
 import org.springblade.system.user.cache.UserCache;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -65,11 +66,11 @@ public class LeaveController extends BladeController implements CacheNames {
 	/**
 	 * 完成任务
 	 *
-	 * @param leave 请假信息
+	 * @param flow 请假信息
 	 */
 	@PostMapping("complete-task")
-	public R completeTask(@RequestBody ProcessLeave leave) {
-		return R.status(leaveService.completeTask(leave));
+	public R completeTask(@RequestBody BladeFlow flow) {
+		return R.status(leaveService.completeTask(flow));
 	}
 
 }

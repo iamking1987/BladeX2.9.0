@@ -69,12 +69,11 @@ public interface IFlowClient {
 	 *
 	 * @param taskId            任务id
 	 * @param processInstanceId 流程实例id
-	 * @param title             任务标题
 	 * @param comment           评论
 	 * @param variables         参数
 	 * @return R
 	 */
 	@PostMapping(COMPLETE_TASK)
-	R completeTask(@RequestParam("taskId") String taskId, @RequestParam("processInstanceId") String processInstanceId, @RequestParam("title") String title, @RequestParam("comment") String comment, @RequestBody Map<String, Object> variables);
+	R completeTask(@RequestParam("taskId") String taskId, @RequestParam("processInstanceId") String processInstanceId, @RequestParam("comment") String comment, @RequestBody Map<String, Object> variables);
 
 }

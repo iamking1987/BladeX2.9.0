@@ -1,4 +1,4 @@
-package org.springblade.system.utils;
+package org.springblade.system.cache;
 
 import org.springblade.core.cache.constant.CacheConstant;
 import org.springblade.core.cache.utils.CacheUtil;
@@ -12,13 +12,17 @@ import org.springblade.system.feign.IDictClient;
 import java.util.List;
 
 /**
- * DictUtil
+ * DictCache
  *
  * @author Chill
  */
-public class DictUtil {
+public class DictCache {
 
-	private static IDictClient dictClient = SpringUtil.getBean(IDictClient.class);
+	private static IDictClient dictClient;
+
+	static {
+		dictClient = SpringUtil.getBean(IDictClient.class);
+	}
 
 	/**
 	 * 获取字典值

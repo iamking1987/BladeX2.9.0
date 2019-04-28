@@ -50,7 +50,6 @@ import org.springblade.flowable.engine.entity.FlowModel;
 import org.springblade.flowable.engine.entity.FlowProcess;
 import org.springblade.flowable.engine.mapper.FlowMapper;
 import org.springblade.flowable.engine.service.FlowService;
-import org.springblade.flowable.engine.utils.FlowCache;
 import org.springblade.system.user.cache.UserCache;
 import org.springblade.system.user.entity.User;
 import org.springframework.stereotype.Service;
@@ -132,7 +131,8 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 				flow.setHistoryActivityName(historicActivityInstance.getActivityName());
 				flow.setCreateTime(historicActivityInstance.getStartTime());
 				flow.setEndTime(historicActivityInstance.getEndTime());
-				flow.setHistoryActivityDurationTime(DateUtil.secondToTime(historicActivityInstance.getDurationInMillis()));
+				String durationTime = DateUtil.secondToTime(Func.toLong(historicActivityInstance.getDurationInMillis(),0L) / 1000);
+				flow.setHistoryActivityDurationTime(durationTime);
 				// 获取流程发起人名称
 				if (FlowConstant.START_EVENT.equals(historicActivityInstance.getActivityType())) {
 					List<HistoricProcessInstance> processInstanceList = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).orderByProcessInstanceStartTime().asc().list();

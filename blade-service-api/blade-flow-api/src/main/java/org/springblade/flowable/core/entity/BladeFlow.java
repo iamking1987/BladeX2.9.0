@@ -145,9 +145,13 @@ public class BladeFlow implements Serializable {
 	 */
 	private String comment;
 	/**
-	 * 是否继续
+	 * 是否通过
 	 */
 	private boolean isPass;
+	/**
+	 * 是否通过代号
+	 */
+	private String flag;
 	/**
 	 * 批复名
 	 */
@@ -169,7 +173,14 @@ public class BladeFlow implements Serializable {
 	 * 获取批复名
 	 */
 	public String getPassComment() {
-		return this.isPass ? ProcessConstant.PASS_COMMENT : ProcessConstant.NOT_PASS_COMMENT;
+		return isPass() ? ProcessConstant.PASS_COMMENT : ProcessConstant.NOT_PASS_COMMENT;
+	}
+
+	/**
+	 * 获取是否通过
+	 */
+	public boolean isPass() {
+		return "ok".equals(flag);
 	}
 
 }

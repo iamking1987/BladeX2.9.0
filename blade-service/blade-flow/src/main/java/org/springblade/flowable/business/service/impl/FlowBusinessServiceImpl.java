@@ -52,7 +52,7 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 
 	@Override
 	public IPage<BladeFlow> selectClaimPage(IPage<BladeFlow> page, BladeFlow bladeFlow) {
-		String taskUser = String.valueOf(SecureUtil.getUserId());
+		String taskUser = String.valueOf(SecureUtil.getUserAccount());
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		// 等待签收的任务
@@ -75,7 +75,7 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 
 	@Override
 	public IPage<BladeFlow> selectTodoPage(IPage<BladeFlow> page, BladeFlow bladeFlow) {
-		String taskUser = String.valueOf(SecureUtil.getUserId());
+		String taskUser = String.valueOf(SecureUtil.getUserAccount());
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		// 已签收的任务
@@ -98,7 +98,7 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 
 	@Override
 	public IPage<BladeFlow> selectSendPage(IPage<BladeFlow> page, BladeFlow bladeFlow) {
-		String taskUser = String.valueOf(SecureUtil.getUserId());
+		String taskUser = String.valueOf(SecureUtil.getUserAccount());
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		HistoricProcessInstanceQuery historyQuery = historyService.createHistoricProcessInstanceQuery().startedBy(taskUser).orderByProcessInstanceStartTime().desc();
@@ -120,11 +120,13 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 			flow.setProcessInstanceId(historicProcessInstance.getId());
 			flow.setHistoryProcessInstanceId(historicProcessInstance.getId());
 			// ProcessDefinition
-			ProcessDefinition pd = FlowCache.getProcessDefinition(historicProcessInstance.getProcessDefinitionId());
-			flow.setProcessDefinitionId(pd.getId());
-			flow.setProcessDefinitionName(pd.getName());
-			flow.setProcessDefinitionKey(pd.getKey());
-			flow.setProcessDefinitionVersion(pd.getVersion());
+			ProcessDefinition processDefinition = FlowCache.getProcessDefinition(historicProcessInstance.getProcessDefinitionId());
+			flow.setProcessDefinitionId(processDefinition.getId());
+			flow.setProcessDefinitionName(processDefinition.getName());
+			flow.setProcessDefinitionVersion(processDefinition.getVersion());
+			flow.setProcessDefinitionKey(processDefinition.getKey());
+			flow.setCategory(processDefinition.getCategory());
+			flow.setCategoryName(FlowCache.getCategoryName(processDefinition.getCategory()));
 			flow.setProcessInstanceId(historicProcessInstance.getId());
 			// HistoricTaskInstance
 			HistoricTaskInstance historyTask = historyService.createHistoricTaskInstanceQuery().processInstanceId(historicProcessInstance.getId()).orderByHistoricTaskInstanceEndTime().desc().list().get(0);
@@ -151,7 +153,7 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 
 	@Override
 	public IPage<BladeFlow> selectDonePage(IPage<BladeFlow> page, BladeFlow bladeFlow) {
-		String taskUser = String.valueOf(SecureUtil.getUserId());
+		String taskUser = String.valueOf(SecureUtil.getUserAccount());
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		HistoricTaskInstanceQuery doneQuery = historyService.createHistoricTaskInstanceQuery().taskAssignee(taskUser).finished()
@@ -177,11 +179,13 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 			flow.setHistoryTaskEndTime(historicTaskInstance.getEndTime());
 			flow.setVariables(historicTaskInstance.getProcessVariables());
 
-			ProcessDefinition pd = FlowCache.getProcessDefinition(historicTaskInstance.getProcessDefinitionId());
-			flow.setProcessDefinitionId(pd.getId());
-			flow.setProcessDefinitionName(pd.getName());
-			flow.setProcessDefinitionKey(pd.getKey());
-			flow.setProcessDefinitionVersion(pd.getVersion());
+			ProcessDefinition processDefinition = FlowCache.getProcessDefinition(historicTaskInstance.getProcessDefinitionId());
+			flow.setProcessDefinitionId(processDefinition.getId());
+			flow.setProcessDefinitionName(processDefinition.getName());
+			flow.setProcessDefinitionKey(processDefinition.getKey());
+			flow.setProcessDefinitionVersion(processDefinition.getVersion());
+			flow.setCategory(processDefinition.getCategory());
+			flow.setCategoryName(FlowCache.getCategoryName(processDefinition.getCategory()));
 
 			flow.setProcessInstanceId(historicTaskInstance.getProcessInstanceId());
 			flow.setHistoryProcessInstanceId(historicTaskInstance.getProcessInstanceId());

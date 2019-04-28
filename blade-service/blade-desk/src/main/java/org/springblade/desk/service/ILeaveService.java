@@ -18,6 +18,7 @@ package org.springblade.desk.service;
 
 import org.springblade.core.mp.base.BaseService;
 import org.springblade.desk.entity.ProcessLeave;
+import org.springblade.flowable.core.entity.BladeFlow;
 
 /**
  * 服务类
@@ -40,6 +41,6 @@ public interface ILeaveService extends BaseService<ProcessLeave> {
 	 * @param leave 请假信息
 	 * @return boolean
 	 */
-	boolean completeTask(ProcessLeave leave);
+	boolean completeTask(BladeFlow leave);
 
 }

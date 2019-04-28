@@ -32,16 +32,17 @@ public class IFlowClientFallback implements IFlowClient {
 
 	@Override
 	public R<BladeFlow> startProcessInstanceById(String processDefinitionId, String businessKey, Map<String, Object> variables) {
-		return null;
+		return R.fail("远程调用失败");
 	}
 
 	@Override
 	public R<BladeFlow> startProcessInstanceByKey(String processDefinitionKey, String businessKey, Map<String, Object> variables) {
-		return null;
+		return R.fail("远程调用失败");
 	}
 
 	@Override
-	public R completeTask(String taskId, String processInstanceId, String title, String comment, Map<String, Object> variables) {
-		return null;
+	public R completeTask(String taskId, String processInstanceId, String comment, Map<String, Object> variables) {
+		return R.fail("远程调用失败");
 	}
+
 }

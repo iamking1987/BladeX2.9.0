@@ -62,7 +62,7 @@ public class FlowClient implements IFlowClient {
 
 	@Override
 	@PostMapping(START_PROCESS_INSTANCE_BY_KEY)
-	public R<BladeFlow> startProcessInstanceByKey(String processDefinitionKey, String businessKey, Map<String, Object> variables) {
+	public R<BladeFlow> startProcessInstanceByKey(String processDefinitionKey, String businessKey, @RequestBody Map<String, Object> variables) {
 		// 设置流程启动用户
 		identityService.setAuthenticatedUserId(String.valueOf(SecureUtil.getUserId()));
 		// 开启流程
@@ -75,7 +75,7 @@ public class FlowClient implements IFlowClient {
 
 	@Override
 	@PostMapping(COMPLETE_TASK)
-	public R completeTask(String taskId, String processInstanceId, String title, String comment, Map<String, Object> variables) {
+	public R completeTask(String taskId, String processInstanceId, String comment, @RequestBody Map<String, Object> variables) {
 		// 增加评论
 		if (StringUtil.isNoneBlank(processInstanceId, comment)) {
 			taskService.addComment(taskId, processInstanceId, comment);
@@ -83,10 +83,6 @@ public class FlowClient implements IFlowClient {
 		// 非空判断
 		if (Func.isEmpty(variables)) {
 			variables = Kv.create();
-		}
-		// 增加标题
-		if (StringUtil.isNotBlank(title)) {
-			variables.put("title", title);
 		}
 		// 完成任务
 		taskService.complete(taskId, variables);

@@ -22,7 +22,7 @@ import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.SpringUtil;
 import org.springblade.core.tool.utils.StringPool;
-import org.springblade.system.utils.DictUtil;
+import org.springblade.system.cache.DictCache;
 
 /**
  * 流程缓存
@@ -66,7 +66,7 @@ public class FlowCache {
 		if (Func.isEmpty(category)) {
 			return StringPool.EMPTY;
 		}
-		return DictUtil.getValue(category.split(StringPool.UNDERSCORE)[0], Func.toInt(category.split(StringPool.UNDERSCORE)[1]));
+		return DictCache.getValue(category.split(StringPool.UNDERSCORE)[0], Func.toInt(category.split(StringPool.UNDERSCORE)[1]));
 	}
 
 }

@@ -77,10 +77,8 @@ public class LeaveServiceImpl extends BaseServiceImpl<LeaveMapper, ProcessLeave>
 	}
 
 	@Override
-	public boolean completeTask(ProcessLeave leave) {
-		BladeFlow flow = leave.getFlow();
-		flow.setComment(flow.getPassComment());
-
-		return false;
+	public boolean completeTask(BladeFlow flow) {
+		R result = flowClient.completeTask(flow.getTaskId(), flow.getProcessInstanceId(), flow.getPassComment(), Kv.create().set("pass", flow.isPass()));
+		return result.isSuccess();
 	}
 }
