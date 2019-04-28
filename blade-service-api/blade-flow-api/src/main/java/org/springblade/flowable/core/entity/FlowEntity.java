@@ -17,7 +17,6 @@
 package org.springblade.flowable.core.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springblade.core.mp.base.BaseEntity;
@@ -31,8 +30,14 @@ import org.springblade.core.mp.base.BaseEntity;
 @EqualsAndHashCode(callSuper = true)
 public class FlowEntity extends BaseEntity {
 
-	@JsonIgnore
 	@TableField(exist = false)
 	private BladeFlow flow;
+
+	public BladeFlow getFlow() {
+		if (flow == null) {
+			flow = new BladeFlow();
+		}
+		return flow;
+	}
 
 }

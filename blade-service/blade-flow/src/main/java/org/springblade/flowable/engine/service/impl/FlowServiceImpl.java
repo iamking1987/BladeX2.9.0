@@ -51,6 +51,7 @@ import org.springblade.flowable.engine.entity.FlowProcess;
 import org.springblade.flowable.engine.mapper.FlowMapper;
 import org.springblade.flowable.engine.service.FlowService;
 import org.springblade.flowable.engine.utils.FlowCache;
+import org.springblade.system.user.cache.UserCache;
 import org.springblade.system.user.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -138,7 +139,7 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 					if (processInstanceList.size() > 0) {
 						if (StringUtil.isNotBlank(processInstanceList.get(0).getStartUserId())) {
 							String userId = processInstanceList.get(0).getStartUserId();
-							User user = FlowCache.getUser(Func.toInt(userId));
+							User user = UserCache.getUser(Func.toInt(userId));
 							if (user != null) {
 								flow.setAssignee(historicActivityInstance.getAssignee());
 								flow.setAssigneeName(user.getName());
@@ -148,7 +149,7 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 				}
 				// 获取任务执行人名称
 				if (StringUtil.isNotBlank(historicActivityInstance.getAssignee())) {
-					User user = FlowCache.getUser(Func.toInt(historicActivityInstance.getAssignee()));
+					User user = UserCache.getUser(Func.toInt(historicActivityInstance.getAssignee()));
 					if (user != null) {
 						flow.setAssignee(historicActivityInstance.getAssignee());
 						flow.setAssigneeName(user.getName());

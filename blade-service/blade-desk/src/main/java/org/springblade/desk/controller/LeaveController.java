@@ -22,6 +22,7 @@ import org.springblade.core.boot.ctrl.BladeController;
 import org.springblade.core.tool.api.R;
 import org.springblade.desk.entity.ProcessLeave;
 import org.springblade.desk.service.ILeaveService;
+import org.springblade.system.user.cache.UserCache;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -46,6 +47,8 @@ public class LeaveController extends BladeController implements CacheNames {
 	@GetMapping("detail")
 	public R<ProcessLeave> detail(Integer businessId) {
 		ProcessLeave detail = leaveService.getById(businessId);
+		String name = UserCache.getUser(detail.getCreateUser()).getName();
+		detail.getFlow().setAssigneeName(name);
 		return R.data(detail);
 	}
 
