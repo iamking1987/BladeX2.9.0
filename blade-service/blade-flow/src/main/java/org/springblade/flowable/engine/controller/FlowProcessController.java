@@ -25,6 +25,7 @@ import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.image.ProcessDiagramGenerator;
+import org.springblade.core.tool.api.R;
 import org.springblade.flowable.core.entity.BladeFlow;
 import org.springblade.flowable.engine.service.FlowService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,50 +60,50 @@ public class FlowProcessController {
 	/**
 	 * 获取流转历史列表
 	 *
-	 * @param processId 流程实例id
+	 * @param processInstanceId 流程实例id
 	 * @param startActivityId   开始节点id
 	 * @param endActivityId     结束节点id
 	 */
 	@GetMapping(value = "history-flow-list")
-	public List<BladeFlow> historyFlowList(@RequestParam String processId, String startActivityId, String endActivityId) {
-		return flowService.historyFlowList(processId, startActivityId, endActivityId);
+	public R<List<BladeFlow>> historyFlowList(@RequestParam String processInstanceId, String startActivityId, String endActivityId) {
+		return R.data(flowService.historyFlowList(processInstanceId, startActivityId, endActivityId));
 	}
 
 
 	/**
 	 * 获取流程节点进程图
 	 *
-	 * @param processId   流程实例id
+	 * @param processInstanceId   流程实例id
 	 * @param httpServletResponse http响应
 	 */
 	@GetMapping(value = "diagram-view")
-	public void diagramView(String processId, HttpServletResponse httpServletResponse) {
-		diagram(processId, httpServletResponse);
+	public void diagramView(String processInstanceId, HttpServletResponse httpServletResponse) {
+		diagram(processInstanceId, httpServletResponse);
 	}
 
 	/**
 	 * 根据流程节点绘图
 	 *
-	 * @param processId   流程实例id
+	 * @param processInstanceId   流程实例id
 	 * @param httpServletResponse http响应
 	 */
-	private void diagram(String processId, HttpServletResponse httpServletResponse) {
+	private void diagram(String processInstanceId, HttpServletResponse httpServletResponse) {
 		// 获得当前活动的节点
 		String processDefinitionId;
 		// 如果流程已经结束，则得到结束节点
-		if (this.isFinished(processId)) {
-			HistoricProcessInstance pi = historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).singleResult();
+		if (this.isFinished(processInstanceId)) {
+			HistoricProcessInstance pi = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
 			processDefinitionId = pi.getProcessDefinitionId();
 		} else {
 			// 如果流程没有结束，则取当前活动节点
 			// 根据流程实例ID获得当前处于活动状态的ActivityId合集
-			ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
+			ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
 			processDefinitionId = pi.getProcessDefinitionId();
 		}
 		List<String> highLightedActivities = new ArrayList<>();
 
 		// 获得活动的节点
-		List<HistoricActivityInstance> highLightedActivityList = historyService.createHistoricActivityInstanceQuery().processInstanceId(processId).orderByHistoricActivityInstanceStartTime().asc().list();
+		List<HistoricActivityInstance> highLightedActivityList = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).orderByHistoricActivityInstanceStartTime().asc().list();
 
 		for (HistoricActivityInstance tempActivity : highLightedActivityList) {
 			String activityId = tempActivity.getActivityId();

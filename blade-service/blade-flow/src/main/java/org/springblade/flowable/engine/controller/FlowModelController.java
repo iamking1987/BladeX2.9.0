@@ -24,7 +24,9 @@ import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
+import org.springblade.core.secure.annotation.PreAuth;
 import org.springblade.core.tool.api.R;
+import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.flowable.engine.entity.FlowModel;
 import org.springblade.flowable.engine.service.FlowService;
@@ -41,6 +43,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("model")
 @AllArgsConstructor
+@PreAuth(RoleConstant.HAS_ROLE_ADMINISTRATOR)
 public class FlowModelController {
 
 	private FlowService flowService;

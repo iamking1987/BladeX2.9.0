@@ -18,7 +18,9 @@ package org.springblade.desk.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springblade.core.log.exception.ServiceException;
 import org.springblade.core.mp.base.BaseServiceImpl;
+import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.desk.entity.ProcessLeave;
@@ -29,6 +31,7 @@ import org.springblade.flowable.core.entity.BladeFlow;
 import org.springblade.flowable.core.feign.IFlowClient;
 import org.springblade.flowable.core.utils.FlowUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -46,7 +49,8 @@ public class LeaveServiceImpl extends BaseServiceImpl<LeaveMapper, ProcessLeave>
 	private IFlowClient flowClient;
 
 	@Override
-	public boolean start(ProcessLeave leave) {
+	@Transactional(rollbackFor = Exception.class)
+	public boolean startProcess(ProcessLeave leave) {
 		String businessTable = FlowUtil.getBusinessTable(ProcessConstant.LEAVE_KEY);
 		if (Func.isEmpty(leave.getId())) {
 			// 保存leave
@@ -56,15 +60,27 @@ public class LeaveServiceImpl extends BaseServiceImpl<LeaveMapper, ProcessLeave>
 			Kv variables = Kv.create()
 				.set("taskUser", leave.getTaskUser())
 				.set("days", Duration.between(leave.getStartTime(), leave.getEndTime()).toDays());
-			BladeFlow bladeFlow = flowClient.startProcessInstanceById(leave.getProcessId(), FlowUtil.getBusinessKey(businessTable, String.valueOf(leave.getId())), variables);
-			log.debug("流程已启动,流程ID:" + bladeFlow.getProcessInstanceId());
-			// 返回流程id写入leave
-			leave.setInstanceId(bladeFlow.getProcessInstanceId());
-			updateById(leave);
+			R<BladeFlow> result = flowClient.startProcessInstanceById(leave.getProcessDefinitionId(), FlowUtil.getBusinessKey(businessTable, String.valueOf(leave.getId())), variables);
+			if (result.isSuccess()) {
+				log.debug("流程已启动,流程ID:" + result.getData().getProcessInstanceId());
+				// 返回流程id写入leave
+				leave.setProcessInstanceId(result.getData().getProcessInstanceId());
+				updateById(leave);
+			} else {
+				throw new ServiceException("开启流程失败");
+			}
 		} else {
 
 			updateById(leave);
 		}
 		return true;
+	}
+
+	@Override
+	public boolean completeTask(ProcessLeave leave) {
+		BladeFlow flow = leave.getFlow();
+		flow.setComment(flow.getPassComment());
+
+		return false;
 	}
 }

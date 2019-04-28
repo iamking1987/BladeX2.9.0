@@ -14,34 +14,25 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.flowable.core.feign;
+package org.springblade.flowable.core.entity;
 
-import org.springblade.core.tool.api.R;
-import org.springblade.flowable.core.entity.BladeFlow;
-import org.springframework.stereotype.Component;
-
-import java.util.Map;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springblade.core.mp.base.BaseEntity;
 
 /**
- * 流程远程调用失败处理类
+ * FlowEntity
  *
  * @author Chill
  */
-@Component
-public class IFlowClientFallback implements IFlowClient {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class FlowEntity extends BaseEntity {
 
-	@Override
-	public R<BladeFlow> startProcessInstanceById(String processDefinitionId, String businessKey, Map<String, Object> variables) {
-		return null;
-	}
+	@JsonIgnore
+	@TableField(exist = false)
+	private BladeFlow flow;
 
-	@Override
-	public R<BladeFlow> startProcessInstanceByKey(String processDefinitionKey, String businessKey, Map<String, Object> variables) {
-		return null;
-	}
-
-	@Override
-	public R completeTask(String taskId, String processInstanceId, String title, String comment, Map<String, Object> variables) {
-		return null;
-	}
 }

@@ -23,7 +23,9 @@ import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
+import org.springblade.core.secure.annotation.PreAuth;
 import org.springblade.core.tool.api.R;
+import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.utils.IntegerPool;
 import org.springblade.flowable.engine.entity.FlowProcess;
 import org.springblade.flowable.engine.service.FlowService;
@@ -43,6 +45,7 @@ import java.util.List;
 @RequestMapping("manager")
 @AllArgsConstructor
 @Api(value = "流程管理接口", tags = "流程管理接口")
+@PreAuth(RoleConstant.HAS_ROLE_ADMINISTRATOR)
 public class FlowManagerController {
 
 	private FlowService flowService;

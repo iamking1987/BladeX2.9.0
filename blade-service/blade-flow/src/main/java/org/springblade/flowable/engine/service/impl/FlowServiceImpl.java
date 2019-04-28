@@ -104,9 +104,9 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 	}
 
 	@Override
-	public List<BladeFlow> historyFlowList(String processId, String startActivityId, String endActivityId) {
+	public List<BladeFlow> historyFlowList(String processInstanceId, String startActivityId, String endActivityId) {
 		List<BladeFlow> flowList = new LinkedList<>();
-		List<HistoricActivityInstance> historicActivityInstanceList = historyService.createHistoricActivityInstanceQuery().processInstanceId(processId).orderByHistoricActivityInstanceStartTime().asc().orderByHistoricActivityInstanceEndTime().asc().list();
+		List<HistoricActivityInstance> historicActivityInstanceList = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).orderByHistoricActivityInstanceStartTime().asc().orderByHistoricActivityInstanceEndTime().asc().list();
 		boolean start = false;
 		Map<String, Integer> activityMap = new HashMap<>(16);
 		for (int i = 0; i < historicActivityInstanceList.size(); i++) {
@@ -134,7 +134,7 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 				flow.setHistoryActivityDurationTime(DateUtil.secondToTime(historicActivityInstance.getDurationInMillis()));
 				// 获取流程发起人名称
 				if (FlowConstant.START_EVENT.equals(historicActivityInstance.getActivityType())) {
-					List<HistoricProcessInstance> processInstanceList = historyService.createHistoricProcessInstanceQuery().processInstanceId(processId).orderByProcessInstanceStartTime().asc().list();
+					List<HistoricProcessInstance> processInstanceList = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).orderByProcessInstanceStartTime().asc().list();
 					if (processInstanceList.size() > 0) {
 						if (StringUtil.isNotBlank(processInstanceList.get(0).getStartUserId())) {
 							String userId = processInstanceList.get(0).getStartUserId();

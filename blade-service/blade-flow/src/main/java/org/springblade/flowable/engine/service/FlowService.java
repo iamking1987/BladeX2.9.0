@@ -54,12 +54,12 @@ public interface FlowService extends IService<FlowModel> {
 	/**
 	 * 获取流转历史列表
 	 *
-	 * @param processId       流程实例id
-	 * @param startActivityId 开始节点id
-	 * @param endActivityId   结束节点id
+	 * @param processInstanceId 流程实例id
+	 * @param startActivityId   开始节点id
+	 * @param endActivityId     结束节点id
 	 * @return
 	 */
-	List<BladeFlow> historyFlowList(String processId, String startActivityId, String endActivityId);
+	List<BladeFlow> historyFlowList(String processInstanceId, String startActivityId, String endActivityId);
 
 	/**
 	 * 变更流程状态

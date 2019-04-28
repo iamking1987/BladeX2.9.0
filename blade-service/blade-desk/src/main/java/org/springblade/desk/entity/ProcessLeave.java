@@ -19,7 +19,7 @@ package org.springblade.desk.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springblade.core.mp.base.BaseEntity;
+import org.springblade.flowable.core.entity.FlowEntity;
 
 import java.time.LocalDateTime;
 
@@ -31,18 +31,18 @@ import java.time.LocalDateTime;
 @Data
 @TableName("blade_process_leave")
 @EqualsAndHashCode(callSuper = true)
-public class ProcessLeave extends BaseEntity {
+public class ProcessLeave extends FlowEntity {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 流程定义id
 	 */
-	private String processId;
+	private String processDefinitionId;
 	/**
 	 * 流程实例id
 	 */
-	private String instanceId;
+	private String processInstanceId;
 	/**
 	 * 请假开始时间
 	 */
@@ -59,10 +59,6 @@ public class ProcessLeave extends BaseEntity {
 	 * 审批人
 	 */
 	private String taskUser;
-	/**
-	 * 批复
-	 */
-	private String comment;
 	/**
 	 * 流程申请时间
 	 */

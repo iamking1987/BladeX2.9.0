@@ -19,7 +19,6 @@ package org.springblade.desk.controller;
 import lombok.AllArgsConstructor;
 import org.springblade.common.cache.CacheNames;
 import org.springblade.core.boot.ctrl.BladeController;
-import org.springblade.core.mp.support.Condition;
 import org.springblade.core.tool.api.R;
 import org.springblade.desk.entity.ProcessLeave;
 import org.springblade.desk.service.ILeaveService;
@@ -41,20 +40,33 @@ public class LeaveController extends BladeController implements CacheNames {
 
 	/**
 	 * 详情
+	 *
+	 * @param businessId 主键
 	 */
-	@GetMapping("/detail")
-	public R<ProcessLeave> detail(ProcessLeave leave) {
-		ProcessLeave detail = leaveService.getOne(Condition.getQueryWrapper(leave));
+	@GetMapping("detail")
+	public R<ProcessLeave> detail(Integer businessId) {
+		ProcessLeave detail = leaveService.getById(businessId);
 		return R.data(detail);
 	}
 
 	/**
 	 * 新增或修改
+	 *
+	 * @param leave 请假信息
 	 */
-	@PostMapping("/start")
-	public R start(@RequestBody ProcessLeave leave) {
-		return R.status(leaveService.start(leave));
+	@PostMapping("start-process")
+	public R startProcess(@RequestBody ProcessLeave leave) {
+		return R.status(leaveService.startProcess(leave));
 	}
 
+	/**
+	 * 完成任务
+	 *
+	 * @param leave 请假信息
+	 */
+	@PostMapping("complete-task")
+	public R completeTask(@RequestBody ProcessLeave leave) {
+		return R.status(leaveService.completeTask(leave));
+	}
 
 }

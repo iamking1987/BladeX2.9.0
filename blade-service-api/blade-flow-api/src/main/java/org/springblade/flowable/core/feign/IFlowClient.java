@@ -17,6 +17,7 @@
 package org.springblade.flowable.core.feign;
 
 import org.springblade.core.launch.constant.AppConstant;
+import org.springblade.core.tool.api.R;
 import org.springblade.flowable.core.entity.BladeFlow;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,7 @@ public interface IFlowClient {
 	String API_PREFIX = "/client";
 	String START_PROCESS_INSTANCE_BY_ID = API_PREFIX + "start-process-instance-by-id";
 	String START_PROCESS_INSTANCE_BY_KEY = API_PREFIX + "start-process-instance-by-key";
+	String COMPLETE_TASK = API_PREFIX + "complete-task";
 
 	/**
 	 * 开启流程
@@ -49,7 +51,7 @@ public interface IFlowClient {
 	 * @return BladeFlow
 	 */
 	@PostMapping(START_PROCESS_INSTANCE_BY_ID)
-	BladeFlow startProcessInstanceById(@RequestParam("processDefinitionId") String processDefinitionId, @RequestParam("businessKey") String businessKey, @RequestBody Map<String, Object> variables);
+	R<BladeFlow> startProcessInstanceById(@RequestParam("processDefinitionId") String processDefinitionId, @RequestParam("businessKey") String businessKey, @RequestBody Map<String, Object> variables);
 
 	/**
 	 * 开启流程
@@ -60,6 +62,19 @@ public interface IFlowClient {
 	 * @return BladeFlow
 	 */
 	@PostMapping(START_PROCESS_INSTANCE_BY_KEY)
-	BladeFlow startProcessInstanceByKey(@RequestParam("processDefinitionKey") String processDefinitionKey, @RequestParam("businessKey") String businessKey, @RequestBody Map<String, Object> variables);
+	R<BladeFlow> startProcessInstanceByKey(@RequestParam("processDefinitionKey") String processDefinitionKey, @RequestParam("businessKey") String businessKey, @RequestBody Map<String, Object> variables);
+
+	/**
+	 * 完成任务
+	 *
+	 * @param taskId            任务id
+	 * @param processInstanceId 流程实例id
+	 * @param title             任务标题
+	 * @param comment           评论
+	 * @param variables         参数
+	 * @return R
+	 */
+	@PostMapping(COMPLETE_TASK)
+	R completeTask(@RequestParam("taskId") String taskId, @RequestParam("processInstanceId") String processInstanceId, @RequestParam("title") String title, @RequestParam("comment") String comment, @RequestBody Map<String, Object> variables);
 
 }

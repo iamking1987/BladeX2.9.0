@@ -28,4 +28,14 @@ public interface ProcessConstant {
 	 */
 	String LEAVE_KEY = "Leave";
 
+	/**
+	 * 同意默认批复
+	 */
+	String PASS_COMMENT = "同意";
+
+	/**
+	 * 驳回默认批复
+	 */
+	String NOT_PASS_COMMENT = "驳回";
+
 }

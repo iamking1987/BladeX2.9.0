@@ -19,7 +19,6 @@ package org.springblade.flowable.business.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
 import org.flowable.engine.HistoryService;
-import org.flowable.engine.RepositoryService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.history.HistoricProcessInstanceQuery;
@@ -48,7 +47,6 @@ import java.util.List;
 @AllArgsConstructor
 public class FlowBusinessServiceImpl implements FlowBusinessService {
 
-	private RepositoryService repositoryService;
 	private TaskService taskService;
 	private HistoryService historyService;
 

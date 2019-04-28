@@ -19,8 +19,13 @@ package org.springblade.flowable.business.feign;
 import lombok.AllArgsConstructor;
 import org.flowable.engine.IdentityService;
 import org.flowable.engine.RuntimeService;
+import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.springblade.core.secure.utils.SecureUtil;
+import org.springblade.core.tool.api.R;
+import org.springblade.core.tool.support.Kv;
+import org.springblade.core.tool.utils.Func;
+import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.flowable.core.entity.BladeFlow;
 import org.springblade.flowable.core.feign.IFlowClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,10 +45,11 @@ public class FlowClient implements IFlowClient {
 
 	private RuntimeService runtimeService;
 	private IdentityService identityService;
+	private TaskService taskService;
 
 	@Override
 	@PostMapping(START_PROCESS_INSTANCE_BY_ID)
-	public BladeFlow startProcessInstanceById(String processDefinitionId, String businessKey, @RequestBody Map<String, Object> variables) {
+	public R<BladeFlow> startProcessInstanceById(String processDefinitionId, String businessKey, @RequestBody Map<String, Object> variables) {
 		// 设置流程启动用户
 		identityService.setAuthenticatedUserId(String.valueOf(SecureUtil.getUserId()));
 		// 开启流程
@@ -51,12 +57,12 @@ public class FlowClient implements IFlowClient {
 		// 组装流程通用类
 		BladeFlow flow = new BladeFlow();
 		flow.setProcessInstanceId(processInstance.getId());
-		return flow;
+		return R.data(flow);
 	}
 
 	@Override
 	@PostMapping(START_PROCESS_INSTANCE_BY_KEY)
-	public BladeFlow startProcessInstanceByKey(String processDefinitionKey, String businessKey, Map<String, Object> variables) {
+	public R<BladeFlow> startProcessInstanceByKey(String processDefinitionKey, String businessKey, Map<String, Object> variables) {
 		// 设置流程启动用户
 		identityService.setAuthenticatedUserId(String.valueOf(SecureUtil.getUserId()));
 		// 开启流程
@@ -64,7 +70,27 @@ public class FlowClient implements IFlowClient {
 		// 组装流程通用类
 		BladeFlow flow = new BladeFlow();
 		flow.setProcessInstanceId(processInstance.getId());
-		return flow;
+		return R.data(flow);
+	}
+
+	@Override
+	@PostMapping(COMPLETE_TASK)
+	public R completeTask(String taskId, String processInstanceId, String title, String comment, Map<String, Object> variables) {
+		// 增加评论
+		if (StringUtil.isNoneBlank(processInstanceId, comment)) {
+			taskService.addComment(taskId, processInstanceId, comment);
+		}
+		// 非空判断
+		if (Func.isEmpty(variables)) {
+			variables = Kv.create();
+		}
+		// 增加标题
+		if (StringUtil.isNotBlank(title)) {
+			variables.put("title", title);
+		}
+		// 完成任务
+		taskService.complete(taskId, variables);
+		return R.success("流程提交成功");
 	}
 
 }

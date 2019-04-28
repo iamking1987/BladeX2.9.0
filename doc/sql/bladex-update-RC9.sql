@@ -121,13 +121,12 @@ INSERT INTO `bladex`.`blade_role`(`tenant_code`, `parent_id`, `role_name`, `sort
 DROP TABLE IF EXISTS `blade_process_leave`;
 CREATE TABLE `blade_process_leave`  (
 `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
-`process_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '流程定义主键',
-`instance_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '流程实例主键',
+`process_definition_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '流程定义主键',
+`process_instance_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '流程实例主键',
 `start_time` datetime(0) NULL DEFAULT NULL COMMENT '开始时间',
 `end_time` datetime(0) NULL DEFAULT NULL COMMENT '结束时间',
 `reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '请假理由',
-`task_user` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '审批人',
-`comment` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '领导意见',
+`task_user` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '第一级审批人',
 `apply_time` datetime(0) NULL DEFAULT NULL COMMENT '申请时间',
 `create_user` int(11) NULL DEFAULT NULL COMMENT '创建人',
 `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',

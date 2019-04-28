@@ -17,6 +17,7 @@
 package org.springblade.flowable.core.entity;
 
 import lombok.Data;
+import org.springblade.flowable.core.constant.ProcessConstant;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -146,7 +147,11 @@ public class BladeFlow implements Serializable {
 	/**
 	 * 是否继续
 	 */
-	private String isPass;
+	private boolean isPass;
+	/**
+	 * 批复名
+	 */
+	private String passComment;
 	/**
 	 * 开始查询日期
 	 */
@@ -159,5 +164,12 @@ public class BladeFlow implements Serializable {
 	 * 流程参数
 	 */
 	private Map<String, Object> variables;
+
+	/**
+	 * 获取批复名
+	 */
+	public String getPassComment() {
+		return this.isPass ? ProcessConstant.PASS_COMMENT : ProcessConstant.NOT_PASS_COMMENT;
+	}
 
 }
