@@ -3,7 +3,7 @@
     <process id="Leave" name="请假流程" isExecutable="true">
         <documentation>请假流程</documentation>
         <startEvent id="start" name="开始"></startEvent>
-        <userTask id="fillTask" name="人事审批" flowable:assignee="${taskUser}">
+        <userTask id="fillTask" name="事假审批" flowable:assignee="${taskUser}">
             <extensionElements>
                 <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
             </extensionElements>
