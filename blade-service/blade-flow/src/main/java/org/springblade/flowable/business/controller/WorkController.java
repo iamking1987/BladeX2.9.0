@@ -109,7 +109,7 @@ public class WorkController {
 	@PostMapping("claim-task")
 	@ApiOperation(value = "签收事务", notes = "传入流程信息", position = 6)
 	public R claimTask(@ApiParam("任务id") String taskId, BladeUser user) {
-		taskService.claim(taskId, String.valueOf(user.getUserId()));
+		taskService.claim(taskId, String.valueOf(user.getAccount()));
 		return R.success("签收事务成功");
 	}
 
