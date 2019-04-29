@@ -52,7 +52,7 @@ public class FlowClient implements IFlowClient {
 	@PostMapping(START_PROCESS_INSTANCE_BY_ID)
 	public R<BladeFlow> startProcessInstanceById(String processDefinitionId, String businessKey, @RequestBody Map<String, Object> variables) {
 		// 设置流程启动用户
-		identityService.setAuthenticatedUserId(String.valueOf(SecureUtil.getUserId()));
+		identityService.setAuthenticatedUserId(String.valueOf(SecureUtil.getUserAccount()));
 		// 开启流程
 		ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefinitionId, businessKey, variables);
 		// 组装流程通用类
@@ -65,7 +65,7 @@ public class FlowClient implements IFlowClient {
 	@PostMapping(START_PROCESS_INSTANCE_BY_KEY)
 	public R<BladeFlow> startProcessInstanceByKey(String processDefinitionKey, String businessKey, @RequestBody Map<String, Object> variables) {
 		// 设置流程启动用户
-		identityService.setAuthenticatedUserId(String.valueOf(SecureUtil.getUserId()));
+		identityService.setAuthenticatedUserId(String.valueOf(SecureUtil.getUserAccount()));
 		// 开启流程
 		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey, variables);
 		// 组装流程通用类
