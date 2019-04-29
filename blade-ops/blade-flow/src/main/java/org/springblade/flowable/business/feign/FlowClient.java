@@ -28,6 +28,7 @@ import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.flowable.core.entity.BladeFlow;
 import org.springblade.flowable.core.feign.IFlowClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -87,6 +88,18 @@ public class FlowClient implements IFlowClient {
 		// 完成任务
 		taskService.complete(taskId, variables);
 		return R.success("流程提交成功");
+	}
+
+	@Override
+	@GetMapping(TASK_VARIABLE)
+	public R<Object> taskVariable(String taskId, String variableName) {
+		return R.data(taskService.getVariable(taskId, variableName));
+	}
+
+	@Override
+	@GetMapping(TASK_VARIABLES)
+	public R<Map<String, Object>> taskVariables(String taskId) {
+		return R.data(taskService.getVariables(taskId));
 	}
 
 }

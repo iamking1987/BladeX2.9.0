@@ -20,6 +20,7 @@ import org.springblade.core.launch.constant.AppConstant;
 import org.springblade.core.tool.api.R;
 import org.springblade.flowable.core.entity.BladeFlow;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +42,8 @@ public interface IFlowClient {
 	String START_PROCESS_INSTANCE_BY_ID = API_PREFIX + "start-process-instance-by-id";
 	String START_PROCESS_INSTANCE_BY_KEY = API_PREFIX + "start-process-instance-by-key";
 	String COMPLETE_TASK = API_PREFIX + "complete-task";
+	String TASK_VARIABLE = API_PREFIX + "task-variable";
+	String TASK_VARIABLES = API_PREFIX + "task-variables";
 
 	/**
 	 * 开启流程
@@ -76,4 +79,22 @@ public interface IFlowClient {
 	@PostMapping(COMPLETE_TASK)
 	R completeTask(@RequestParam("taskId") String taskId, @RequestParam("processInstanceId") String processInstanceId, @RequestParam("comment") String comment, @RequestBody Map<String, Object> variables);
 
+	/**
+	 * 获取流程变量
+	 *
+	 * @param taskId       任务id
+	 * @param variableName 变量名
+	 * @return R
+	 */
+	@GetMapping(TASK_VARIABLE)
+	R<Object> taskVariable(@RequestParam("taskId") String taskId, @RequestParam("variableName") String variableName);
+
+	/**
+	 * 获取流程变量集合
+	 *
+	 * @param taskId 任务id
+	 * @return R
+	 */
+	@GetMapping(TASK_VARIABLES)
+	R<Map<String, Object>> taskVariables(@RequestParam("taskId") String taskId);
 }

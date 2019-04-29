@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.log.exception.ServiceException;
 import org.springblade.core.mp.base.BaseServiceImpl;
+import org.springblade.core.secure.utils.SecureUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.Func;
@@ -58,6 +59,7 @@ public class LeaveServiceImpl extends BaseServiceImpl<LeaveMapper, ProcessLeave>
 			save(leave);
 			// 启动流程
 			Kv variables = Kv.create()
+				.set(ProcessConstant.TASK_VARIABLE_CREATE_USER, SecureUtil.getUserName())
 				.set("taskUser", leave.getTaskUser())
 				.set("days", Duration.between(leave.getStartTime(), leave.getEndTime()).toDays());
 			R<BladeFlow> result = flowClient.startProcessInstanceById(leave.getProcessDefinitionId(), FlowUtil.getBusinessKey(businessTable, String.valueOf(leave.getId())), variables);

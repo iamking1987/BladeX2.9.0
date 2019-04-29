@@ -45,4 +45,14 @@ public class IFlowClientFallback implements IFlowClient {
 		return R.fail("远程调用失败");
 	}
 
+	@Override
+	public R<Object> taskVariable(String taskId, String variableName) {
+		return R.fail("远程调用失败");
+	}
+
+	@Override
+	public R<Map<String, Object>> taskVariables(String taskId) {
+		return R.fail("远程调用失败");
+	}
+
 }
