@@ -20,12 +20,10 @@ import lombok.AllArgsConstructor;
 import org.springblade.common.cache.CacheNames;
 import org.springblade.core.boot.ctrl.BladeController;
 import org.springblade.core.tool.api.R;
-import org.springblade.core.tool.utils.Func;
 import org.springblade.desk.entity.ProcessLeave;
 import org.springblade.desk.service.ILeaveService;
-import org.springblade.flowable.core.constant.ProcessConstant;
 import org.springblade.flowable.core.entity.BladeFlow;
-import org.springblade.flowable.core.feign.IFlowClient;
+import org.springblade.system.user.cache.UserCache;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -41,21 +39,16 @@ import springfox.documentation.annotations.ApiIgnore;
 public class LeaveController extends BladeController implements CacheNames {
 
 	private ILeaveService leaveService;
-	private IFlowClient flowClient;
 
 	/**
 	 * 详情
 	 *
-	 * @param taskId     任务主键
 	 * @param businessId 主键
 	 */
 	@GetMapping("detail")
-	public R<ProcessLeave> detail(String taskId, Integer businessId) {
+	public R<ProcessLeave> detail(Integer businessId) {
 		ProcessLeave detail = leaveService.getById(businessId);
-		R<Object> result = flowClient.taskVariable(taskId, ProcessConstant.TASK_VARIABLE_CREATE_USER);
-		if (result.isSuccess()) {
-			detail.getFlow().setAssigneeName(Func.toStr(result.getData(), "暂无"));
-		}
+		detail.getFlow().setAssigneeName(UserCache.getUser(detail.getCreateUser()).getName());
 		return R.data(detail);
 	}
 
