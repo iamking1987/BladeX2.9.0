@@ -45,6 +45,7 @@ import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringPool;
 import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.flowable.core.entity.BladeFlow;
+import org.springblade.flowable.core.utils.TaskUtil;
 import org.springblade.flowable.engine.constant.FlowConstant;
 import org.springblade.flowable.engine.entity.FlowModel;
 import org.springblade.flowable.engine.entity.FlowProcess;
@@ -138,8 +139,8 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 					List<HistoricProcessInstance> processInstanceList = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).orderByProcessInstanceStartTime().asc().list();
 					if (processInstanceList.size() > 0) {
 						if (StringUtil.isNotBlank(processInstanceList.get(0).getStartUserId())) {
-							String userId = processInstanceList.get(0).getStartUserId();
-							User user = UserCache.getUser(Func.toInt(userId));
+							String taskUser = processInstanceList.get(0).getStartUserId();
+							User user = UserCache.getUser(TaskUtil.getUserId(taskUser));
 							if (user != null) {
 								flow.setAssignee(historicActivityInstance.getAssignee());
 								flow.setAssigneeName(user.getName());
@@ -149,7 +150,7 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 				}
 				// 获取任务执行人名称
 				if (StringUtil.isNotBlank(historicActivityInstance.getAssignee())) {
-					User user = UserCache.getUser(Func.toInt(historicActivityInstance.getAssignee()));
+					User user = UserCache.getUser(TaskUtil.getUserId(historicActivityInstance.getAssignee()));
 					if (user != null) {
 						flow.setAssignee(historicActivityInstance.getAssignee());
 						flow.setAssigneeName(user.getName());

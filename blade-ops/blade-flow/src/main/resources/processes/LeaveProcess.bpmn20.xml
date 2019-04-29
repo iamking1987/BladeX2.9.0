@@ -10,7 +10,7 @@
         </userTask>
         <exclusiveGateway id="judgeTask"></exclusiveGateway>
         <userTask id="managerTak" name="经理审批" flowable:candidateGroups="manager"></userTask>
-        <userTask id="bossTask" name="老板审批" flowable:candidateUsers="boss"></userTask>
+        <userTask id="bossTask" name="老板审批" flowable:candidateGroups="boss"></userTask>
         <endEvent id="end" name="结束"></endEvent>
         <sequenceFlow id="flow1" sourceRef="start" targetRef="fillTask"></sequenceFlow>
         <sequenceFlow id="flow2" sourceRef="fillTask" targetRef="judgeTask"></sequenceFlow>

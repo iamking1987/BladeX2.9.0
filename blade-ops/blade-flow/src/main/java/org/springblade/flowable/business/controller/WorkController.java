@@ -24,16 +24,13 @@ import lombok.AllArgsConstructor;
 import org.flowable.engine.TaskService;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
-import org.springblade.core.secure.BladeUser;
 import org.springblade.core.tool.api.R;
 import org.springblade.flowable.business.service.FlowBusinessService;
 import org.springblade.flowable.core.entity.BladeFlow;
+import org.springblade.flowable.core.utils.TaskUtil;
 import org.springblade.flowable.engine.entity.FlowProcess;
 import org.springblade.flowable.engine.service.FlowService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 流程事务通用接口
@@ -104,13 +101,22 @@ public class WorkController {
 	 * 签收事务
 	 *
 	 * @param taskId 任务id
-	 * @param user   用户
 	 */
 	@PostMapping("claim-task")
 	@ApiOperation(value = "签收事务", notes = "传入流程信息", position = 6)
-	public R claimTask(@ApiParam("任务id") String taskId, BladeUser user) {
-		taskService.claim(taskId, String.valueOf(user.getAccount()));
+	public R claimTask(@ApiParam("任务id") String taskId) {
+		taskService.claim(taskId, TaskUtil.getTaskUser());
 		return R.success("签收事务成功");
+	}
+
+	/**
+	 * 完成任务
+	 *
+	 * @param flow 请假信息
+	 */
+	@PostMapping("complete-task")
+	public R completeTask(@ApiParam("任务信息") @RequestBody BladeFlow flow) {
+		return R.status(flowBusinessService.completeTask(flow));
 	}
 
 	/**

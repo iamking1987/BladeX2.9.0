@@ -34,6 +34,16 @@ public interface ProcessConstant {
 	String Expense_KEY = "Expense";
 
 	/**
+	 * 同意标识
+	 */
+	String PASS_KEY = "pass";
+
+	/**
+	 * 同意代号
+	 */
+	String PASS_ALIAS = "ok";
+
+	/**
 	 * 同意默认批复
 	 */
 	String PASS_COMMENT = "同意";

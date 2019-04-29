@@ -153,10 +153,6 @@ public class BladeFlow implements Serializable {
 	 */
 	private String flag;
 	/**
-	 * 批复名
-	 */
-	private String passComment;
-	/**
 	 * 开始查询日期
 	 */
 	private Date beginDate;
@@ -170,17 +166,10 @@ public class BladeFlow implements Serializable {
 	private Map<String, Object> variables;
 
 	/**
-	 * 获取批复名
-	 */
-	public String getPassComment() {
-		return isPass() ? ProcessConstant.PASS_COMMENT : ProcessConstant.NOT_PASS_COMMENT;
-	}
-
-	/**
 	 * 获取是否通过
 	 */
 	public boolean isPass() {
-		return "ok".equals(flag);
+		return ProcessConstant.PASS_ALIAS.equals(flag) || ProcessConstant.PASS_COMMENT.equals(comment);
 	}
 
 }

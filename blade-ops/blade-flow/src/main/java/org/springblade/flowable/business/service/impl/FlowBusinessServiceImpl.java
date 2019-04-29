@@ -26,17 +26,21 @@ import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.task.api.TaskQuery;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.flowable.task.api.history.HistoricTaskInstanceQuery;
-import org.springblade.core.secure.utils.SecureUtil;
+import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringPool;
+import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.flowable.business.service.FlowBusinessService;
+import org.springblade.flowable.core.constant.ProcessConstant;
 import org.springblade.flowable.core.entity.BladeFlow;
+import org.springblade.flowable.core.utils.TaskUtil;
 import org.springblade.flowable.engine.constant.FlowConstant;
 import org.springblade.flowable.engine.utils.FlowCache;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 流程业务实现类
@@ -52,8 +56,8 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 
 	@Override
 	public IPage<BladeFlow> selectClaimPage(IPage<BladeFlow> page, BladeFlow bladeFlow) {
-		String taskUser = String.valueOf(SecureUtil.getUserAccount());
-		String taskRole = String.valueOf(SecureUtil.getUserRole());
+		String taskUser = TaskUtil.getTaskUser();
+		String taskRole = TaskUtil.getCandidateGroup();
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		// 等待签收的任务
@@ -80,7 +84,7 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 
 	@Override
 	public IPage<BladeFlow> selectTodoPage(IPage<BladeFlow> page, BladeFlow bladeFlow) {
-		String taskUser = String.valueOf(SecureUtil.getUserAccount());
+		String taskUser = TaskUtil.getTaskUser();
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		// 已签收的任务
@@ -103,7 +107,7 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 
 	@Override
 	public IPage<BladeFlow> selectSendPage(IPage<BladeFlow> page, BladeFlow bladeFlow) {
-		String taskUser = String.valueOf(SecureUtil.getUserAccount());
+		String taskUser = TaskUtil.getTaskUser();
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		HistoricProcessInstanceQuery historyQuery = historyService.createHistoricProcessInstanceQuery().startedBy(taskUser).orderByProcessInstanceStartTime().desc();
@@ -158,7 +162,7 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 
 	@Override
 	public IPage<BladeFlow> selectDonePage(IPage<BladeFlow> page, BladeFlow bladeFlow) {
-		String taskUser = String.valueOf(SecureUtil.getUserAccount());
+		String taskUser = TaskUtil.getTaskUser();
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		HistoricTaskInstanceQuery doneQuery = historyService.createHistoricTaskInstanceQuery().taskAssignee(taskUser).finished()
@@ -214,6 +218,26 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 		page.setTotal(count);
 		page.setRecords(flowList);
 		return page;
+	}
+
+	@Override
+	public boolean completeTask(BladeFlow flow) {
+		String taskId = flow.getTaskId();
+		String processInstanceId = flow.getProcessInstanceId();
+		String comment = Func.toStr(flow.getComment(), ProcessConstant.PASS_COMMENT);
+		// 增加评论
+		if (StringUtil.isNoneBlank(processInstanceId, comment)) {
+			taskService.addComment(taskId, processInstanceId, comment);
+		}
+		// 创建变量
+		Map<String, Object> variables = flow.getVariables();
+		if (variables == null) {
+			variables = Kv.create();
+		}
+		variables.put(ProcessConstant.PASS_KEY, flow.isPass());
+		// 完成任务
+		taskService.complete(taskId, variables);
+		return true;
 	}
 
 	/**

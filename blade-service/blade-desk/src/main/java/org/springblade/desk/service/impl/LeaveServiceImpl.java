@@ -31,6 +31,7 @@ import org.springblade.flowable.core.constant.ProcessConstant;
 import org.springblade.flowable.core.entity.BladeFlow;
 import org.springblade.flowable.core.feign.IFlowClient;
 import org.springblade.flowable.core.utils.FlowUtil;
+import org.springblade.flowable.core.utils.TaskUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,7 +61,7 @@ public class LeaveServiceImpl extends BaseServiceImpl<LeaveMapper, ProcessLeave>
 			// 启动流程
 			Kv variables = Kv.create()
 				.set(ProcessConstant.TASK_VARIABLE_CREATE_USER, SecureUtil.getUserName())
-				.set("taskUser", leave.getTaskUser())
+				.set("taskUser", TaskUtil.getTaskUser(leave.getTaskUser()))
 				.set("days", Duration.between(leave.getStartTime(), leave.getEndTime()).toDays());
 			R<BladeFlow> result = flowClient.startProcessInstanceById(leave.getProcessDefinitionId(), FlowUtil.getBusinessKey(businessTable, String.valueOf(leave.getId())), variables);
 			if (result.isSuccess()) {
@@ -78,9 +79,4 @@ public class LeaveServiceImpl extends BaseServiceImpl<LeaveMapper, ProcessLeave>
 		return true;
 	}
 
-	@Override
-	public boolean completeTask(BladeFlow flow) {
-		R result = flowClient.completeTask(flow.getTaskId(), flow.getProcessInstanceId(), flow.getPassComment(), Kv.create().set("pass", flow.isPass()));
-		return result.isSuccess();
-	}
 }

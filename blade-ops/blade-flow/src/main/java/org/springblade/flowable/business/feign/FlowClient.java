@@ -21,13 +21,13 @@ import org.flowable.engine.IdentityService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
-import org.springblade.core.secure.utils.SecureUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.flowable.core.entity.BladeFlow;
 import org.springblade.flowable.core.feign.IFlowClient;
+import org.springblade.flowable.core.utils.TaskUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,7 +52,7 @@ public class FlowClient implements IFlowClient {
 	@PostMapping(START_PROCESS_INSTANCE_BY_ID)
 	public R<BladeFlow> startProcessInstanceById(String processDefinitionId, String businessKey, @RequestBody Map<String, Object> variables) {
 		// 设置流程启动用户
-		identityService.setAuthenticatedUserId(String.valueOf(SecureUtil.getUserAccount()));
+		identityService.setAuthenticatedUserId(TaskUtil.getTaskUser());
 		// 开启流程
 		ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefinitionId, businessKey, variables);
 		// 组装流程通用类
@@ -65,7 +65,7 @@ public class FlowClient implements IFlowClient {
 	@PostMapping(START_PROCESS_INSTANCE_BY_KEY)
 	public R<BladeFlow> startProcessInstanceByKey(String processDefinitionKey, String businessKey, @RequestBody Map<String, Object> variables) {
 		// 设置流程启动用户
-		identityService.setAuthenticatedUserId(String.valueOf(SecureUtil.getUserAccount()));
+		identityService.setAuthenticatedUserId(TaskUtil.getTaskUser());
 		// 开启流程
 		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey, variables);
 		// 组装流程通用类

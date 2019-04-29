@@ -16,51 +16,54 @@
  */
 package org.springblade.flowable.core.utils;
 
+import org.springblade.core.secure.utils.SecureUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringUtil;
-import org.springblade.flowable.core.constant.ProcessConstant;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
- * 工作流工具类
+ * 工作流任务工具类
  *
  * @author Chill
  */
-public class FlowUtil {
+public class TaskUtil {
 
 	/**
-	 * 定义流程key对应的表名
+	 * 获取任务用户格式
+	 *
+	 * @return taskUser
 	 */
-	private final static Map<String, String> BUSINESS_TABLE = new HashMap<>();
-
-	static {
-		BUSINESS_TABLE.put(ProcessConstant.LEAVE_KEY, "blade_process_leave");
+	public static String getTaskUser() {
+		return StringUtil.format("taskUser_{}", SecureUtil.getUserId());
 	}
 
 	/**
-	 * 通过流程key获取业务表名
+	 * 获取任务用户格式
 	 *
-	 * @param key 流程key
+	 * @param userId 用户id
+	 * @return taskUser
 	 */
-	public static String getBusinessTable(String key) {
-		String businessTable = BUSINESS_TABLE.get(key);
-		if (Func.isEmpty(businessTable)) {
-			throw new RuntimeException("流程启动失败,未找到相关业务表");
-		}
-		return businessTable;
+	public static String getTaskUser(String userId) {
+		return StringUtil.format("taskUser_{}", userId);
+	}
+
+
+	/**
+	 * 获取用户主键
+	 *
+	 * @param taskUser 任务用户
+	 * @return userId
+	 */
+	public static Integer getUserId(String taskUser) {
+		return Func.toInt(StringUtil.removePrefix(taskUser, "taskUser_"));
 	}
 
 	/**
-	 * 获取业务标识
+	 * 获取用户组格式
 	 *
-	 * @param businessTable 业务表
-	 * @param businessId    业务表主键
-	 * @return businessKey
+	 * @return candidateGroup
 	 */
-	public static String getBusinessKey(String businessTable, String businessId) {
-		return StringUtil.format("{}:{}", businessTable, businessId);
+	public static String getCandidateGroup() {
+		return SecureUtil.getUserRole();
 	}
 
 }

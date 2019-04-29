@@ -35,12 +35,4 @@ public interface ILeaveService extends BaseService<ProcessLeave> {
 	 */
 	boolean startProcess(ProcessLeave leave);
 
-	/**
-	 * 完成任务
-	 *
-	 * @param leave 请假信息
-	 * @return boolean
-	 */
-	boolean completeTask(BladeFlow leave);
-
 }

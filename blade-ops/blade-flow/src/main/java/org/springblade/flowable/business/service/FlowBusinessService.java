@@ -61,4 +61,12 @@ public interface FlowBusinessService {
 	 * @return
 	 */
 	IPage<BladeFlow> selectDonePage(IPage<BladeFlow> page, BladeFlow bladeFlow);
+
+	/**
+	 * 完成任务
+	 *
+	 * @param leave 请假信息
+	 * @return boolean
+	 */
+	boolean completeTask(BladeFlow leave);
 }
