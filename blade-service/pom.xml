@@ -18,8 +18,6 @@
 
     <modules>
         <module>blade-desk</module>
-        <module>blade-flow</module>
-        <module>blade-log</module>
         <module>blade-system</module>
         <module>blade-user</module>
     </modules>
