@@ -53,17 +53,22 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 	@Override
 	public IPage<BladeFlow> selectClaimPage(IPage<BladeFlow> page, BladeFlow bladeFlow) {
 		String taskUser = String.valueOf(SecureUtil.getUserAccount());
+		String taskRole = String.valueOf(SecureUtil.getUserRole());
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		// 等待签收的任务
-		TaskQuery claimQuery = taskService.createTaskQuery().taskCandidateUser(taskUser)
+		TaskQuery claimUserQuery = taskService.createTaskQuery().taskCandidateUser(taskUser)
+			.includeProcessVariables().active().orderByTaskCreateTime().desc();
+		// 等待签收的任务
+		TaskQuery claimRoleQuery = taskService.createTaskQuery().taskCandidateGroup(taskRole)
 			.includeProcessVariables().active().orderByTaskCreateTime().desc();
 
 		// 构建列表数据
-		buildFlowTaskList(bladeFlow, flowList, claimQuery, FlowConstant.STATUS_CLAIM);
+		buildFlowTaskList(bladeFlow, flowList, claimUserQuery, FlowConstant.STATUS_CLAIM);
+		buildFlowTaskList(bladeFlow, flowList, claimRoleQuery, FlowConstant.STATUS_CLAIM);
 
 		// 计算总数
-		long count = claimQuery.count();
+		long count = claimUserQuery.count() + claimRoleQuery.count();
 		// 设置页数
 		page.setSize(count);
 		// 设置总数
