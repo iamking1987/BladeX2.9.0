@@ -20,8 +20,11 @@ import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.SpringUtil;
+import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.feign.IUserClient;
+
+import static org.springblade.core.launch.constant.FlowConstant.TASK_USR_PREFIX;
 
 /**
  * 系统缓存
@@ -37,6 +40,17 @@ public class UserCache {
 
 	static {
 		userClient = SpringUtil.getBean(IUserClient.class);
+	}
+
+	/**
+	 * 根据任务用户id获取用户信息
+	 *
+	 * @param taskUserId 任务用户id
+	 * @return
+	 */
+	public static User getUserByTaskUser(String taskUserId) {
+		int userId = Func.toInt(StringUtil.removePrefix(taskUserId, TASK_USR_PREFIX));
+		return getUser(userId);
 	}
 
 	/**

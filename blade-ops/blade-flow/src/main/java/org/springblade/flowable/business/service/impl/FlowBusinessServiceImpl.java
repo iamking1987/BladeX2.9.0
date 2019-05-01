@@ -57,14 +57,14 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 	@Override
 	public IPage<BladeFlow> selectClaimPage(IPage<BladeFlow> page, BladeFlow bladeFlow) {
 		String taskUser = TaskUtil.getTaskUser();
-		String taskRole = TaskUtil.getCandidateGroup();
+		String taskGroup = TaskUtil.getCandidateGroup();
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		// 等待签收的任务
 		TaskQuery claimUserQuery = taskService.createTaskQuery().taskCandidateUser(taskUser)
 			.includeProcessVariables().active().orderByTaskCreateTime().desc();
 		// 等待签收的任务
-		TaskQuery claimRoleQuery = taskService.createTaskQuery().taskCandidateGroup(taskRole)
+		TaskQuery claimRoleQuery = taskService.createTaskQuery().taskCandidateGroup(taskGroup)
 			.includeProcessVariables().active().orderByTaskCreateTime().desc();
 
 		// 构建列表数据
@@ -111,8 +111,19 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 		List<BladeFlow> flowList = new LinkedList<>();
 
 		HistoricProcessInstanceQuery historyQuery = historyService.createHistoricProcessInstanceQuery().startedBy(taskUser).orderByProcessInstanceStartTime().desc();
+
+		if (bladeFlow.getCategory() != null) {
+			historyQuery.processDefinitionCategory(bladeFlow.getCategory());
+		}
+		if (bladeFlow.getBeginDate() != null) {
+			historyQuery.startedAfter(bladeFlow.getBeginDate());
+		}
+		if (bladeFlow.getEndDate() != null) {
+			historyQuery.startedBefore(bladeFlow.getEndDate());
+		}
+
 		// 查询列表
-		List<HistoricProcessInstance> historyList = historyQuery.listPage(Func.toInt(page.getCurrent() - 1), Func.toInt(page.getSize()));
+		List<HistoricProcessInstance> historyList = historyQuery.listPage(Func.toInt(page.getCurrent() - 1), Func.toInt(page.getSize() * page.getCurrent()));
 
 		historyList.forEach(historicProcessInstance -> {
 			BladeFlow flow = new BladeFlow();
@@ -168,6 +179,9 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 		HistoricTaskInstanceQuery doneQuery = historyService.createHistoricTaskInstanceQuery().taskAssignee(taskUser).finished()
 			.includeProcessVariables().orderByHistoricTaskInstanceEndTime().desc();
 
+		if (bladeFlow.getCategory() != null) {
+			doneQuery.processCategoryIn(Func.toStrList(bladeFlow.getCategory()));
+		}
 		if (bladeFlow.getBeginDate() != null) {
 			doneQuery.taskCompletedAfter(bladeFlow.getBeginDate());
 		}
@@ -176,7 +190,7 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 		}
 
 		// 查询列表
-		List<HistoricTaskInstance> doneList = doneQuery.listPage(Func.toInt(page.getCurrent() - 1), Func.toInt(page.getSize()));
+		List<HistoricTaskInstance> doneList = doneQuery.listPage(Func.toInt(page.getCurrent() - 1), Func.toInt(page.getSize() * page.getCurrent()));
 		doneList.forEach(historicTaskInstance -> {
 			BladeFlow flow = new BladeFlow();
 			flow.setTaskId(historicTaskInstance.getId());
@@ -249,6 +263,9 @@ public class FlowBusinessServiceImpl implements FlowBusinessService {
 	 * @param status    状态
 	 */
 	private void buildFlowTaskList(BladeFlow bladeFlow, List<BladeFlow> flowList, TaskQuery taskQuery, String status) {
+		if (bladeFlow.getCategory() != null) {
+			taskQuery.processCategoryIn(Func.toStrList(bladeFlow.getCategory()));
+		}
 		if (bladeFlow.getBeginDate() != null) {
 			taskQuery.taskCreatedAfter(bladeFlow.getBeginDate());
 		}

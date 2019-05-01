@@ -33,10 +33,10 @@ INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`,
 VALUES (@managerid, 'flow_manager_remove', '删除', 'remove', '', 'delete', 3, 2, 3, 1, NULL, 0);
 
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
-VALUES (@flowid, 'flow_status', '流程状态', 'menu', '/flow/status', NULL, 4, 1, 0, 1, NULL, 0);
+VALUES (@flowid, 'flow_follow', '流程跟踪', 'menu', '/flow/follow', NULL, 4, 1, 0, 1, NULL, 0);
 set @statueid = (SELECT LAST_INSERT_ID());
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
-VALUES (@statueid, 'flow_status_delete', '删除', 'delete', '', 'delete', 1, 2, 3, 1, NULL, 0);
+VALUES (@statueid, 'flow_follow_delete', '删除', 'remove', '', 'remove', 1, 2, 2, 1, NULL, 0);
 
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
 VALUES (0, 'work', '我的事务', 'work', '/work', 'bell', 2, 1, 0, 1, NULL, 0);
@@ -85,7 +85,7 @@ set @doneid = (SELECT LAST_INSERT_ID());
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
 VALUES (@doneid, 'work_done_detail', '详情', 'detail', '', 'detail', 1, 2, 2, 1, NULL, 0);
 INSERT INTO `blade_menu`(`parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`)
-VALUES (@sendid, 'work_done_follow', '跟踪', 'follow', '', 'follow', 2, 2, 2, 1, NULL, 0);
+VALUES (@doneid, 'work_done_follow', '跟踪', 'follow', '', 'follow', 2, 2, 2, 1, NULL, 0);
 
 -- ----------------------------
 -- 更新系统管理排序

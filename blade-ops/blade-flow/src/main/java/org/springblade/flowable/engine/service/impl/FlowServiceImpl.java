@@ -33,11 +33,13 @@ import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.history.HistoricProcessInstance;
+import org.flowable.engine.impl.persistence.entity.ExecutionEntityImpl;
 import org.flowable.engine.impl.persistence.entity.ProcessDefinitionEntityImpl;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.repository.ProcessDefinitionQuery;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.engine.runtime.ProcessInstanceQuery;
 import org.flowable.engine.task.Comment;
 import org.springblade.core.log.exception.ServiceException;
 import org.springblade.core.tool.utils.DateUtil;
@@ -47,10 +49,12 @@ import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.flowable.core.entity.BladeFlow;
 import org.springblade.flowable.core.utils.TaskUtil;
 import org.springblade.flowable.engine.constant.FlowConstant;
+import org.springblade.flowable.engine.entity.FlowExecution;
 import org.springblade.flowable.engine.entity.FlowModel;
 import org.springblade.flowable.engine.entity.FlowProcess;
 import org.springblade.flowable.engine.mapper.FlowMapper;
 import org.springblade.flowable.engine.service.FlowService;
+import org.springblade.flowable.engine.utils.FlowCache;
 import org.springblade.system.user.cache.UserCache;
 import org.springblade.system.user.entity.User;
 import org.springframework.stereotype.Service;
@@ -90,17 +94,51 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 		if (StringUtils.isNotEmpty(category)) {
 			processDefinitionQuery.processDefinitionCategory(category);
 		}
-		List<ProcessDefinition> processDefinitionList = processDefinitionQuery.listPage(Func.toInt(page.getCurrent() - 1), Func.toInt(page.getSize()));
+		List<ProcessDefinition> processDefinitionList = processDefinitionQuery.listPage(Func.toInt(page.getCurrent() - 1), Func.toInt(page.getSize() * page.getCurrent()));
 		List<FlowProcess> flowProcessList = new ArrayList<>();
-		for (ProcessDefinition processDefinition : processDefinitionList) {
+		processDefinitionList.forEach(processDefinition -> {
 			String deploymentId = processDefinition.getDeploymentId();
 			Deployment deployment = repositoryService.createDeploymentQuery().deploymentId(deploymentId).singleResult();
 			FlowProcess flowProcess = new FlowProcess((ProcessDefinitionEntityImpl) processDefinition);
 			flowProcess.setDeploymentTime(deployment.getDeploymentTime());
 			flowProcessList.add(flowProcess);
-		}
+		});
 		page.setTotal(processDefinitionQuery.count());
 		page.setRecords(flowProcessList);
+		return page;
+	}
+
+	@Override
+	public IPage<FlowExecution> selectFollowPage(IPage<FlowExecution> page, String processInstanceId, String processDefinitionKey) {
+		ProcessInstanceQuery processInstanceQuery = runtimeService.createProcessInstanceQuery();
+		if (StringUtil.isNotBlank(processInstanceId)) {
+			processInstanceQuery.processInstanceId(processInstanceId);
+		}
+		if (StringUtil.isNotBlank(processDefinitionKey)) {
+			processInstanceQuery.processDefinitionKey(processDefinitionKey);
+		}
+		List<FlowExecution> flowList = new ArrayList<>();
+		List<ProcessInstance> procInsList = processInstanceQuery.listPage(Func.toInt(page.getCurrent() - 1), Func.toInt(page.getSize() * page.getCurrent()));
+		procInsList.forEach(processInstance -> {
+			ExecutionEntityImpl execution = (ExecutionEntityImpl) processInstance;
+			FlowExecution flowExecution = new FlowExecution();
+			flowExecution.setId(execution.getId());
+			flowExecution.setName(execution.getName());
+			flowExecution.setStartUserId(execution.getStartUserId());
+			flowExecution.setStartUser(UserCache.getUserByTaskUser(execution.getStartUserId()).getName());
+			flowExecution.setStartTime(execution.getStartTime());
+			flowExecution.setExecutionId(execution.getId());
+			flowExecution.setProcessInstanceId(execution.getProcessInstanceId());
+			flowExecution.setProcessDefinitionId(execution.getProcessDefinitionId());
+			flowExecution.setProcessDefinitionKey(execution.getProcessDefinitionKey());
+			flowExecution.setSuspensionState(execution.getSuspensionState());
+			ProcessDefinition processDefinition = FlowCache.getProcessDefinition(execution.getProcessDefinitionId());
+			flowExecution.setCategory(processDefinition.getCategory());
+			flowExecution.setCategoryName(FlowCache.getCategoryName(processDefinition.getCategory()));
+			flowList.add(flowExecution);
+		});
+		page.setTotal(processInstanceQuery.count());
+		page.setRecords(flowList);
 		return page;
 	}
 
@@ -132,7 +170,7 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 				flow.setHistoryActivityName(historicActivityInstance.getActivityName());
 				flow.setCreateTime(historicActivityInstance.getStartTime());
 				flow.setEndTime(historicActivityInstance.getEndTime());
-				String durationTime = DateUtil.secondToTime(Func.toLong(historicActivityInstance.getDurationInMillis(),0L) / 1000);
+				String durationTime = DateUtil.secondToTime(Func.toLong(historicActivityInstance.getDurationInMillis(), 0L) / 1000);
 				flow.setHistoryActivityDurationTime(durationTime);
 				// 获取流程发起人名称
 				if (FlowConstant.START_EVENT.equals(historicActivityInstance.getActivityType())) {
@@ -250,6 +288,12 @@ public class FlowServiceImpl extends ServiceImpl<FlowMapper, FlowModel> implemen
 		}
 		Deployment deployment = repositoryService.createDeployment().addBytes(processName, bytes).name(model.getName()).key(model.getModelKey()).deploy();
 		return deploy(deployment, category);
+	}
+
+	@Override
+	public boolean deleteProcessInstance(String processInstanceId, String deleteReason) {
+		runtimeService.deleteProcessInstance(processInstanceId, deleteReason);
+		return true;
 	}
 
 	private boolean deploy(Deployment deployment, String category) {

@@ -19,6 +19,7 @@ package org.springblade.flowable.engine.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springblade.flowable.core.entity.BladeFlow;
+import org.springblade.flowable.engine.entity.FlowExecution;
 import org.springblade.flowable.engine.entity.FlowModel;
 import org.springblade.flowable.engine.entity.FlowProcess;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,6 +51,16 @@ public interface FlowService extends IService<FlowModel> {
 	 * @return
 	 */
 	IPage<FlowProcess> selectProcessPage(IPage<FlowProcess> page, String category);
+
+	/**
+	 * 流程管理列表
+	 *
+	 * @param page                 分页工具
+	 * @param processInstanceId    流程实例id
+	 * @param processDefinitionKey 流程key
+	 * @return
+	 */
+	IPage<FlowExecution> selectFollowPage(IPage<FlowExecution> page, String processInstanceId, String processDefinitionKey);
 
 	/**
 	 * 获取流转历史列表
@@ -105,4 +116,13 @@ public interface FlowService extends IService<FlowModel> {
 	 * @return
 	 */
 	boolean deployModel(String modelId, String category);
+
+	/**
+	 * 删除流程实例
+	 *
+	 * @param processInstanceId 流程实例id
+	 * @param deleteReason      删除原因
+	 * @return
+	 */
+	boolean deleteProcessInstance(String processInstanceId, String deleteReason);
 }
