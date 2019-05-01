@@ -63,10 +63,12 @@ public class FlowCache {
 	 * @return
 	 */
 	public static String getCategoryName(String category) {
-		if (Func.isEmpty(category)) {
+		String[] categoryArr = category.split(StringPool.UNDERSCORE);
+		if (categoryArr.length <= 1) {
 			return StringPool.EMPTY;
+		} else {
+			return DictCache.getValue(category.split(StringPool.UNDERSCORE)[0], Func.toInt(category.split(StringPool.UNDERSCORE)[1]));
 		}
-		return DictCache.getValue(category.split(StringPool.UNDERSCORE)[0], Func.toInt(category.split(StringPool.UNDERSCORE)[1]));
 	}
 
 }
