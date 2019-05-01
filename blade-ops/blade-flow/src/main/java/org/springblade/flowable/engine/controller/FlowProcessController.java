@@ -23,9 +23,11 @@ import org.flowable.common.engine.impl.util.IoUtil;
 import org.flowable.engine.*;
 import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.history.HistoricProcessInstance;
+import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.image.ProcessDiagramGenerator;
 import org.springblade.core.tool.api.R;
+import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.flowable.core.entity.BladeFlow;
 import org.springblade.flowable.engine.service.FlowService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +53,10 @@ import java.util.List;
 @RequestMapping("process")
 public class FlowProcessController {
 
+	private static final String IMAGE_NAME = "image";
+	private static final String XML_NAME = "xml";
+	private static final Integer INT_1024 = 1024;
+
 	private RepositoryService repositoryService;
 	private RuntimeService runtimeService;
 	private HistoryService historyService;
@@ -69,6 +75,37 @@ public class FlowProcessController {
 		return R.data(flowService.historyFlowList(processInstanceId, startActivityId, endActivityId));
 	}
 
+	/**
+	 * 流程图展示
+	 *
+	 * @param processDefinitionId 流程id
+	 * @param processInstanceId   实例id
+	 * @param resourceType        资源类型
+	 * @param response            响应
+	 */
+	@GetMapping("resource-view")
+	public void resourceView(@RequestParam String processDefinitionId, String processInstanceId, @RequestParam(defaultValue = IMAGE_NAME) String resourceType, HttpServletResponse response) throws Exception {
+		if (StringUtil.isAllBlank(processDefinitionId, processInstanceId)) {
+			return;
+		}
+		if (StringUtil.isBlank(processDefinitionId)) {
+			ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+			processDefinitionId = processInstance.getProcessDefinitionId();
+		}
+		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult();
+		String resourceName = "";
+		if (resourceType.equals(IMAGE_NAME)) {
+			resourceName = processDefinition.getDiagramResourceName();
+		} else if (resourceType.equals(XML_NAME)) {
+			resourceName = processDefinition.getResourceName();
+		}
+		InputStream resourceAsStream = repositoryService.getResourceAsStream(processDefinition.getDeploymentId(), resourceName);
+		byte[] b = new byte[1024];
+		int len;
+		while ((len = resourceAsStream.read(b, 0, INT_1024)) != -1) {
+			response.getOutputStream().write(b, 0, len);
+		}
+	}
 
 	/**
 	 * 获取流程节点进程图
