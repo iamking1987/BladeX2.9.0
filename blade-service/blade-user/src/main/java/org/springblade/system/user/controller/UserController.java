@@ -101,7 +101,7 @@ public class UserController {
 	 * 修改
 	 */
 	@PostMapping("/update")
-	@ApiOperation(value = "修改", notes = "传入User", position = 3)
+	@ApiOperation(value = "修改", notes = "传入User", position = 4)
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
 	public R update(@Valid @RequestBody User user) {
 		return R.status(userService.updateById(user));
@@ -111,7 +111,7 @@ public class UserController {
 	 * 删除
 	 */
 	@PostMapping("/remove")
-	@ApiOperation(value = "删除", notes = "传入地基和", position = 4)
+	@ApiOperation(value = "删除", notes = "传入地基和", position = 5)
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
 	public R remove(@RequestParam String ids) {
 		return R.status(userService.deleteLogic(Func.toIntList(ids)));
@@ -125,7 +125,7 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping("/grant")
-	@ApiOperation(value = "权限设置", notes = "传入roleId集合以及menuId集合", position = 5)
+	@ApiOperation(value = "权限设置", notes = "传入roleId集合以及menuId集合", position = 6)
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
 	public R grant(@ApiParam(value = "userId集合", required = true) @RequestParam String userIds,
 				   @ApiParam(value = "roleId集合", required = true) @RequestParam String roleIds) {
@@ -134,7 +134,7 @@ public class UserController {
 	}
 
 	@PostMapping("/reset-password")
-	@ApiOperation(value = "初始化密码", notes = "传入userId集合", position = 6)
+	@ApiOperation(value = "初始化密码", notes = "传入userId集合", position = 7)
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
 	public R resetPassword(@ApiParam(value = "userId集合", required = true) @RequestParam String userIds) {
 		boolean temp = userService.resetPassword(userIds);
@@ -148,7 +148,7 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("/user-list")
-	@ApiOperation(value = "用户列表", notes = "传入user", position = 7)
+	@ApiOperation(value = "用户列表", notes = "传入user", position = 8)
 	public R<List<User>> userList(User user) {
 		List<User> list = userService.list(Condition.getQueryWrapper(user));
 		return R.data(list);
