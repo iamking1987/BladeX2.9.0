@@ -41,13 +41,13 @@ public class DictClient implements IDictClient {
 	IDictService service;
 
 	@Override
-	@GetMapping(API_PREFIX + "/getValue")
+	@GetMapping(GET_VALUE)
 	public R<String> getValue(String code, Integer dictKey) {
 		return R.data(service.getValue(code, dictKey));
 	}
 
 	@Override
-	@GetMapping(API_PREFIX + "/getList")
+	@GetMapping(GET_LIST)
 	public R<List<Dict>> getList(String code) {
 		return R.data(service.getList(code));
 	}

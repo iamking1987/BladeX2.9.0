@@ -43,33 +43,33 @@ public class SysClient implements ISysClient {
 	IAuthClientService clientService;
 
 	@Override
-	@GetMapping(API_PREFIX + "/getDeptName")
-	public String getDeptName(Integer id) {
-		return deptService.getById(id).getDeptName();
-	}
-
-	@Override
-	@GetMapping(API_PREFIX + "/getDept")
+	@GetMapping(DEPT)
 	public Dept getDept(Integer id) {
 		return deptService.getById(id);
 	}
 
 	@Override
-	@GetMapping(API_PREFIX + "/getRoleName")
+	@GetMapping(DEPT_NAME)
+	public String getDeptName(Integer id) {
+		return deptService.getById(id).getDeptName();
+	}
+
+	@Override
+	@GetMapping(ROLE)
+	public Role getRole(Integer id) {
+		return roleService.getById(id);
+	}
+
+	@Override
+	@GetMapping(ROLE_NAME)
 	public String getRoleName(Integer id) {
 		return roleService.getById(id).getRoleName();
 	}
 
 	@Override
-	@GetMapping(API_PREFIX + "/getRoleAlias")
+	@GetMapping(ROLE_ALIAS)
 	public String getRoleAlias(Integer id) {
 		return roleService.getById(id).getRoleAlias();
-	}
-
-	@Override
-	@GetMapping(API_PREFIX + "/getRole")
-	public Role getRole(Integer id) {
-		return roleService.getById(id);
 	}
 
 }

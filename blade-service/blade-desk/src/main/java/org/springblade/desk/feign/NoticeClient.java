@@ -39,7 +39,7 @@ public class NoticeClient implements INoticeClient {
 	NoticeMapper mapper;
 
 	@Override
-	@GetMapping(API_PREFIX + "/top")
+	@GetMapping(TOP)
 	public R<List<Notice>> top(Integer number) {
 		return R.data(mapper.topList(number));
 	}

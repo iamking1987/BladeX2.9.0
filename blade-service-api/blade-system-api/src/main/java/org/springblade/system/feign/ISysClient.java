@@ -34,16 +34,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 )
 public interface ISysClient {
 
-	String API_PREFIX = "/sys";
-
-	/**
-	 * 获取部门名
-	 *
-	 * @param id 主键
-	 * @return 部门名
-	 */
-	@GetMapping(API_PREFIX + "/getDeptName")
-	String getDeptName(@RequestParam("id") Integer id);
+	String API_PREFIX = "/client";
+	String DEPT = API_PREFIX + "/dept";
+	String DEPT_NAME = API_PREFIX + "/dept-name";
+	String ROLE = API_PREFIX + "/role";
+	String ROLE_NAME = API_PREFIX + "/role-name";
+	String ROLE_ALIAS = API_PREFIX + "/role-alias";
 
 	/**
 	 * 获取部门
@@ -51,8 +47,26 @@ public interface ISysClient {
 	 * @param id 主键
 	 * @return Dept
 	 */
-	@GetMapping(API_PREFIX + "/getDept")
+	@GetMapping(DEPT)
 	Dept getDept(@RequestParam("id") Integer id);
+
+	/**
+	 * 获取部门名
+	 *
+	 * @param id 主键
+	 * @return 部门名
+	 */
+	@GetMapping(DEPT_NAME)
+	String getDeptName(@RequestParam("id") Integer id);
+
+	/**
+	 * 获取角色
+	 *
+	 * @param id 主键
+	 * @return Role
+	 */
+	@GetMapping(ROLE)
+	Role getRole(@RequestParam("id") Integer id);
 
 	/**
 	 * 获取角色名
@@ -60,7 +74,7 @@ public interface ISysClient {
 	 * @param id 主键
 	 * @return 角色名
 	 */
-	@GetMapping(API_PREFIX + "/getRoleName")
+	@GetMapping(ROLE_NAME)
 	String getRoleName(@RequestParam("id") Integer id);
 
 	/**
@@ -69,16 +83,7 @@ public interface ISysClient {
 	 * @param id 主键
 	 * @return 角色别名
 	 */
-	@GetMapping(API_PREFIX + "/getRoleAlias")
+	@GetMapping(ROLE_ALIAS)
 	String getRoleAlias(@RequestParam("id") Integer id);
-
-	/**
-	 * 获取角色
-	 *
-	 * @param id 主键
-	 * @return Role
-	 */
-	@GetMapping(API_PREFIX + "/getRole")
-	Role getRole(@RequestParam("id") Integer id);
 
 }

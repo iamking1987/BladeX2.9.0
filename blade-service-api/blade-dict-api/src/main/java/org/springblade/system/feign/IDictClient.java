@@ -37,7 +37,9 @@ import java.util.List;
 )
 public interface IDictClient {
 
-	String API_PREFIX = "/dict";
+	String API_PREFIX = "/client";
+	String GET_VALUE = API_PREFIX + "/get-value";
+	String GET_LIST = API_PREFIX + "/get-list";
 
 	/**
 	 * 获取字典表对应值
@@ -46,7 +48,7 @@ public interface IDictClient {
 	 * @param dictKey 字典序号
 	 * @return
 	 */
-	@GetMapping(API_PREFIX + "/getValue")
+	@GetMapping(GET_VALUE)
 	R<String> getValue(@RequestParam("code") String code, @RequestParam("dictKey") Integer dictKey);
 
 	/**
@@ -55,7 +57,7 @@ public interface IDictClient {
 	 * @param code 字典编号
 	 * @return
 	 */
-	@GetMapping(API_PREFIX + "/getList")
+	@GetMapping(GET_LIST)
 	R<List<Dict>> getList(@RequestParam("code") String code);
 
 }

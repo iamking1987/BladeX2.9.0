@@ -35,7 +35,8 @@ import java.util.List;
 )
 public interface INoticeClient {
 
-	String API_PREFIX = "/dashboard";
+	String API_PREFIX = "/client";
+	String TOP = API_PREFIX + "/top";
 
 	/**
 	 * 获取notice列表
@@ -43,7 +44,7 @@ public interface INoticeClient {
 	 * @param number
 	 * @return
 	 */
-	@GetMapping(API_PREFIX + "/top")
+	@GetMapping(TOP)
 	R<List<Notice>> top(@RequestParam("number") Integer number);
 
 }
