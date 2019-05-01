@@ -14,54 +14,30 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.desk.entity;
+package org.springblade.flow.core.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springblade.flow.core.entity.FlowEntity;
-
-import java.time.LocalDateTime;
+import org.springblade.core.mp.base.BaseEntity;
 
 /**
- * 请假流程实体类
+ * FlowEntity
  *
  * @author Chill
  */
 @Data
-@TableName("blade_process_leave")
 @EqualsAndHashCode(callSuper = true)
-public class ProcessLeave extends FlowEntity {
+public class FlowEntity extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+	@TableField(exist = false)
+	private BladeFlow flow;
 
-	/**
-	 * 流程定义id
-	 */
-	private String processDefinitionId;
-	/**
-	 * 流程实例id
-	 */
-	private String processInstanceId;
-	/**
-	 * 请假开始时间
-	 */
-	private LocalDateTime startTime;
-	/**
-	 * 请假结束时间
-	 */
-	private LocalDateTime endTime;
-	/**
-	 * 请假理由
-	 */
-	private String reason;
-	/**
-	 * 审批人
-	 */
-	private String taskUser;
-	/**
-	 * 流程申请时间
-	 */
-	private LocalDateTime applyTime;
+	public BladeFlow getFlow() {
+		if (flow == null) {
+			flow = new BladeFlow();
+		}
+		return flow;
+	}
 
 }

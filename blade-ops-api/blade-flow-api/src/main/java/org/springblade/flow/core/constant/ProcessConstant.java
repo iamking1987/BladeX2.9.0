@@ -14,54 +14,48 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.desk.entity;
-
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.springblade.flow.core.entity.FlowEntity;
-
-import java.time.LocalDateTime;
+package org.springblade.flow.core.constant;
 
 /**
- * 请假流程实体类
+ * 流程常量.
  *
  * @author Chill
  */
-@Data
-@TableName("blade_process_leave")
-@EqualsAndHashCode(callSuper = true)
-public class ProcessLeave extends FlowEntity {
-
-	private static final long serialVersionUID = 1L;
+public interface ProcessConstant {
 
 	/**
-	 * 流程定义id
+	 * 请假流程标识
 	 */
-	private String processDefinitionId;
+	String LEAVE_KEY = "Leave";
+
 	/**
-	 * 流程实例id
+	 * 报销流程标识
 	 */
-	private String processInstanceId;
+	String Expense_KEY = "Expense";
+
 	/**
-	 * 请假开始时间
+	 * 同意标识
 	 */
-	private LocalDateTime startTime;
+	String PASS_KEY = "pass";
+
 	/**
-	 * 请假结束时间
+	 * 同意代号
 	 */
-	private LocalDateTime endTime;
+	String PASS_ALIAS = "ok";
+
 	/**
-	 * 请假理由
+	 * 同意默认批复
 	 */
-	private String reason;
+	String PASS_COMMENT = "同意";
+
 	/**
-	 * 审批人
+	 * 驳回默认批复
 	 */
-	private String taskUser;
+	String NOT_PASS_COMMENT = "驳回";
+
 	/**
-	 * 流程申请时间
+	 * 创建人变量名
 	 */
-	private LocalDateTime applyTime;
+	String TASK_VARIABLE_CREATE_USER = "createUser";
 
 }

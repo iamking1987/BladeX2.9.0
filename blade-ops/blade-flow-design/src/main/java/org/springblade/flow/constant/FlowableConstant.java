@@ -14,24 +14,19 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.desk.service;
-
-import org.springblade.core.mp.base.BaseService;
-import org.springblade.desk.entity.ProcessLeave;
+package org.springblade.flow.constant;
 
 /**
- * 服务类
+ * Flowable常量
  *
  * @author Chill
  */
-public interface ILeaveService extends BaseService<ProcessLeave> {
+public interface FlowableConstant {
+	String FLOWABLE_BASE_PACKAGES = "org.flowable.ui";
 
-	/**
-	 * 开启流程
-	 *
-	 * @param leave 请假实体
-	 * @return boolean
-	 */
-	boolean startProcess(ProcessLeave leave);
-
+	String css = ".css";
+	String js = ".js";
+	String jpg = ".jpg";
+	String png = ".png";
+	String app = "/app";
 }

@@ -14,24 +14,39 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.desk.service;
-
-import org.springblade.core.mp.base.BaseService;
-import org.springblade.desk.entity.ProcessLeave;
+package org.springblade.flow.engine.constant;
 
 /**
- * 服务类
+ * 流程常量.
  *
- * @author Chill
+ * @author zhuangqian
  */
-public interface ILeaveService extends BaseService<ProcessLeave> {
+public interface FlowConstant {
 
-	/**
-	 * 开启流程
-	 *
-	 * @param leave 请假实体
-	 * @return boolean
-	 */
-	boolean startProcess(ProcessLeave leave);
+	String FLOWABLE_BASE_PACKAGES = "org.flowable.ui";
+
+	String SUFFIX = ".bpmn20.xml";
+
+	String ACTIVE = "active";
+
+	String SUSPEND = "suspend";
+
+	String STATUS_TODO = "todo";
+
+	String STATUS_CLAIM = "claim";
+
+	String STATUS_SEND = "send";
+
+	String STATUS_DONE = "done";
+
+	String STATUS_FINISHED = "finished";
+
+	String STATUS_UNFINISHED = "unfinished";
+
+	String STATUS_FINISH = "finish";
+
+	String START_EVENT = "startEvent";
+
+	String END_EVENT = "endEvent";
 
 }

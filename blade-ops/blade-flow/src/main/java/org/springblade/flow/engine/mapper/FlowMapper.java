@@ -14,54 +14,33 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.desk.entity;
+package org.springblade.flow.engine.mapper;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.springblade.flow.core.entity.FlowEntity;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.springblade.flow.engine.entity.FlowModel;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
- * 请假流程实体类
+ * FlowMapper.
  *
  * @author Chill
  */
-@Data
-@TableName("blade_process_leave")
-@EqualsAndHashCode(callSuper = true)
-public class ProcessLeave extends FlowEntity {
-
-	private static final long serialVersionUID = 1L;
+public interface FlowMapper extends BaseMapper<FlowModel> {
 
 	/**
-	 * 流程定义id
+	 * 自定义分页
+	 * @param page
+	 * @param flowModel
+	 * @return
 	 */
-	private String processDefinitionId;
-	/**
-	 * 流程实例id
-	 */
-	private String processInstanceId;
-	/**
-	 * 请假开始时间
-	 */
-	private LocalDateTime startTime;
-	/**
-	 * 请假结束时间
-	 */
-	private LocalDateTime endTime;
-	/**
-	 * 请假理由
-	 */
-	private String reason;
-	/**
-	 * 审批人
-	 */
-	private String taskUser;
-	/**
-	 * 流程申请时间
-	 */
-	private LocalDateTime applyTime;
+	List<FlowModel> selectFlowPage(IPage page, FlowModel flowModel);
 
+	/**
+	 * 获取模型
+	 * @param parentModelId
+	 * @return
+	 */
+	List<FlowModel> findByParentModelId(String parentModelId);
 }
