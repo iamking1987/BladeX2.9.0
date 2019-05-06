@@ -79,8 +79,8 @@
                         <configuration>
                             <tasks>
                                 <copy overwrite="true"
-                                      tofile="${session.executionRootDirectory}/target/${artifactId}.jar"
-                                      file="${project.build.directory}/${artifactId}.jar" />
+                                      tofile="${session.executionRootDirectory}/target/${project.artifactId}.jar"
+                                      file="${project.build.directory}/${project.artifactId}.jar" />
                             </tasks>
                         </configuration>
                     </execution>
