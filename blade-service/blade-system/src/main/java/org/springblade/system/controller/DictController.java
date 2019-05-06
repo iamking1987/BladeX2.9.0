@@ -108,7 +108,7 @@ public class DictController extends BladeController {
 	@CacheEvict(cacheNames = {DICT_LIST, DICT_VALUE}, allEntries = true)
 	@ApiOperation(value = "删除", notes = "传入ids", position = 7)
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
-		return R.status(dictService.removeByIds(Func.toIntList(ids)));
+		return R.status(dictService.removeByIds(Func.toLongList(ids)));
 	}
 
 	/**

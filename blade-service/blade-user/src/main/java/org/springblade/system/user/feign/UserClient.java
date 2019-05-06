@@ -37,7 +37,7 @@ public class UserClient implements IUserClient {
 
 	@Override
 	@GetMapping(USER_INFO_BY_ID)
-	public R<User> userInfoById(Integer userId) {
+	public R<User> userInfoById(Long userId) {
 		return R.data(service.getById(userId));
 	}
 

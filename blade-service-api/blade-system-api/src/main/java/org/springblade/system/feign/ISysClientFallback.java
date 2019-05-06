@@ -29,27 +29,27 @@ import org.springframework.stereotype.Component;
 public class ISysClientFallback implements ISysClient {
 
 	@Override
-	public Dept getDept(Integer id) {
+	public Dept getDept(Long id) {
 		return null;
 	}
 
 	@Override
-	public String getDeptName(Integer id) {
+	public String getDeptName(Long id) {
 		return null;
 	}
 
 	@Override
-	public Role getRole(Integer id) {
+	public Role getRole(Long id) {
 		return null;
 	}
 
 	@Override
-	public String getRoleName(Integer id) {
+	public String getRoleName(Long id) {
 		return null;
 	}
 
 	@Override
-	public String getRoleAlias(Integer id) {
+	public String getRoleAlias(Long id) {
 		return null;
 	}
 }

@@ -48,7 +48,7 @@ public interface ISysClient {
 	 * @return Dept
 	 */
 	@GetMapping(DEPT)
-	Dept getDept(@RequestParam("id") Integer id);
+	Dept getDept(@RequestParam("id") Long id);
 
 	/**
 	 * 获取部门名
@@ -57,7 +57,7 @@ public interface ISysClient {
 	 * @return 部门名
 	 */
 	@GetMapping(DEPT_NAME)
-	String getDeptName(@RequestParam("id") Integer id);
+	String getDeptName(@RequestParam("id") Long id);
 
 	/**
 	 * 获取角色
@@ -66,7 +66,7 @@ public interface ISysClient {
 	 * @return Role
 	 */
 	@GetMapping(ROLE)
-	Role getRole(@RequestParam("id") Integer id);
+	Role getRole(@RequestParam("id") Long id);
 
 	/**
 	 * 获取角色名
@@ -75,7 +75,7 @@ public interface ISysClient {
 	 * @return 角色名
 	 */
 	@GetMapping(ROLE_NAME)
-	String getRoleName(@RequestParam("id") Integer id);
+	String getRoleName(@RequestParam("id") Long id);
 
 	/**
 	 * 获取角色别名
@@ -84,6 +84,6 @@ public interface ISysClient {
 	 * @return 角色别名
 	 */
 	@GetMapping(ROLE_ALIAS)
-	String getRoleAlias(@RequestParam("id") Integer id);
+	String getRoleAlias(@RequestParam("id") Long id);
 
 }

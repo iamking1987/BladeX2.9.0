@@ -98,24 +98,24 @@ UPDATE `blade_menu` set `sort` = 99 WHERE `code` = 'system';
 INSERT INTO `blade_dict`(`parent_id`, `code`, `dict_key`, `dict_value`, `sort`, `remark`, `is_deleted`)
 VALUES (0, 'flow', -1, '流程类型', 5, NULL, 0);
 set @dictid = (SELECT LAST_INSERT_ID());
-INSERT INTO `bladex`.`blade_dict`(`parent_id`, `code`, `dict_key`, `dict_value`, `sort`, `remark`, `is_deleted`)
+INSERT INTO `blade_dict`(`parent_id`, `code`, `dict_key`, `dict_value`, `sort`, `remark`, `is_deleted`)
 VALUES (@dictid, 'flow', 1, '请假流程', 1, NULL, 0);
-INSERT INTO `bladex`.`blade_dict`(`parent_id`, `code`, `dict_key`, `dict_value`, `sort`, `remark`, `is_deleted`)
+INSERT INTO `blade_dict`(`parent_id`, `code`, `dict_key`, `dict_value`, `sort`, `remark`, `is_deleted`)
 VALUES (@dictid, 'flow', 2, '报销流程', 2, NULL, 0);
 
 -- ----------------------------
 -- 用户数据增加
 -- ----------------------------
-INSERT INTO `bladex`.`blade_user`(`tenant_code`, `account`, `password`, `name`, `real_name`, `email`, `phone`, `birthday`, `sex`, `role_id`, `dept_id`, `create_user`, `create_time`, `update_user`, `update_time`, `status`, `is_deleted`) VALUES ('000000', 'hr', '5e79b90f7bba52d54115f086e48f539016a27ec6', '人事', '人事', NULL, NULL, NULL, NULL, '3', '1', 1, '2019-04-27 17:03:10', 1, '2019-04-27 17:03:10', 1, 0);
-INSERT INTO `bladex`.`blade_user`(`tenant_code`, `account`, `password`, `name`, `real_name`, `email`, `phone`, `birthday`, `sex`, `role_id`, `dept_id`, `create_user`, `create_time`, `update_user`, `update_time`, `status`, `is_deleted`) VALUES ('000000', 'manager', 'dfbaa3b61caa3a319f463cc165085aa8c822d2ce', '经理', '经理', NULL, NULL, NULL, NULL, '4', '1', 1, '2019-04-27 17:03:38', 1, '2019-04-27 17:03:38', 1, 0);
-INSERT INTO `bladex`.`blade_user`(`tenant_code`, `account`, `password`, `name`, `real_name`, `email`, `phone`, `birthday`, `sex`, `role_id`, `dept_id`, `create_user`, `create_time`, `update_user`, `update_time`, `status`, `is_deleted`) VALUES ('000000', 'boss', 'abe57d23e18f7ad8ea99c86e430c90a05119a9d3', '老板', '老板', NULL, NULL, NULL, NULL, '5', '1', 1, '2019-04-27 17:03:55', 1, '2019-04-27 17:03:55', 1, 0);
+INSERT INTO `blade_user`(`tenant_code`, `account`, `password`, `name`, `real_name`, `email`, `phone`, `birthday`, `sex`, `role_id`, `dept_id`, `create_user`, `create_time`, `update_user`, `update_time`, `status`, `is_deleted`) VALUES ('000000', 'hr', '5e79b90f7bba52d54115f086e48f539016a27ec6', '人事', '人事', NULL, NULL, NULL, NULL, '3', '1', 1, '2019-04-27 17:03:10', 1, '2019-04-27 17:03:10', 1, 0);
+INSERT INTO `blade_user`(`tenant_code`, `account`, `password`, `name`, `real_name`, `email`, `phone`, `birthday`, `sex`, `role_id`, `dept_id`, `create_user`, `create_time`, `update_user`, `update_time`, `status`, `is_deleted`) VALUES ('000000', 'manager', 'dfbaa3b61caa3a319f463cc165085aa8c822d2ce', '经理', '经理', NULL, NULL, NULL, NULL, '4', '1', 1, '2019-04-27 17:03:38', 1, '2019-04-27 17:03:38', 1, 0);
+INSERT INTO `blade_user`(`tenant_code`, `account`, `password`, `name`, `real_name`, `email`, `phone`, `birthday`, `sex`, `role_id`, `dept_id`, `create_user`, `create_time`, `update_user`, `update_time`, `status`, `is_deleted`) VALUES ('000000', 'boss', 'abe57d23e18f7ad8ea99c86e430c90a05119a9d3', '老板', '老板', NULL, NULL, NULL, NULL, '5', '1', 1, '2019-04-27 17:03:55', 1, '2019-04-27 17:03:55', 1, 0);
 
 -- ----------------------------
 -- 角色数据增加
 -- ----------------------------
-INSERT INTO `bladex`.`blade_role`(`tenant_code`, `parent_id`, `role_name`, `sort`, `role_alias`, `is_deleted`) VALUES ('000000', 2, '人事', 1, 'hr', 0);
-INSERT INTO `bladex`.`blade_role`(`tenant_code`, `parent_id`, `role_name`, `sort`, `role_alias`, `is_deleted`) VALUES ('000000', 2, '经理', 2, 'manager', 0);
-INSERT INTO `bladex`.`blade_role`(`tenant_code`, `parent_id`, `role_name`, `sort`, `role_alias`, `is_deleted`) VALUES ('000000', 2, '老板', 3, 'boss', 0);
+INSERT INTO `blade_role`(`tenant_code`, `parent_id`, `role_name`, `sort`, `role_alias`, `is_deleted`) VALUES ('000000', 2, '人事', 1, 'hr', 0);
+INSERT INTO `blade_role`(`tenant_code`, `parent_id`, `role_name`, `sort`, `role_alias`, `is_deleted`) VALUES ('000000', 2, '经理', 2, 'manager', 0);
+INSERT INTO `blade_role`(`tenant_code`, `parent_id`, `role_name`, `sort`, `role_alias`, `is_deleted`) VALUES ('000000', 2, '老板', 3, 'boss', 0);
 
 -- ----------------------------
 -- 增加业务流程表
@@ -140,3 +140,47 @@ PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------
+-- 修改表主键为long类型
+-- ----------------------------
+ALTER TABLE `blade_notice`
+    MODIFY COLUMN `id` bigint(64) NOT NULL COMMENT '主键' FIRST,
+    MODIFY COLUMN `create_user` bigint(64) NULL DEFAULT NULL COMMENT '创建人' AFTER `content`,
+    MODIFY COLUMN `update_user` bigint(64) NULL DEFAULT NULL COMMENT '修改人' AFTER `create_time`;
+ALTER TABLE `blade_client`
+    MODIFY COLUMN `id` bigint(64) NOT NULL COMMENT '主键' FIRST,
+    MODIFY COLUMN `create_user` bigint(64) NULL DEFAULT NULL COMMENT '创建人' AFTER `autoapprove`,
+    MODIFY COLUMN `update_user` bigint(64) NULL DEFAULT NULL COMMENT '修改人' AFTER `create_time`;
+ALTER TABLE `blade_code`
+    MODIFY COLUMN `id` bigint(64) NOT NULL COMMENT '主键' FIRST;
+ALTER TABLE `blade_dept`
+    MODIFY COLUMN `id` bigint(64) NOT NULL COMMENT '主键' FIRST,
+    MODIFY COLUMN `parent_id` bigint(64) NULL DEFAULT 0 COMMENT '父主键' AFTER `tenant_code`;
+ALTER TABLE `blade_dict`
+    MODIFY COLUMN `id` bigint(64) NOT NULL COMMENT '主键' FIRST,
+    MODIFY COLUMN `parent_id` bigint(64) NULL DEFAULT 0 COMMENT '父主键' AFTER `id`;
+ALTER TABLE `blade_menu`
+    MODIFY COLUMN `id` bigint(64) NOT NULL COMMENT '主键' FIRST,
+    MODIFY COLUMN `parent_id` bigint(64) NULL DEFAULT 0 COMMENT '父级菜单' AFTER `id`;
+ALTER TABLE `blade_param`
+    MODIFY COLUMN `id` bigint(64) NOT NULL COMMENT '主键' FIRST,
+    MODIFY COLUMN `create_user` bigint(64) NULL DEFAULT NULL COMMENT '创建人' AFTER `remark`,
+    MODIFY COLUMN `update_user` bigint(64) NULL DEFAULT NULL COMMENT '修改人' AFTER `create_time`;
+ALTER TABLE `blade_process_leave`
+    MODIFY COLUMN `id` bigint(64) NOT NULL COMMENT '编号' FIRST;
+ALTER TABLE `blade_role`
+    MODIFY COLUMN `id` bigint(64) NOT NULL COMMENT '主键' FIRST,
+    MODIFY COLUMN `parent_id` bigint(64) NULL DEFAULT 0 COMMENT '父主键' AFTER `tenant_code`;
+ALTER TABLE `blade_role_menu`
+    MODIFY COLUMN `id` bigint(64) NOT NULL COMMENT '主键' FIRST,
+    MODIFY COLUMN `menu_id` bigint(64) NULL DEFAULT NULL COMMENT '菜单id' AFTER `id`,
+    MODIFY COLUMN `role_id` bigint(64) NULL DEFAULT NULL COMMENT '角色id' AFTER `menu_id`;
+ALTER TABLE `blade_tenant`
+    MODIFY COLUMN `id` bigint(64) NOT NULL COMMENT '主键' FIRST,
+    MODIFY COLUMN `create_user` bigint(64) NULL DEFAULT NULL COMMENT '创建人' AFTER `address`,
+    MODIFY COLUMN `update_user` bigint(64) NULL DEFAULT NULL COMMENT '修改人' AFTER `create_time`;
+ALTER TABLE `blade_user`
+    MODIFY COLUMN `id` bigint(64) NOT NULL COMMENT '主键' FIRST,
+    MODIFY COLUMN `create_user` bigint(64) NULL DEFAULT NULL COMMENT '创建人' AFTER `dept_id`,
+    MODIFY COLUMN `update_user` bigint(64) NULL DEFAULT NULL COMMENT '修改人' AFTER `create_time`;

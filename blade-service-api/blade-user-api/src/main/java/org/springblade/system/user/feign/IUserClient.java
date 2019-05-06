@@ -46,7 +46,7 @@ public interface IUserClient {
 	 * @return
 	 */
 	@GetMapping(USER_INFO_BY_ID)
-	R<User> userInfoById(@RequestParam("userId") Integer userId);
+	R<User> userInfoById(@RequestParam("userId") Long userId);
 
 	/**
 	 * 获取用户信息

@@ -44,31 +44,31 @@ public class SysClient implements ISysClient {
 
 	@Override
 	@GetMapping(DEPT)
-	public Dept getDept(Integer id) {
+	public Dept getDept(Long id) {
 		return deptService.getById(id);
 	}
 
 	@Override
 	@GetMapping(DEPT_NAME)
-	public String getDeptName(Integer id) {
+	public String getDeptName(Long id) {
 		return deptService.getById(id).getDeptName();
 	}
 
 	@Override
 	@GetMapping(ROLE)
-	public Role getRole(Integer id) {
+	public Role getRole(Long id) {
 		return roleService.getById(id);
 	}
 
 	@Override
 	@GetMapping(ROLE_NAME)
-	public String getRoleName(Integer id) {
+	public String getRoleName(Long id) {
 		return roleService.getById(id).getRoleName();
 	}
 
 	@Override
 	@GetMapping(ROLE_ALIAS)
-	public String getRoleAlias(Integer id) {
+	public String getRoleAlias(Long id) {
 		return roleService.getById(id).getRoleAlias();
 	}
 

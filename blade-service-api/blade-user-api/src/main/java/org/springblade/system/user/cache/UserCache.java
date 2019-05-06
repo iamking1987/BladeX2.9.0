@@ -49,7 +49,7 @@ public class UserCache {
 	 * @return
 	 */
 	public static User getUserByTaskUser(String taskUserId) {
-		int userId = Func.toInt(StringUtil.removePrefix(taskUserId, TASK_USR_PREFIX));
+		Long userId = Func.toLong(StringUtil.removePrefix(taskUserId, TASK_USR_PREFIX));
 		return getUser(userId);
 	}
 
@@ -59,7 +59,7 @@ public class UserCache {
 	 * @param userId 用户id
 	 * @return
 	 */
-	public static User getUser(Integer userId) {
+	public static User getUser(Long userId) {
 		User user = CacheUtil.get(USER_CACHE, USER_CACHE_ID_ + userId, User.class);
 		if (Func.isEmpty(user)) {
 			R<User> result = userClient.userInfoById(userId);
