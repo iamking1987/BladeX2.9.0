@@ -18,7 +18,17 @@
         <!--Blade-->
         <dependency>
             <groupId>org.springblade</groupId>
+            <artifactId>blade-common</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
             <artifactId>blade-core-boot</artifactId>
+            <version>${bladex.tool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-tenant</artifactId>
             <version>${bladex.tool.version}</version>
         </dependency>
     </dependencies>
