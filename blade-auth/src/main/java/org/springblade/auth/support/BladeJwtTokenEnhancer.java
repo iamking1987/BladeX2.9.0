@@ -41,7 +41,8 @@ public class BladeJwtTokenEnhancer implements TokenEnhancer {
 		info.put(TokenUtil.ROLE_ID, principal.getRoleId());
 		info.put(TokenUtil.TENANT_CODE, principal.getTenantCode());
 		info.put(TokenUtil.ACCOUNT, principal.getAccount());
-		info.put(TokenUtil.USER_NAME, principal.getName());
+		info.put(TokenUtil.USER_NAME, principal.getUsername());
+		info.put(TokenUtil.NICK_NAME, principal.getName());
 		info.put(TokenUtil.ROLE_NAME, principal.getRoleName());
 		info.put(TokenUtil.AVATAR, principal.getAvatar());
 		info.put(TokenUtil.LICENSE, TokenUtil.LICENSE_NAME);

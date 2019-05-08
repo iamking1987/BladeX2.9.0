@@ -36,9 +36,10 @@ public class TokenUtil {
 
 	public final static String AVATAR = TokenConstant.AVATAR;
 	public final static String ACCOUNT = TokenConstant.ACCOUNT;
+	public final static String USER_NAME = TokenConstant.USER_NAME;
+	public final static String NICK_NAME = TokenConstant.NICK_NAME;
 	public final static String USER_ID = TokenConstant.USER_ID;
 	public final static String ROLE_ID = TokenConstant.ROLE_ID;
-	public final static String USER_NAME = TokenConstant.USER_NAME;
 	public final static String ROLE_NAME = TokenConstant.ROLE_NAME;
 	public final static String TENANT_CODE = TokenConstant.TENANT_CODE;
 	public final static String CLIENT_ID = TokenConstant.CLIENT_ID;
