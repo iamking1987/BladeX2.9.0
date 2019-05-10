@@ -26,12 +26,15 @@ import org.springblade.core.mp.support.Query;
 import org.springblade.core.secure.annotation.PreAuth;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.RoleConstant;
+import org.springblade.core.tool.support.Kv;
+import org.springblade.flow.engine.constant.FlowEngineConstant;
 import org.springblade.flow.engine.entity.FlowProcess;
 import org.springblade.flow.engine.service.FlowService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 流程管理接口
@@ -79,6 +82,18 @@ public class FlowManagerController {
 	@ApiOperation(value = "删除部署流程", notes = "部署流程id集合", position = 3)
 	public R deleteDeployment(String deploymentIds) {
 		return R.status(flowService.deleteDeployment(deploymentIds));
+	}
+
+	/**
+	 * 检查流程文件格式
+	 *
+	 * @param file    流程文件
+	 */
+	@PostMapping("check-upload")
+	@ApiOperation(value = "上传部署流程文件", notes = "传入文件", position = 4)
+	public R checkUpload(@RequestParam MultipartFile file) {
+		boolean temp = Objects.requireNonNull(file.getOriginalFilename()).endsWith(FlowEngineConstant.SUFFIX);
+		return R.data(Kv.create().set("name", file.getOriginalFilename()).set("success", temp));
 	}
 
 	/**
