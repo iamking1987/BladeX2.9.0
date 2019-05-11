@@ -35,8 +35,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
-import static org.springblade.core.cache.constant.CacheConstant.DICT_LIST;
-import static org.springblade.core.cache.constant.CacheConstant.DICT_VALUE;
+import static org.springblade.core.cache.constant.CacheConstant.*;
 
 
 /**
@@ -59,8 +58,7 @@ public class DictController extends BladeController {
 	@ApiOperation(value = "详情", notes = "传入dict", position = 1)
 	public R<DictVO> detail(Dict dict) {
 		Dict detail = dictService.getOne(Condition.getQueryWrapper(dict));
-		DictWrapper dictWrapper = new DictWrapper(dictService);
-		return R.data(dictWrapper.entityVO(detail));
+		return R.data(DictWrapper.build().entityVO(detail));
 	}
 
 	/**
@@ -96,6 +94,7 @@ public class DictController extends BladeController {
 	 */
 	@PostMapping("/submit")
 	@ApiOperation(value = "新增或修改", notes = "传入dict", position = 6)
+	@CacheEvict(cacheNames = {DICT_CACHE}, allEntries = true)
 	public R submit(@Valid @RequestBody Dict dict) {
 		return R.status(dictService.submit(dict));
 	}
@@ -105,7 +104,7 @@ public class DictController extends BladeController {
 	 * 删除
 	 */
 	@PostMapping("/remove")
-	@CacheEvict(cacheNames = {DICT_LIST, DICT_VALUE}, allEntries = true)
+	@CacheEvict(cacheNames = {DICT_CACHE}, allEntries = true)
 	@ApiOperation(value = "删除", notes = "传入ids", position = 7)
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
 		return R.status(dictService.removeByIds(Func.toLongList(ids)));

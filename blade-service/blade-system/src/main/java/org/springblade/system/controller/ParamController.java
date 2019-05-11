@@ -25,10 +25,7 @@ import org.springblade.core.mp.support.Query;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.system.entity.Param;
-import org.springblade.system.feign.IDictClient;
 import org.springblade.system.service.IParamService;
-import org.springblade.system.vo.ParamVO;
-import org.springblade.system.wrapper.ParamWrapper;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -48,17 +45,14 @@ public class ParamController extends BladeController {
 
 	private IParamService paramService;
 
-	private IDictClient dictClient;
-
 	/**
 	 * 详情
 	 */
 	@GetMapping("/detail")
 	@ApiOperation(value = "详情", notes = "传入param", position = 1)
-	public R<ParamVO> detail(Param param) {
+	public R<Param> detail(Param param) {
 		Param detail = paramService.getOne(Condition.getQueryWrapper(param));
-		ParamWrapper paramWrapper = new ParamWrapper(dictClient);
-		return R.data(paramWrapper.entityVO(detail));
+		return R.data(detail);
 	}
 
 	/**
@@ -71,10 +65,9 @@ public class ParamController extends BladeController {
 		@ApiImplicitParam(name = "paramValue", value = "参数键值", paramType = "query", dataType = "string")
 	})
 	@ApiOperation(value = "分页", notes = "传入param", position = 2)
-	public R<IPage<ParamVO>> list(@ApiIgnore @RequestParam Map<String, Object> param, Query query) {
+	public R<IPage<Param>> list(@ApiIgnore @RequestParam Map<String, Object> param, Query query) {
 		IPage<Param> pages = paramService.page(Condition.getPage(query), Condition.getQueryWrapper(param, Param.class));
-		ParamWrapper paramWrapper = new ParamWrapper(dictClient);
-		return R.data(paramWrapper.pageVO(pages));
+		return R.data(pages);
 	}
 
 	/**

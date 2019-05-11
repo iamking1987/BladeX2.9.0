@@ -30,6 +30,11 @@ import java.util.List;
 @Component
 public class IDictClientFallback implements IDictClient {
 	@Override
+	public R<Dict> getById(Long id) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
 	public R<String> getValue(String code, Integer dictKey) {
 		return R.fail("获取数据失败");
 	}

@@ -38,8 +38,18 @@ import java.util.List;
 public interface IDictClient {
 
 	String API_PREFIX = "/client";
+	String GET_BY_ID = API_PREFIX + "/get-by-id";
 	String GET_VALUE = API_PREFIX + "/get-value";
 	String GET_LIST = API_PREFIX + "/get-list";
+
+	/**
+	 * 获取字典实体
+	 *
+	 * @param id 主键
+	 * @return
+	 */
+	@GetMapping(GET_BY_ID)
+	R<Dict> getById(@RequestParam("id") Long id);
 
 	/**
 	 * 获取字典表对应值

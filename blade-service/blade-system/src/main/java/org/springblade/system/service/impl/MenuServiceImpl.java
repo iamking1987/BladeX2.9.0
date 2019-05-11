@@ -39,7 +39,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.springblade.core.cache.constant.CacheConstant.AUTH_ROUTES;
+import static org.springblade.core.cache.constant.CacheConstant.MENU_CACHE;
 
 /**
  * 服务实现类
@@ -50,7 +50,7 @@ import static org.springblade.core.cache.constant.CacheConstant.AUTH_ROUTES;
 @AllArgsConstructor
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IMenuService {
 
-	IRoleMenuService roleMenuService;
+	private IRoleMenuService roleMenuService;
 
 	@Override
 	public IPage<MenuVO> selectMenuPage(IPage<MenuVO> page, MenuVO menu) {
@@ -101,7 +101,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 	}
 
 	@Override
-	@Cacheable(cacheNames = AUTH_ROUTES, key = "#user.roleId")
+	@Cacheable(cacheNames = MENU_CACHE, key = "'auth:routes:' + #user.roleId")
 	public List<Kv> authRoutes(BladeUser user) {
 		List<MenuDTO> routes = baseMapper.authRoutes(Func.toLongList(user.getRoleId()));
 		List<Kv> list = new ArrayList<>();

@@ -17,7 +17,9 @@
 package org.springblade.system.feign;
 
 import org.springblade.core.launch.constant.AppConstant;
+import org.springblade.core.tool.api.R;
 import org.springblade.system.entity.Dept;
+import org.springblade.system.entity.Menu;
 import org.springblade.system.entity.Role;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,11 +37,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface ISysClient {
 
 	String API_PREFIX = "/client";
+	String MENU = API_PREFIX + "/menu";
 	String DEPT = API_PREFIX + "/dept";
 	String DEPT_NAME = API_PREFIX + "/dept-name";
 	String ROLE = API_PREFIX + "/role";
 	String ROLE_NAME = API_PREFIX + "/role-name";
 	String ROLE_ALIAS = API_PREFIX + "/role-alias";
+
+	/**
+	 * 获取菜单
+	 *
+	 * @param id 主键
+	 * @return Menu
+	 */
+	@GetMapping(MENU)
+	R<Menu> getMenu(Long id);
 
 	/**
 	 * 获取部门
@@ -48,7 +60,7 @@ public interface ISysClient {
 	 * @return Dept
 	 */
 	@GetMapping(DEPT)
-	Dept getDept(@RequestParam("id") Long id);
+	R<Dept> getDept(@RequestParam("id") Long id);
 
 	/**
 	 * 获取部门名
@@ -57,7 +69,7 @@ public interface ISysClient {
 	 * @return 部门名
 	 */
 	@GetMapping(DEPT_NAME)
-	String getDeptName(@RequestParam("id") Long id);
+	R<String> getDeptName(@RequestParam("id") Long id);
 
 	/**
 	 * 获取角色
@@ -66,7 +78,7 @@ public interface ISysClient {
 	 * @return Role
 	 */
 	@GetMapping(ROLE)
-	Role getRole(@RequestParam("id") Long id);
+	R<Role> getRole(@RequestParam("id") Long id);
 
 	/**
 	 * 获取角色名
@@ -75,7 +87,7 @@ public interface ISysClient {
 	 * @return 角色名
 	 */
 	@GetMapping(ROLE_NAME)
-	String getRoleName(@RequestParam("id") Long id);
+	R<String> getRoleName(@RequestParam("id") Long id);
 
 	/**
 	 * 获取角色别名
@@ -84,6 +96,6 @@ public interface ISysClient {
 	 * @return 角色别名
 	 */
 	@GetMapping(ROLE_ALIAS)
-	String getRoleAlias(@RequestParam("id") Long id);
+	R<String> getRoleAlias(@RequestParam("id") Long id);
 
 }

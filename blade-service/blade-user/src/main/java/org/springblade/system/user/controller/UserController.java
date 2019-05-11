@@ -32,17 +32,19 @@ import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.utils.Func;
-import org.springblade.system.feign.IDictClient;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.service.IUserService;
 import org.springblade.system.user.vo.UserVO;
 import org.springblade.system.user.wrapper.UserWrapper;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+
+import static org.springblade.core.cache.constant.CacheConstant.USER_CACHE;
 
 /**
  * 控制器
@@ -56,8 +58,6 @@ public class UserController {
 
 	private IUserService userService;
 
-	private IDictClient dictClient;
-
 	/**
 	 * 查询单条
 	 */
@@ -66,7 +66,7 @@ public class UserController {
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
 	public R<UserVO> detail(User user) {
 		User detail = userService.getOne(Condition.getQueryWrapper(user));
-		UserWrapper userWrapper = new UserWrapper(userService, dictClient);
+		UserWrapper userWrapper = new UserWrapper(userService);
 		return R.data(userWrapper.entityVO(detail));
 	}
 
@@ -83,7 +83,7 @@ public class UserController {
 	public R<IPage<UserVO>> list(@ApiIgnore @RequestParam Map<String, Object> user, Query query, BladeUser bladeUser) {
 		QueryWrapper<User> queryWrapper = Condition.getQueryWrapper(user, User.class);
 		IPage<User> pages = userService.page(Condition.getPage(query), (!bladeUser.getTenantCode().equals(BladeConstant.ADMIN_TENANT_CODE)) ? queryWrapper.lambda().eq(User::getTenantCode, bladeUser.getTenantCode()) : queryWrapper);
-		UserWrapper userWrapper = new UserWrapper(userService, dictClient);
+		UserWrapper userWrapper = new UserWrapper(userService);
 		return R.data(userWrapper.pageVO(pages));
 	}
 
@@ -93,6 +93,7 @@ public class UserController {
 	@PostMapping("/submit")
 	@ApiOperation(value = "新增或修改", notes = "传入User", position = 3)
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
+	@CacheEvict(cacheNames = {USER_CACHE})
 	public R submit(@Valid @RequestBody User user) {
 		return R.status(userService.submit(user));
 	}
@@ -103,6 +104,7 @@ public class UserController {
 	@PostMapping("/update")
 	@ApiOperation(value = "修改", notes = "传入User", position = 4)
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
+	@CacheEvict(cacheNames = {USER_CACHE})
 	public R update(@Valid @RequestBody User user) {
 		return R.status(userService.updateById(user));
 	}
@@ -113,6 +115,7 @@ public class UserController {
 	@PostMapping("/remove")
 	@ApiOperation(value = "删除", notes = "传入id集合", position = 5)
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
+	@CacheEvict(cacheNames = {USER_CACHE})
 	public R remove(@RequestParam String ids) {
 		return R.status(userService.deleteLogic(Func.toLongList(ids)));
 	}

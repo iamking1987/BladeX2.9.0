@@ -24,6 +24,7 @@ import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.feign.IUserClient;
 
+import static org.springblade.core.cache.constant.CacheConstant.USER_CACHE;
 import static org.springblade.core.launch.constant.FlowConstant.TASK_USR_PREFIX;
 
 /**
@@ -32,9 +33,7 @@ import static org.springblade.core.launch.constant.FlowConstant.TASK_USR_PREFIX;
  * @author Chill
  */
 public class UserCache {
-	private static final String USER_CACHE = "blade:user";
-	private static final String USER_CACHE_ID_ = "user:id";
-
+	private static final String USER_CACHE_ID_ = "user:id:";
 
 	private static IUserClient userClient;
 
@@ -60,17 +59,10 @@ public class UserCache {
 	 * @return
 	 */
 	public static User getUser(Long userId) {
-		User user = CacheUtil.get(USER_CACHE, USER_CACHE_ID_ + userId, User.class);
-		if (Func.isEmpty(user)) {
+		return CacheUtil.get(USER_CACHE, USER_CACHE_ID_ + userId, () -> {
 			R<User> result = userClient.userInfoById(userId);
-			if (result.isSuccess()) {
-				user = result.getData();
-				if (Func.isNotEmpty(user)) {
-					CacheUtil.put(USER_CACHE, USER_CACHE_ID_ + userId, user);
-				}
-			}
-		}
-		return user;
+			return result.getData();
+		});
 	}
 
 }

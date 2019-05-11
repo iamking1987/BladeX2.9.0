@@ -34,11 +34,6 @@
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
-            <artifactId>blade-dict-api</artifactId>
-            <version>${bladex.project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springblade</groupId>
             <artifactId>blade-user-api</artifactId>
             <version>${bladex.project.version}</version>
         </dependency>

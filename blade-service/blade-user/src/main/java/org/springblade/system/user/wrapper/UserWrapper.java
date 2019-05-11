@@ -18,10 +18,9 @@ package org.springblade.system.user.wrapper;
 
 import lombok.AllArgsConstructor;
 import org.springblade.core.mp.support.BaseEntityWrapper;
-import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.BeanUtil;
 import org.springblade.core.tool.utils.Func;
-import org.springblade.system.feign.IDictClient;
+import org.springblade.system.cache.DictCache;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.service.IUserService;
 import org.springblade.system.user.vo.UserVO;
@@ -38,22 +37,16 @@ public class UserWrapper extends BaseEntityWrapper<User, UserVO> {
 
 	private IUserService userService;
 
-	private IDictClient dictClient;
-
-	public UserWrapper() {
-	}
-
 	@Override
 	public UserVO entityVO(User user) {
 		UserVO userVO = BeanUtil.copy(user, UserVO.class);
+		assert userVO != null;
 		List<String> roleName = userService.getRoleName(user.getRoleId());
 		List<String> deptName = userService.getDeptName(user.getDeptId());
 		userVO.setRoleName(Func.join(roleName));
 		userVO.setDeptName(Func.join(deptName));
-		R<String> dict = dictClient.getValue("sex", Func.toInt(user.getSex()));
-		if (dict.isSuccess()) {
-			userVO.setSexName(dict.getData());
-		}
+		String sex = DictCache.getValue("sex", Func.toInt(user.getSex()));
+		userVO.setSexName(sex);
 		return userVO;
 	}
 

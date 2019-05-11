@@ -16,32 +16,28 @@
  */
 package org.springblade.desk.wrapper;
 
-import lombok.AllArgsConstructor;
 import org.springblade.core.mp.support.BaseEntityWrapper;
-import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.BeanUtil;
 import org.springblade.desk.entity.Notice;
 import org.springblade.desk.vo.NoticeVO;
-import org.springblade.system.feign.IDictClient;
+import org.springblade.system.cache.DictCache;
 
 /**
  * Notice包装类,返回视图层所需的字段
  *
  * @author Chill
  */
-@AllArgsConstructor
 public class NoticeWrapper extends BaseEntityWrapper<Notice, NoticeVO> {
 
-	private IDictClient dictClient;
+	public static NoticeWrapper build() {
+		return new NoticeWrapper();
+	}
 
 	@Override
 	public NoticeVO entityVO(Notice notice) {
 		NoticeVO noticeVO = BeanUtil.copy(notice, NoticeVO.class);
-		R<String> dict = dictClient.getValue("notice", noticeVO.getCategory());
-		if (dict.isSuccess()) {
-			String categoryName = dict.getData();
-			noticeVO.setCategoryName(categoryName);
-		}
+		String dictValue = DictCache.getValue("notice", noticeVO.getCategory());
+		noticeVO.setCategoryName(dictValue);
 		return noticeVO;
 	}
 

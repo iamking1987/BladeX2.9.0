@@ -16,16 +16,14 @@
  */
 package org.springblade.system.wrapper;
 
-import lombok.AllArgsConstructor;
 import org.springblade.common.constant.CommonConstant;
 import org.springblade.core.mp.support.BaseEntityWrapper;
-import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.node.ForestNodeMerger;
 import org.springblade.core.tool.utils.BeanUtil;
 import org.springblade.core.tool.utils.Func;
+import org.springblade.system.cache.DictCache;
+import org.springblade.system.cache.SysCache;
 import org.springblade.system.entity.Menu;
-import org.springblade.system.feign.IDictClient;
-import org.springblade.system.service.IMenuService;
 import org.springblade.system.vo.MenuVO;
 
 import java.util.List;
@@ -36,40 +34,30 @@ import java.util.stream.Collectors;
  *
  * @author Chill
  */
-@AllArgsConstructor
 public class MenuWrapper extends BaseEntityWrapper<Menu, MenuVO> {
 
-	private IMenuService menuService;
-
-	private IDictClient dictClient;
-
-	public MenuWrapper() {
+	public static MenuWrapper build() {
+		return new MenuWrapper();
 	}
 
 	@Override
 	public MenuVO entityVO(Menu menu) {
 		MenuVO menuVO = BeanUtil.copy(menu, MenuVO.class);
+		assert menuVO != null;
 		if (Func.equals(menu.getParentId(), CommonConstant.TOP_PARENT_ID)) {
 			menuVO.setParentName(CommonConstant.TOP_PARENT_NAME);
 		} else {
-			Menu parent = menuService.getById(menu.getParentId());
+			Menu parent = SysCache.getMenu(menu.getParentId());
 			menuVO.setParentName(parent.getName());
 		}
-		R<String> d1 = dictClient.getValue("menu_category", Func.toInt(menuVO.getCategory()));
-		R<String> d2 = dictClient.getValue("button_func", Func.toInt(menuVO.getAction()));
-		R<String> d3 = dictClient.getValue("yes_no", Func.toInt(menuVO.getIsOpen()));
-		if (d1.isSuccess()) {
-			menuVO.setCategoryName(d1.getData());
-		}
-		if (d2.isSuccess()) {
-			menuVO.setActionName(d2.getData());
-		}
-		if (d3.isSuccess()) {
-			menuVO.setIsOpenName(d3.getData());
-		}
+		String category = DictCache.getValue("menu_category", Func.toInt(menuVO.getCategory()));
+		String action = DictCache.getValue("button_func", Func.toInt(menuVO.getAction()));
+		String open = DictCache.getValue("yes_no", Func.toInt(menuVO.getIsOpen()));
+		menuVO.setCategoryName(category);
+		menuVO.setActionName(action);
+		menuVO.setIsOpenName(open);
 		return menuVO;
 	}
-
 
 	public List<MenuVO> listNodeVO(List<Menu> list) {
 		List<MenuVO> collect = list.stream().map(menu -> BeanUtil.copy(menu, MenuVO.class)).collect(Collectors.toList());

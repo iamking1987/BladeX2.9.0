@@ -16,7 +16,9 @@
  */
 package org.springblade.system.feign;
 
+import org.springblade.core.tool.api.R;
 import org.springblade.system.entity.Dept;
+import org.springblade.system.entity.Menu;
 import org.springblade.system.entity.Role;
 import org.springframework.stereotype.Component;
 
@@ -29,27 +31,32 @@ import org.springframework.stereotype.Component;
 public class ISysClientFallback implements ISysClient {
 
 	@Override
-	public Dept getDept(Long id) {
-		return null;
+	public R<Menu> getMenu(Long id) {
+		return R.fail("获取数据失败");
 	}
 
 	@Override
-	public String getDeptName(Long id) {
-		return null;
+	public R<Dept> getDept(Long id) {
+		return R.fail("获取数据失败");
 	}
 
 	@Override
-	public Role getRole(Long id) {
-		return null;
+	public R<String> getDeptName(Long id) {
+		return R.fail("获取数据失败");
 	}
 
 	@Override
-	public String getRoleName(Long id) {
-		return null;
+	public R<Role> getRole(Long id) {
+		return R.fail("获取数据失败");
 	}
 
 	@Override
-	public String getRoleAlias(Long id) {
-		return null;
+	public R<String> getRoleName(Long id) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<String> getRoleAlias(Long id) {
+		return R.fail("获取数据失败");
 	}
 }

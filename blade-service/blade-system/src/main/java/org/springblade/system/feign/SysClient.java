@@ -17,10 +17,12 @@
 package org.springblade.system.feign;
 
 import lombok.AllArgsConstructor;
+import org.springblade.core.tool.api.R;
 import org.springblade.system.entity.Dept;
+import org.springblade.system.entity.Menu;
 import org.springblade.system.entity.Role;
-import org.springblade.system.service.IAuthClientService;
 import org.springblade.system.service.IDeptService;
+import org.springblade.system.service.IMenuService;
 import org.springblade.system.service.IRoleService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,40 +38,46 @@ import springfox.documentation.annotations.ApiIgnore;
 @AllArgsConstructor
 public class SysClient implements ISysClient {
 
-	IDeptService deptService;
+	private IDeptService deptService;
 
-	IRoleService roleService;
+	private IRoleService roleService;
 
-	IAuthClientService clientService;
+	private IMenuService menuService;
+
+	@Override
+	@GetMapping(MENU)
+	public R<Menu> getMenu(Long id) {
+		return R.data(menuService.getById(id));
+	}
 
 	@Override
 	@GetMapping(DEPT)
-	public Dept getDept(Long id) {
-		return deptService.getById(id);
+	public R<Dept> getDept(Long id) {
+		return R.data(deptService.getById(id));
 	}
 
 	@Override
 	@GetMapping(DEPT_NAME)
-	public String getDeptName(Long id) {
-		return deptService.getById(id).getDeptName();
+	public R<String> getDeptName(Long id) {
+		return R.data(deptService.getById(id).getDeptName());
 	}
 
 	@Override
 	@GetMapping(ROLE)
-	public Role getRole(Long id) {
-		return roleService.getById(id);
+	public R<Role> getRole(Long id) {
+		return R.data(roleService.getById(id));
 	}
 
 	@Override
 	@GetMapping(ROLE_NAME)
-	public String getRoleName(Long id) {
-		return roleService.getById(id).getRoleName();
+	public R<String> getRoleName(Long id) {
+		return R.data(roleService.getById(id).getRoleName());
 	}
 
 	@Override
 	@GetMapping(ROLE_ALIAS)
-	public String getRoleAlias(Long id) {
-		return roleService.getById(id).getRoleAlias();
+	public R<String> getRoleAlias(Long id) {
+		return R.data(roleService.getById(id).getRoleAlias());
 	}
 
 }
