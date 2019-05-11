@@ -1,2 +1,4 @@
 swagger:
-  base-package: org.springblade,org.springframework.security.oauth2.provider.endpoint
+  base-packages:
+    - org.springblade
+    - org.springframework.security.oauth2.provider.endpoint
