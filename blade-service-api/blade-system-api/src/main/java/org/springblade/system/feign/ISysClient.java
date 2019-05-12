@@ -25,6 +25,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 /**
  * Feign接口类
  *
@@ -40,9 +42,12 @@ public interface ISysClient {
 	String MENU = API_PREFIX + "/menu";
 	String DEPT = API_PREFIX + "/dept";
 	String DEPT_NAME = API_PREFIX + "/dept-name";
+	String DEPT_NAMES = API_PREFIX + "/dept-names";
 	String ROLE = API_PREFIX + "/role";
 	String ROLE_NAME = API_PREFIX + "/role-name";
+	String ROLE_NAMES = API_PREFIX + "/role-names";
 	String ROLE_ALIAS = API_PREFIX + "/role-alias";
+	String ROLE_ALIASES = API_PREFIX + "/role-aliases";
 
 	/**
 	 * 获取菜单
@@ -97,5 +102,32 @@ public interface ISysClient {
 	 */
 	@GetMapping(ROLE_ALIAS)
 	R<String> getRoleAlias(@RequestParam("id") Long id);
+
+	/**
+	 * 获取部门名
+	 *
+	 * @param deptIds 主键
+	 * @return
+	 */
+	@GetMapping(DEPT_NAMES)
+	R<List<String>> getDeptNames(@RequestParam("deptIds") String deptIds);
+
+	/**
+	 * 获取角色名
+	 *
+	 * @param roleIds 主键
+	 * @return
+	 */
+	@GetMapping(ROLE_NAMES)
+	R<List<String>> getRoleNames(@RequestParam("roleIds") String roleIds);
+
+	/**
+	 * 获取角色别名
+	 *
+	 * @param roleIds 主键
+	 * @return 角色别名
+	 */
+	@GetMapping(ROLE_ALIASES)
+	R<List<String>> getRoleAliases(@RequestParam("roleIds") String roleIds);
 
 }

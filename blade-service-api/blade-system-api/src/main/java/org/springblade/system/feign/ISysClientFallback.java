@@ -22,6 +22,8 @@ import org.springblade.system.entity.Menu;
 import org.springblade.system.entity.Role;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * Feign失败配置
  *
@@ -57,6 +59,21 @@ public class ISysClientFallback implements ISysClient {
 
 	@Override
 	public R<String> getRoleAlias(Long id) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<List<String>> getDeptNames(String deptIds) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<List<String>> getRoleNames(String roleIds) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<List<String>> getRoleAliases(String roleIds) {
 		return R.fail("获取数据失败");
 	}
 }

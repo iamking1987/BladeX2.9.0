@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.List;
+
 /**
  * 系统服务Feign实现类
  *
@@ -78,6 +80,24 @@ public class SysClient implements ISysClient {
 	@GetMapping(ROLE_ALIAS)
 	public R<String> getRoleAlias(Long id) {
 		return R.data(roleService.getById(id).getRoleAlias());
+	}
+
+	@Override
+	@GetMapping(DEPT_NAMES)
+	public R<List<String>> getDeptNames(String deptIds) {
+		return R.data(deptService.getDeptNames(deptIds));
+	}
+
+	@Override
+	@GetMapping(ROLE_NAMES)
+	public R<List<String>> getRoleNames(String roleIds) {
+		return R.data(roleService.getRoleNames(roleIds));
+	}
+
+	@Override
+	@GetMapping(ROLE_ALIASES)
+	public R<List<String>> getRoleAliases(String roleIds) {
+		return R.data(roleService.getRoleAliases(roleIds));
 	}
 
 }

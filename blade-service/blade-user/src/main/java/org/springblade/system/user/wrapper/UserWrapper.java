@@ -16,13 +16,12 @@
  */
 package org.springblade.system.user.wrapper;
 
-import lombok.AllArgsConstructor;
 import org.springblade.core.mp.support.BaseEntityWrapper;
 import org.springblade.core.tool.utils.BeanUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.system.cache.DictCache;
+import org.springblade.system.cache.SysCache;
 import org.springblade.system.user.entity.User;
-import org.springblade.system.user.service.IUserService;
 import org.springblade.system.user.vo.UserVO;
 
 import java.util.List;
@@ -32,17 +31,18 @@ import java.util.List;
  *
  * @author Chill
  */
-@AllArgsConstructor
 public class UserWrapper extends BaseEntityWrapper<User, UserVO> {
 
-	private IUserService userService;
+	public static UserWrapper build() {
+		return new UserWrapper();
+	}
 
 	@Override
 	public UserVO entityVO(User user) {
 		UserVO userVO = BeanUtil.copy(user, UserVO.class);
 		assert userVO != null;
-		List<String> roleName = userService.getRoleName(user.getRoleId());
-		List<String> deptName = userService.getDeptName(user.getDeptId());
+		List<String> roleName = SysCache.getRoleNames(user.getRoleId());
+		List<String> deptName = SysCache.getDeptNames(user.getDeptId());
 		userVO.setRoleName(Func.join(roleName));
 		userVO.setDeptName(Func.join(deptName));
 		String sex = DictCache.getValue("sex", Func.toInt(user.getSex()));

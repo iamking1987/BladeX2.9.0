@@ -24,6 +24,8 @@ import org.springblade.system.entity.Menu;
 import org.springblade.system.entity.Role;
 import org.springblade.system.feign.ISysClient;
 
+import java.util.List;
+
 import static org.springblade.core.cache.constant.CacheConstant.SYS_CACHE;
 
 /**
@@ -35,9 +37,12 @@ public class SysCache {
 	private static final String MENU_ID = "menu:id:";
 	private static final String DEPT_ID = "dept:id:";
 	private static final String DEPT_NAME_ID = "deptName:id:";
+	private static final String DEPT_NAMES_ID = "deptNames:id:";
 	private static final String ROLE_ID = "role:id:";
 	private static final String ROLE_NAME_ID = "roleName:id:";
+	private static final String ROLE_NAMES_ID = "roleNames:id:";
 	private static final String ROLE_ALIAS_ID = "roleAlias:id:";
+	private static final String ROLE_ALIASES_ID = "roleAliases:id:";
 
 	private static ISysClient sysClient;
 
@@ -119,6 +124,46 @@ public class SysCache {
 	public static String getRoleAlias(Long id) {
 		return CacheUtil.get(SYS_CACHE, ROLE_ALIAS_ID + id, () -> {
 			R<String> result = sysClient.getRoleAlias(id);
+			return result.getData();
+		});
+	}
+
+
+	/**
+	 * 获取部门名集合
+	 *
+	 * @param deptIds 主键集合
+	 * @return 部门名
+	 */
+	public static List<String> getDeptNames(String deptIds) {
+		return CacheUtil.get(SYS_CACHE, DEPT_NAMES_ID + deptIds, () -> {
+			R<List<String>> result = sysClient.getDeptNames(deptIds);
+			return result.getData();
+		});
+	}
+
+	/**
+	 * 获取角色名集合
+	 *
+	 * @param roleIds 主键集合
+	 * @return 角色名
+	 */
+	public static List<String> getRoleNames(String roleIds) {
+		return CacheUtil.get(SYS_CACHE, ROLE_NAMES_ID + roleIds, () -> {
+			R<List<String>> result = sysClient.getRoleNames(roleIds);
+			return result.getData();
+		});
+	}
+
+	/**
+	 * 获取角色别名集合
+	 *
+	 * @param roleIds 主键集合
+	 * @return 角色别名
+	 */
+	public static List<String> getRoleAliases(String roleIds) {
+		return CacheUtil.get(SYS_CACHE, ROLE_ALIASES_ID + roleIds, () -> {
+			R<List<String>> result = sysClient.getRoleAliases(roleIds);
 			return result.getData();
 		});
 	}
