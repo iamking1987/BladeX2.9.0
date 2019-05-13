@@ -88,4 +88,12 @@ public interface IMenuService extends IService<Menu> {
 	 */
 	List<Kv> authRoutes(BladeUser user);
 
+	/**
+	 * 删除菜单
+	 *
+	 * @param ids
+	 * @return
+	 */
+	boolean removeMenu(String ids);
+
 }

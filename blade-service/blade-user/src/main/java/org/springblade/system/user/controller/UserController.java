@@ -31,7 +31,6 @@ import org.springblade.core.secure.annotation.PreAuth;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.constant.RoleConstant;
-import org.springblade.core.tool.utils.Func;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.service.IUserService;
 import org.springblade.system.user.vo.UserVO;
@@ -115,7 +114,7 @@ public class UserController {
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
 	@CacheEvict(cacheNames = {USER_CACHE})
 	public R remove(@RequestParam String ids) {
-		return R.status(userService.deleteLogic(Func.toLongList(ids)));
+		return R.status(userService.removeUser(ids));
 	}
 
 	/**

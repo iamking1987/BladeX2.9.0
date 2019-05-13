@@ -70,4 +70,12 @@ public interface IUserService extends BaseService<User> {
 	 * @return
 	 */
 	boolean resetPassword(String userIds);
+
+	/**
+	 * 删除用户
+	 *
+	 * @param userIds
+	 * @return
+	 */
+	boolean removeUser(String userIds);
 }
