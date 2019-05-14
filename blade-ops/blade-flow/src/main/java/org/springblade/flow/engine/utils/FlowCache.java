@@ -33,7 +33,7 @@ import static org.springblade.core.cache.constant.CacheConstant.FLOW_CACHE;
  */
 public class FlowCache {
 
-	private static final String FLOW_DEFINITION_ID_ = "definition:id:";
+	private static final String FLOW_DEFINITION_ID = "definition:id:";
 	private static RepositoryService repositoryService;
 
 	static {
@@ -47,7 +47,7 @@ public class FlowCache {
 	 * @return
 	 */
 	public static ProcessDefinition getProcessDefinition(String processDefinitionId) {
-		return CacheUtil.get(FLOW_CACHE, FLOW_DEFINITION_ID_ + processDefinitionId, () -> repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult());
+		return CacheUtil.get(FLOW_CACHE, FLOW_DEFINITION_ID , processDefinitionId, () -> repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult());
 	}
 
 	/**
