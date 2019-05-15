@@ -131,6 +131,22 @@ services:
     networks:
     - blade_net
 
+  blade-flow:
+    image: "${REGISTER}/blade/blade-flow:${TAG}"
+    privileged: true
+    restart: always
+    networks:
+      - blade_net
+
+  blade-flow-design:
+    image: "${REGISTER}/blade/blade-flow-design:${TAG}"
+    privileged: true
+    restart: always
+    ports:
+      - 9999:9999
+    networks:
+      - blade_net
+
 networks:
   blade_net:
     driver: bridge

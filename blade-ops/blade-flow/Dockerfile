@@ -2,11 +2,11 @@ FROM anapsix/alpine-java:8_server-jre_unlimited
 
 MAINTAINER smallchill@163.com
 
-RUN mkdir -p /blade/admin
+RUN mkdir -p /blade/flow
 
-WORKDIR /blade/admin
+WORKDIR /blade/flow
 
-EXPOSE 7002
+EXPOSE 8008
 
 ADD ./target/blade-flow.jar ./app.jar
 
