@@ -21,6 +21,7 @@ import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
+import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.launch.constant.NacosConstant;
 import org.springblade.core.launch.props.BladeProperties;
 import org.springframework.cloud.alibaba.nacos.NacosConfigProperties;
@@ -38,6 +39,7 @@ import java.util.concurrent.Executor;
  * @author Chill
  */
 @Order
+@Slf4j
 @Component
 public class DynamicRouteServiceListener {
 
@@ -63,8 +65,6 @@ public class DynamicRouteServiceListener {
 			String group = nacosConfigProperties.getGroup();
 			String serverAddr = nacosDiscoveryProperties.getServerAddr();
 			ConfigService configService = NacosFactory.createConfigService(serverAddr);
-			String content = configService.getConfig(dataId, group, 5000);
-			System.out.println(content);
 			configService.addListener(dataId, group, new Listener() {
 				@Override
 				public void receiveConfigInfo(String configInfo) {
