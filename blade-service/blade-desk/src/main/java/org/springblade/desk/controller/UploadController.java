@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springblade.core.minio.MinioTemplate;
 import org.springblade.core.tool.api.R;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -15,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author Chill
  */
-@RequestMapping("upload")
+@RequestMapping("/notice/upload")
 @RestController
 @AllArgsConstructor
 public class UploadController {
@@ -26,13 +23,14 @@ public class UploadController {
 	 * minio上传demo
 	 *
 	 * @param file 上传文件
-	 * @return
+	 * @return String
 	 */
 	@SneakyThrows
 	@PostMapping("put-object")
-	public R putObject(@RequestParam MultipartFile file) {
-		minioTemplate.putObject("test233", file.getOriginalFilename(), file.getInputStream());
-		return R.success("操作成功");
+	public R<String> putObject(@RequestParam MultipartFile file, @RequestParam String bucketName) {
+		minioTemplate.putObject(bucketName, file.getOriginalFilename(), file.getInputStream());
+		String objectUrl = minioTemplate.getObjectUrl(bucketName, file.getOriginalFilename());
+		return R.data(objectUrl);
 	}
 
 }
