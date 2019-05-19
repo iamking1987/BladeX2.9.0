@@ -42,6 +42,11 @@
             <artifactId>blade-flow-api</artifactId>
             <version>${bladex.project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-minio</artifactId>
+            <version>${bladex.tool.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

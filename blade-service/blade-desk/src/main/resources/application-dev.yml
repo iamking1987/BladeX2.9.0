@@ -8,3 +8,10 @@ spring:
     url: ${blade.datasource.dev.url}
     username: ${blade.datasource.dev.username}
     password: ${blade.datasource.dev.password}
+
+minio:
+  enable: true
+  tenant-mode: false
+  endpoint: http://127.0.0.1:9000
+  access-key: AZINRTAPCMMWMC9G7F3Z
+  secret-key: sHl2k4+vvmNaSZZdahUOHQwQDZGZl+4+ajRvBX8d
