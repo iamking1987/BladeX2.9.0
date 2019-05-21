@@ -15,3 +15,10 @@ minio:
   endpoint: http://127.0.0.1:9000
   access-key: AZINRTAPCMMWMC9G7F3Z
   secret-key: sHl2k4+vvmNaSZZdahUOHQwQDZGZl+4+ajRvBX8d
+
+qiniu:
+  enable: true
+  endpoint: prv0t4ij6.bkt.clouddn.com
+  access-key: N_Loh1ngBqcJovwiAJqR91Ifj2vgOWHOf8AwBA_h
+  secret-key: AuzuA1KHAbkIndCU0dB3Zfii2O3crHNODDmpxHRS
+
