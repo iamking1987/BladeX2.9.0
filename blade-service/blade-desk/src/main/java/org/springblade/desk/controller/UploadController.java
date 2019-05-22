@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Objects;
+
 /**
  * UploadController
  *
@@ -31,16 +33,15 @@ public class UploadController {
 	/**
 	 * minio上传demo
 	 *
-	 * @param file       上传文件
-	 * @param bucketName 存储桶名称
+	 * @param file 上传文件
 	 * @return String
 	 */
 	@SneakyThrows
 	@PostMapping("put-minio-object")
-	public R<String> putMinioObject(@RequestParam MultipartFile file, @RequestParam String bucketName) {
-		minioTemplate.putObject(bucketName, file.getOriginalFilename(), file.getInputStream());
-		String objectUrl = minioTemplate.getObjectUrl(bucketName, file.getOriginalFilename());
-		return R.data(objectUrl);
+	public R<String> putMinioObject(@RequestParam MultipartFile file) {
+		minioTemplate.putObject(file);
+		String objectLink = minioTemplate.getObjectLink(Objects.requireNonNull(file.getOriginalFilename()));
+		return R.data(objectLink);
 	}
 
 	/**
@@ -53,7 +54,7 @@ public class UploadController {
 	@SneakyThrows
 	@PostMapping("put-qiniu-object")
 	public R<Kv> putQiniuObject(@RequestParam MultipartFile file, @RequestParam String fileKey) {
-		Response put = qiniuTemplate.put(file.getInputStream(), fileKey);
+		Response put = qiniuTemplate.putObject(file, fileKey);
 		Kv parse = JsonUtil.parse(put.bodyString(), Kv.class);
 		return R.data(parse);
 	}
