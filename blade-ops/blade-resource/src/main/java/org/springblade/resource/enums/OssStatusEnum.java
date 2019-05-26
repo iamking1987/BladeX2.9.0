@@ -26,7 +26,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum OssCategoryEnum {
+public enum OssStatusEnum {
 
 	/**
 	 * 关闭
@@ -41,6 +41,6 @@ public enum OssCategoryEnum {
 	/**
 	 * 类型编号
 	 */
-	final int category;
+	final int num;
 
 }

@@ -23,7 +23,7 @@ import org.springblade.core.oss.rule.OssRule;
 import org.springblade.core.secure.utils.SecureUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.resource.entity.Oss;
-import org.springblade.resource.enums.OssCategoryEnum;
+import org.springblade.resource.enums.OssStatusEnum;
 import org.springblade.resource.enums.OssEnum;
 import org.springblade.resource.mapper.OssMapper;
 import org.springblade.resource.props.OssProperties;
@@ -40,7 +40,7 @@ import static org.springblade.core.cache.constant.CacheConstant.SYS_CACHE;
  */
 public class OssBuilder {
 
-	private static final String OSS_CODE = "oss:code:";
+	public static final String OSS_CODE = "oss:code:";
 
 	private final OssProperties ossProperties;
 	private final OssMapper ossMapper;
@@ -76,7 +76,7 @@ public class OssBuilder {
 		if (Func.hasEmpty(template, ossCached) || oss.getEndpoint().equals(ossCached.getEndpoint()) || !oss.getAccessKey().equals(ossCached.getAccessKey())) {
 			synchronized (OssBuilder.class) {
 				template = templatePool.get(tenantCode);
-				if (template == null) {
+				if (Func.hasEmpty(template, ossCached) || oss.getEndpoint().equals(ossCached.getEndpoint()) || !oss.getAccessKey().equals(ossCached.getAccessKey())) {
 					if (oss.getCategory() == OssEnum.MINIO.getCategory()) {
 						template = MinioBuilder.template(oss, ossRule);
 					} else if (oss.getCategory() == OssEnum.QINIU.getCategory()) {
@@ -98,7 +98,7 @@ public class OssBuilder {
 	 */
 	public Oss getOss(String tenantCode) {
 		return CacheUtil.get(SYS_CACHE, OSS_CODE, tenantCode, () -> {
-			Oss o = ossMapper.selectOne(Wrappers.<Oss>query().lambda().eq(Oss::getCategory, OssCategoryEnum.ENABLE.getCategory()));
+			Oss o = ossMapper.selectOne(Wrappers.<Oss>query().lambda().eq(Oss::getStatus, OssStatusEnum.ENABLE.getNum()));
 			// 若为空则调用默认配置
 			if ((Func.isEmpty(o))) {
 				Oss defaultOss = new Oss();
