@@ -29,15 +29,15 @@ public class CodeGenerator {
 	/**
 	 * 代码生成的模块名
 	 */
-	public static String CODE_NAME = "应用管理";
+	public static String CODE_NAME = "资源管理";
 	/**
 	 * 代码所在服务名
 	 */
-	public static String SERVICE_NAME = "blade-system";
+	public static String SERVICE_NAME = "blade-oss";
 	/**
 	 * 代码生成的包名
 	 */
-	public static String PACKAGE_NAME = "org.springblade.system";
+	public static String PACKAGE_NAME = "org.springblade.oss";
 	/**
 	 * 前端代码生成所属系统
 	 */
@@ -45,7 +45,7 @@ public class CodeGenerator {
 	/**
 	 * 前端代码生成地址
 	 */
-	public static String PACKAGE_WEB_DIR = "/Users/chill/Workspaces1/product/Saber";
+	public static String PACKAGE_WEB_DIR = "/Users/chill/Workspaces/product/Saber";
 	/**
 	 * 需要去掉的表前缀
 	 */
@@ -53,7 +53,7 @@ public class CodeGenerator {
 	/**
 	 * 需要生成的表名(两者只能取其一)
 	 */
-	public static String[] INCLUDE_TABLES = {"blade_client"};
+	public static String[] INCLUDE_TABLES = {"blade_oss"};
 	/**
 	 * 需要排除的表名(两者只能取其一)
 	 */
