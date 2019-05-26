@@ -30,9 +30,12 @@ import org.springblade.resource.entity.Oss;
 import org.springblade.resource.service.IOssService;
 import org.springblade.resource.entity.OssVO;
 import org.springblade.resource.wrapper.OssWrapper;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import static org.springblade.core.cache.constant.CacheConstant.SYS_CACHE;
 
 /**
  * 控制器
@@ -82,6 +85,7 @@ public class OssController extends BladeController {
 	 * 新增
 	 */
 	@PostMapping("/save")
+	@CacheEvict(cacheNames = {SYS_CACHE})
 	@ApiOperation(value = "新增", notes = "传入oss", position = 4)
 	public R save(@Valid @RequestBody Oss oss) {
 		return R.status(ossService.save(oss));
@@ -91,6 +95,7 @@ public class OssController extends BladeController {
 	 * 修改
 	 */
 	@PostMapping("/update")
+	@CacheEvict(cacheNames = {SYS_CACHE})
 	@ApiOperation(value = "修改", notes = "传入oss", position = 5)
 	public R update(@Valid @RequestBody Oss oss) {
 		return R.status(ossService.updateById(oss));
@@ -100,6 +105,7 @@ public class OssController extends BladeController {
 	 * 新增或修改
 	 */
 	@PostMapping("/submit")
+	@CacheEvict(cacheNames = {SYS_CACHE})
 	@ApiOperation(value = "新增或修改", notes = "传入oss", position = 6)
 	public R submit(@Valid @RequestBody Oss oss) {
 		return R.status(ossService.saveOrUpdate(oss));
@@ -110,6 +116,7 @@ public class OssController extends BladeController {
 	 * 删除
 	 */
 	@PostMapping("/remove")
+	@CacheEvict(cacheNames = {SYS_CACHE})
 	@ApiOperation(value = "逻辑删除", notes = "传入ids", position = 7)
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
 		return R.status(ossService.deleteLogic(Func.toLongList(ids)));
@@ -120,6 +127,7 @@ public class OssController extends BladeController {
 	 * 启用
 	 */
 	@PostMapping("/enable")
+	@CacheEvict(cacheNames = {SYS_CACHE})
 	@ApiOperation(value = "配置启用", notes = "传入id", position = 7)
 	public R enable(@ApiParam(value = "主键", required = true) @RequestParam Long id) {
 		return R.status(ossService.enable(id));
