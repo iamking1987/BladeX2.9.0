@@ -136,7 +136,7 @@ public class OssEndpoint {
 	 * @return ObjectStat
 	 */
 	@SneakyThrows
-	@PostMapping("/put-file")
+	@PostMapping("/put-file-by-name")
 	public R<OssFile> putFile(@RequestParam String fileName, @RequestParam MultipartFile file) {
 		ossBuilder.template().putFile(fileName, file.getInputStream());
 		return R.data(ossBuilder.template().statFile(fileName));
