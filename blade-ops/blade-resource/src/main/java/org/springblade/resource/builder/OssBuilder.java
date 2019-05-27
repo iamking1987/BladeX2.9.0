@@ -91,7 +91,7 @@ public class OssBuilder {
 	}
 
 	/**
-	 * 获取角色
+	 * 获取对象存储实体
 	 *
 	 * @param tenantCode 租户编号
 	 * @return Role
