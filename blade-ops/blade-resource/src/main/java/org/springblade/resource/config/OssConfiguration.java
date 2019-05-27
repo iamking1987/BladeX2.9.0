@@ -18,7 +18,6 @@ package org.springblade.resource.config;
 
 import lombok.AllArgsConstructor;
 import org.springblade.core.oss.props.OssProperties;
-import org.springblade.core.oss.rule.OssRule;
 import org.springblade.resource.builder.OssBuilder;
 import org.springblade.resource.mapper.OssMapper;
 import org.springframework.context.annotation.Bean;
@@ -37,11 +36,9 @@ public class OssConfiguration {
 
 	private OssMapper ossMapper;
 
-	private OssRule ossRule;
-
 	@Bean
 	public OssBuilder ossBuilder() {
-		return new OssBuilder(ossProperties, ossMapper, ossRule);
+		return new OssBuilder(ossProperties, ossMapper);
 	}
 
 }
