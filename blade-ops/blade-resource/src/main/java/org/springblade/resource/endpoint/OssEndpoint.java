@@ -19,6 +19,7 @@ package org.springblade.resource.endpoint;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.springblade.core.oss.model.BladeFile;
 import org.springblade.core.oss.model.OssFile;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.Func;
@@ -126,8 +127,8 @@ public class OssEndpoint {
 	@SneakyThrows
 	@PostMapping("/put-file")
 	public R<OssFile> putFile(@RequestParam MultipartFile file) {
-		ossBuilder.template().putFile(file.getOriginalFilename(), file.getInputStream());
-		return R.data(ossBuilder.template().statFile(file.getOriginalFilename()));
+		BladeFile bladeFile = ossBuilder.template().putFile(file.getOriginalFilename(), file.getInputStream());
+		return R.data(ossBuilder.template().statFile(bladeFile.getName()));
 	}
 
 	/**
@@ -140,8 +141,8 @@ public class OssEndpoint {
 	@SneakyThrows
 	@PostMapping("/put-file-by-name")
 	public R<OssFile> putFile(@RequestParam String fileName, @RequestParam MultipartFile file) {
-		ossBuilder.template().putFile(fileName, file.getInputStream());
-		return R.data(ossBuilder.template().statFile(fileName));
+		BladeFile bladeFile = ossBuilder.template().putFile(fileName, file.getInputStream());
+		return R.data(ossBuilder.template().statFile(bladeFile.getName()));
 	}
 
 	/**
