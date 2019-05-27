@@ -126,9 +126,9 @@ public class OssEndpoint {
 	 */
 	@SneakyThrows
 	@PostMapping("/put-file")
-	public R<OssFile> putFile(@RequestParam MultipartFile file) {
+	public R<BladeFile> putFile(@RequestParam MultipartFile file) {
 		BladeFile bladeFile = ossBuilder.template().putFile(file.getOriginalFilename(), file.getInputStream());
-		return R.data(ossBuilder.template().statFile(bladeFile.getName()));
+		return R.data(bladeFile);
 	}
 
 	/**
@@ -140,9 +140,9 @@ public class OssEndpoint {
 	 */
 	@SneakyThrows
 	@PostMapping("/put-file-by-name")
-	public R<OssFile> putFile(@RequestParam String fileName, @RequestParam MultipartFile file) {
+	public R<BladeFile> putFile(@RequestParam String fileName, @RequestParam MultipartFile file) {
 		BladeFile bladeFile = ossBuilder.template().putFile(fileName, file.getInputStream());
-		return R.data(ossBuilder.template().statFile(bladeFile.getName()));
+		return R.data(bladeFile);
 	}
 
 	/**
