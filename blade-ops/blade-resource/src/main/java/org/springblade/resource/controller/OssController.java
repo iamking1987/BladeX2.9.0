@@ -25,8 +25,10 @@ import org.springblade.core.boot.ctrl.BladeController;
 import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
+import org.springblade.core.secure.annotation.PreAuth;
 import org.springblade.core.secure.utils.SecureUtil;
 import org.springblade.core.tool.api.R;
+import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.resource.builder.OssBuilder;
 import org.springblade.resource.entity.Oss;
@@ -48,6 +50,7 @@ import static org.springblade.core.cache.constant.CacheConstant.SYS_CACHE;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/oss")
+@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
 @Api(value = "对象存储接口", tags = "接口")
 public class OssController extends BladeController {
 
