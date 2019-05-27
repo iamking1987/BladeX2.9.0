@@ -50,7 +50,7 @@ public class OssConfiguration {
 
 	@Bean
 	@ConditionalOnBean(OssRule.class)
-	public OssBuilder ossStorage(OssRule ossRule) {
+	public OssBuilder ossBuilder(OssRule ossRule) {
 		return new OssBuilder(ossProperties, ossMapper, ossRule);
 	}
 
