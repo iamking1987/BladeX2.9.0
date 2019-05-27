@@ -17,14 +17,10 @@
 package org.springblade.resource.config;
 
 import lombok.AllArgsConstructor;
-import org.springblade.core.minio.rule.BladeMinioRule;
+import org.springblade.core.oss.props.OssProperties;
 import org.springblade.core.oss.rule.OssRule;
 import org.springblade.resource.builder.OssBuilder;
 import org.springblade.resource.mapper.OssMapper;
-import org.springblade.resource.props.OssProperties;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,22 +31,16 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @AllArgsConstructor
-@EnableConfigurationProperties(OssProperties.class)
 public class OssConfiguration {
 
 	private OssProperties ossProperties;
 
 	private OssMapper ossMapper;
 
-	@Bean
-	@ConditionalOnMissingBean(OssRule.class)
-	public OssRule ossRule() {
-		return new BladeMinioRule(true);
-	}
+	private OssRule ossRule;
 
 	@Bean
-	@ConditionalOnBean(OssRule.class)
-	public OssBuilder ossBuilder(OssRule ossRule) {
+	public OssBuilder ossBuilder() {
 		return new OssBuilder(ossProperties, ossMapper, ossRule);
 	}
 
