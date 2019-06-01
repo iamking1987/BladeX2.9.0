@@ -49,15 +49,15 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 	@SneakyThrows
 	public UserDetails loadUserByUsername(String username) {
 		HttpServletRequest request = WebUtil.getRequest();
-		String tenantCode = Func.toStr(request.getHeader(TokenUtil.TENANT_HEADER_KEY), TokenUtil.DEFAULT_TENANT_CODE);
-		R<UserInfo> result = userClient.userInfo(tenantCode, username);
+		String tenantId = Func.toStr(request.getHeader(TokenUtil.TENANT_HEADER_KEY), TokenUtil.DEFAULT_TENANT_ID);
+		R<UserInfo> result = userClient.userInfo(tenantId, username);
 		if (result.isSuccess()) {
 			User user = result.getData().getUser();
 			if (user == null) {
 				throw new UsernameNotFoundException(TokenUtil.USER_NOT_FOUND);
 			}
 			return new BladeUserDetails(user.getId(),
-				user.getTenantCode(), user.getName(), user.getRoleId(), Func.join(result.getData().getRoles()), TokenUtil.DEFAULT_AVATAR,
+				user.getTenantId(), user.getName(), user.getRoleId(), Func.join(result.getData().getRoles()), TokenUtil.DEFAULT_AVATAR,
 				username, AuthConstant.ENCRYPT + user.getPassword(), true, true, true, true,
 				AuthorityUtils.commaSeparatedStringToAuthorityList(Func.join(result.getData().getRoles())));
 		} else {

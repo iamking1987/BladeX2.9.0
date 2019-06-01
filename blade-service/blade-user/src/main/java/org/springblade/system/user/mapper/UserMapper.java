@@ -41,11 +41,11 @@ public interface UserMapper extends BaseMapper<User> {
 	/**
 	 * 获取用户
 	 *
-	 * @param tenantCode
+	 * @param tenantId
 	 * @param account
 	 * @return
 	 */
-	User getUser(String tenantCode, String account);
+	User getUser(String tenantId, String account);
 
 	/**
 	 * 获取角色名

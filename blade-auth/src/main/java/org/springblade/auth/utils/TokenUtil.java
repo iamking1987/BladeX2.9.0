@@ -41,14 +41,14 @@ public class TokenUtil {
 	public final static String USER_ID = TokenConstant.USER_ID;
 	public final static String ROLE_ID = TokenConstant.ROLE_ID;
 	public final static String ROLE_NAME = TokenConstant.ROLE_NAME;
-	public final static String TENANT_CODE = TokenConstant.TENANT_CODE;
+	public final static String TENANT_ID = TokenConstant.TENANT_ID;
 	public final static String CLIENT_ID = TokenConstant.CLIENT_ID;
 	public final static String LICENSE = TokenConstant.LICENSE;
 	public final static String LICENSE_NAME = TokenConstant.LICENSE_NAME;
 
 
-	public final static String TENANT_HEADER_KEY = "Tenant-Code";
-	public final static String DEFAULT_TENANT_CODE = "000000";
+	public final static String TENANT_HEADER_KEY = "Tenant-Id";
+	public final static String DEFAULT_TENANT_ID = "000000";
 	public final static String USER_NOT_FOUND = "用户名或密码错误";
 	public final static String HEADER_KEY = "Authorization";
 	public final static String HEADER_PREFIX = "Basic ";

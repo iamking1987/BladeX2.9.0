@@ -43,8 +43,8 @@ public class UserClient implements IUserClient {
 
 	@Override
 	@GetMapping(USER_INFO)
-	public R<UserInfo> userInfo(String tenantCode, String account) {
-		return R.data(service.userInfo(tenantCode, account));
+	public R<UserInfo> userInfo(String tenantId, String account) {
+		return R.data(service.userInfo(tenantId, account));
 	}
 
 }

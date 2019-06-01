@@ -35,9 +35,9 @@ public class BladeUserDetails extends User {
 	 */
 	private Long userId;
 	/**
-	 * 租户编号
+	 * 租户ID
 	 */
-	private String tenantCode;
+	private String tenantId;
 	/**
 	 * 昵称
 	 */
@@ -59,10 +59,10 @@ public class BladeUserDetails extends User {
 	 */
 	private String avatar;
 
-	BladeUserDetails(Long userId, String tenantCode, String name, String roleId, String roleName, String avatar, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+	BladeUserDetails(Long userId, String tenantId, String name, String roleId, String roleName, String avatar, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.userId = userId;
-		this.tenantCode = tenantCode;
+		this.tenantId = tenantId;
 		this.name = name;
 		this.account = username;
 		this.roleId = roleId;
