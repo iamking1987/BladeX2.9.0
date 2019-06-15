@@ -59,7 +59,7 @@ public class BladeUserDetails extends User {
 	 */
 	private String avatar;
 
-	BladeUserDetails(Long userId, String tenantId, String name, String roleId, String roleName, String avatar, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+	public BladeUserDetails(Long userId, String tenantId, String name, String roleId, String roleName, String avatar, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.userId = userId;
 		this.tenantId = tenantId;

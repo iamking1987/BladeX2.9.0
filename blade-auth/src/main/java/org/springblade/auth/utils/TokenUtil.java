@@ -49,6 +49,8 @@ public class TokenUtil {
 
 	public final static String TENANT_HEADER_KEY = "Tenant-Id";
 	public final static String DEFAULT_TENANT_ID = "000000";
+	public final static String USER_TYPE_HEADER_KEY = "User-Type";
+	public final static String DEFAULT_USER_TYPE = "web";
 	public final static String USER_NOT_FOUND = "用户名或密码错误";
 	public final static String HEADER_KEY = "Authorization";
 	public final static String HEADER_PREFIX = "Basic ";

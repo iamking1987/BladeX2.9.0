@@ -19,6 +19,7 @@ package org.springblade.auth.service;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springblade.auth.constant.AuthConstant;
+import org.springblade.auth.enums.BladeUserEnum;
 import org.springblade.auth.utils.TokenUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.Func;
@@ -49,8 +50,23 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 	@SneakyThrows
 	public UserDetails loadUserByUsername(String username) {
 		HttpServletRequest request = WebUtil.getRequest();
+		// 获取租户
 		String tenantId = Func.toStr(request.getHeader(TokenUtil.TENANT_HEADER_KEY), TokenUtil.DEFAULT_TENANT_ID);
-		R<UserInfo> result = userClient.userInfo(tenantId, username);
+		// 获取用户类型
+		String userType = Func.toStr(request.getHeader(TokenUtil.USER_TYPE_HEADER_KEY), TokenUtil.DEFAULT_USER_TYPE);
+
+		// 远程调用返回数据
+		R<UserInfo> result;
+		// 根据不同用户类型调用对应的接口返回数据，用户可自行拓展
+		if (userType.equals(BladeUserEnum.WEB.getName())) {
+			result = userClient.userInfo(tenantId, username);
+		} else if (userType.equals(BladeUserEnum.APP.getName())) {
+			result = userClient.userInfo(tenantId, username);
+		} else {
+			result = userClient.userInfo(tenantId, username);
+		}
+
+		// 判断返回信息
 		if (result.isSuccess()) {
 			User user = result.getData().getUser();
 			if (user == null) {
