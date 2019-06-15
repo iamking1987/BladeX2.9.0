@@ -18,6 +18,7 @@ package org.springblade.auth.support;
 
 import org.springblade.auth.service.BladeUserDetails;
 import org.springblade.auth.utils.TokenUtil;
+import org.springblade.core.tool.utils.Func;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -37,8 +38,8 @@ public class BladeJwtTokenEnhancer implements TokenEnhancer {
 		BladeUserDetails principal = (BladeUserDetails) authentication.getUserAuthentication().getPrincipal();
 		Map<String, Object> info = new HashMap<>(16);
 		info.put(TokenUtil.CLIENT_ID, TokenUtil.getClientIdFromHeader());
-		info.put(TokenUtil.USER_ID, principal.getUserId());
-		info.put(TokenUtil.ROLE_ID, principal.getRoleId());
+		info.put(TokenUtil.USER_ID, Func.toStr(principal.getUserId()));
+		info.put(TokenUtil.ROLE_ID, Func.toStr(principal.getRoleId()));
 		info.put(TokenUtil.TENANT_ID, principal.getTenantId());
 		info.put(TokenUtil.ACCOUNT, principal.getAccount());
 		info.put(TokenUtil.USER_NAME, principal.getUsername());

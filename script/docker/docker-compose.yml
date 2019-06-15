@@ -147,6 +147,13 @@ services:
     networks:
       - blade_net
 
+  blade-resource:
+    image: "${REGISTER}/blade/blade-resource:${TAG}"
+    privileged: true
+    restart: always
+    networks:
+      - blade_net
+
 networks:
   blade_net:
     driver: bridge
