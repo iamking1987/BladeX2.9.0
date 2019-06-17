@@ -25,8 +25,10 @@ import org.springblade.core.boot.ctrl.BladeController;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
 import org.springblade.core.secure.BladeUser;
+import org.springblade.core.secure.annotation.PreAuth;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
+import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.system.entity.Tenant;
 import org.springblade.system.service.ITenantService;
@@ -47,6 +49,7 @@ import java.util.Map;
 @RequestMapping("/tenant")
 @ApiIgnore
 @Api(value = "租户管理", tags = "接口")
+@PreAuth(RoleConstant.HAS_ROLE_ADMINISTRATOR)
 public class TenantController extends BladeController {
 
 	private ITenantService tenantService;
