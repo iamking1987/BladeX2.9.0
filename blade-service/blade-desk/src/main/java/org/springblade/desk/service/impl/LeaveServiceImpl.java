@@ -23,6 +23,7 @@ import org.springblade.core.mp.base.BaseServiceImpl;
 import org.springblade.core.secure.utils.SecureUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.support.Kv;
+import org.springblade.core.tool.utils.DateUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.desk.entity.ProcessLeave;
 import org.springblade.desk.mapper.LeaveMapper;
@@ -35,8 +36,7 @@ import org.springblade.flow.core.utils.TaskUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 服务实现类
@@ -56,13 +56,13 @@ public class LeaveServiceImpl extends BaseServiceImpl<LeaveMapper, ProcessLeave>
 		String businessTable = FlowUtil.getBusinessTable(ProcessConstant.LEAVE_KEY);
 		if (Func.isEmpty(leave.getId())) {
 			// 保存leave
-			leave.setApplyTime(LocalDateTime.now());
+			leave.setApplyTime(DateUtil.now());
 			save(leave);
 			// 启动流程
 			Kv variables = Kv.create()
 				.set(ProcessConstant.TASK_VARIABLE_CREATE_USER, SecureUtil.getUserName())
 				.set("taskUser", TaskUtil.getTaskUser(leave.getTaskUser()))
-				.set("days", Duration.between(leave.getStartTime(), leave.getEndTime()).toDays());
+				.set("days", DateUtil.between(leave.getStartTime(), leave.getEndTime()).toDays());
 			R<BladeFlow> result = flowClient.startProcessInstanceById(leave.getProcessDefinitionId(), FlowUtil.getBusinessKey(businessTable, String.valueOf(leave.getId())), variables);
 			if (result.isSuccess()) {
 				log.debug("流程已启动,流程ID:" + result.getData().getProcessInstanceId());
