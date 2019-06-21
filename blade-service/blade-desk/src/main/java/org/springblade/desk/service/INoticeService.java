@@ -19,6 +19,7 @@ package org.springblade.desk.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springblade.core.mp.base.BaseService;
 import org.springblade.desk.entity.Notice;
+import org.springblade.desk.vo.NoticeVO;
 
 /**
  * 服务类
@@ -33,6 +34,6 @@ public interface INoticeService extends BaseService<Notice> {
 	 * @param notice
 	 * @return
 	 */
-	IPage<Notice> selectNoticePage(IPage<Notice> page, Notice notice);
+	IPage<NoticeVO> selectNoticePage(IPage<NoticeVO> page, NoticeVO notice);
 
 }

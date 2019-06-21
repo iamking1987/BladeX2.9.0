@@ -39,6 +39,7 @@ public class BladeJwtTokenEnhancer implements TokenEnhancer {
 		Map<String, Object> info = new HashMap<>(16);
 		info.put(TokenUtil.CLIENT_ID, TokenUtil.getClientIdFromHeader());
 		info.put(TokenUtil.USER_ID, Func.toStr(principal.getUserId()));
+		info.put(TokenUtil.DEPT_ID, Func.toStr(principal.getDeptId()));
 		info.put(TokenUtil.ROLE_ID, Func.toStr(principal.getRoleId()));
 		info.put(TokenUtil.TENANT_ID, principal.getTenantId());
 		info.put(TokenUtil.ACCOUNT, principal.getAccount());
