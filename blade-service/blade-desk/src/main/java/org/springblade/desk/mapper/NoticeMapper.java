@@ -44,7 +44,7 @@ public interface NoticeMapper extends BaseMapper<Notice> {
 	 * @param notice
 	 * @return
 	 */
-	@DataAuth(resourceCode = "notice")
+	@DataAuth(code = "desk")
 	List<NoticeVO> selectNoticePage(IPage page, NoticeVO notice);
 
 }
