@@ -60,7 +60,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 	public List<RoleVO> tree(String tenantId) {
 		String userRole = SecureUtil.getUserRole();
 		String excludeRole = null;
-		if (!CollectionUtil.contains(Func.toStrArray(userRole), RoleConstant.ADMINISTRATOR) && !CollectionUtil.contains(Func.toStrArray(userRole), RoleConstant.ADMINISTRATOR)) {
+		if (!CollectionUtil.contains(Func.toStrArray(userRole), RoleConstant.ADMIN) && !CollectionUtil.contains(Func.toStrArray(userRole), RoleConstant.ADMINISTRATOR)) {
 			excludeRole = RoleConstant.ADMINISTRATOR;
 		}
 		return ForestNodeMerger.merge(baseMapper.tree(tenantId, excludeRole));
