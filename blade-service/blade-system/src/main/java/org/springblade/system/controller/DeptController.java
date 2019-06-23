@@ -103,7 +103,7 @@ public class DeptController extends BladeController {
 		if (Func.isEmpty(dept.getId())) {
 			dept.setTenantId(user.getTenantId());
 		}
-		return R.status(deptService.saveOrUpdate(dept));
+		return R.status(deptService.submit(dept));
 	}
 
 	/**

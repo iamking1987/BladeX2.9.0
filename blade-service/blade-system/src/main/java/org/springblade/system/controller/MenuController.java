@@ -28,6 +28,8 @@ import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.system.entity.Menu;
 import org.springblade.system.service.IMenuService;
+import org.springblade.system.vo.CheckedTreeVO;
+import org.springblade.system.vo.GrantTreeVO;
 import org.springblade.system.vo.MenuVO;
 import org.springblade.system.wrapper.MenuWrapper;
 import org.springframework.cache.annotation.CacheEvict;
@@ -139,8 +141,11 @@ public class MenuController extends BladeController {
 	 */
 	@GetMapping("/grant-tree")
 	@ApiOperation(value = "权限分配树形结构", notes = "权限分配树形结构", position = 6)
-	public R<List<MenuVO>> grantTree(BladeUser user) {
-		return R.data(menuService.grantTree(user));
+	public R<GrantTreeVO> grantTree(BladeUser user) {
+		GrantTreeVO vo = new GrantTreeVO();
+		vo.setMenu(menuService.grantTree(user));
+		vo.setScope(menuService.grantScopeTree(user));
+		return R.data(vo);
 	}
 
 	/**
@@ -148,8 +153,11 @@ public class MenuController extends BladeController {
 	 */
 	@GetMapping("/role-tree-keys")
 	@ApiOperation(value = "角色所分配的树", notes = "角色所分配的树", position = 7)
-	public R<List<String>> roleTreeKeys(String roleIds) {
-		return R.data(menuService.roleTreeKeys(roleIds));
+	public R<CheckedTreeVO> roleTreeKeys(String roleIds) {
+		CheckedTreeVO vo = new CheckedTreeVO();
+		vo.setMenu(menuService.roleTreeKeys(roleIds));
+		vo.setScope(menuService.scopeTreeKeys(roleIds));
+		return R.data(vo);
 	}
 
 	/**

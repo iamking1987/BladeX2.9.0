@@ -24,6 +24,7 @@ import org.springblade.system.vo.MenuVO;
 
 import java.util.List;
 
+
 /**
  * Mapper 接口
  *
@@ -63,6 +64,21 @@ public interface MenuMapper extends BaseMapper<Menu> {
 	List<MenuVO> grantTreeByRole(List<Long> roleId);
 
 	/**
+	 * 数据权限授权树形结构
+	 *
+	 * @return
+	 */
+	List<MenuVO> grantScopeTree();
+
+	/**
+	 * 数据权限授权树形结构
+	 *
+	 * @param roleId
+	 * @return
+	 */
+	List<MenuVO> grantScopeTreeByRole(List<Long> roleId);
+
+	/**
 	 * 所有菜单
 	 *
 	 * @return
@@ -95,7 +111,6 @@ public interface MenuMapper extends BaseMapper<Menu> {
 
 	/**
 	 * 获取配置的角色权限
-	 *
 	 * @param roleIds
 	 * @return
 	 */

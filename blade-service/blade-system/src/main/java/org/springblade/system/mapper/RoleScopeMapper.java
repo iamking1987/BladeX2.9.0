@@ -14,61 +14,16 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.system.service;
+package org.springblade.system.mapper;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
-import org.springblade.system.entity.Dept;
-import org.springblade.system.vo.DeptVO;
-
-import java.util.List;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springblade.system.entity.RoleScope;
 
 /**
- * 服务类
+ * Mapper 接口
  *
  * @author Chill
  */
-public interface IDeptService extends IService<Dept> {
-
-	/**
-	 * 自定义分页
-	 *
-	 * @param page
-	 * @param dept
-	 * @return
-	 */
-	IPage<DeptVO> selectDeptPage(IPage<DeptVO> page, DeptVO dept);
-
-	/**
-	 * 树形结构
-	 *
-	 * @param tenantId
-	 * @return
-	 */
-	List<DeptVO> tree(String tenantId);
-
-	/**
-	 * 获取部门名
-	 *
-	 * @param deptIds
-	 * @return
-	 */
-	List<String> getDeptNames(String deptIds);
-
-	/**
-	 * 删除部门
-	 *
-	 * @param ids
-	 * @return
-	 */
-	boolean removeDept(String ids);
-
-	/**
-	 * 提交
-	 *
-	 * @param dept
-	 * @return
-	 */
-	boolean submit(Dept dept);
+public interface RoleScopeMapper extends BaseMapper<RoleScope> {
 
 }

@@ -30,9 +30,11 @@ import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.system.dto.MenuDTO;
 import org.springblade.system.entity.Menu;
 import org.springblade.system.entity.RoleMenu;
+import org.springblade.system.entity.RoleScope;
 import org.springblade.system.mapper.MenuMapper;
 import org.springblade.system.service.IMenuService;
 import org.springblade.system.service.IRoleMenuService;
+import org.springblade.system.service.IRoleScopeService;
 import org.springblade.system.vo.MenuVO;
 import org.springblade.system.wrapper.MenuWrapper;
 import org.springframework.cache.annotation.Cacheable;
@@ -53,6 +55,7 @@ import static org.springblade.core.cache.constant.CacheConstant.MENU_CACHE;
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IMenuService {
 
 	private IRoleMenuService roleMenuService;
+	private IRoleScopeService roleScopeService;
 
 	@Override
 	public IPage<MenuVO> selectMenuPage(IPage<MenuVO> page, MenuVO menu) {
@@ -66,6 +69,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 		}
 		List<Menu> allMenus = baseMapper.allMenu();
 		List<Menu> roleMenus = baseMapper.roleMenu(Func.toLongList(roleId));
+		return buildRoutes(allMenus, roleMenus);
+	}
+
+	private List<MenuVO> buildRoutes(List<Menu> allMenus, List<Menu> roleMenus) {
 		List<Menu> routes = new LinkedList<>(roleMenus);
 		roleMenus.forEach(roleMenu -> recursion(allMenus, routes, roleMenu));
 		routes.sort(Comparator.comparing(Menu::getSort));
@@ -74,7 +81,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 		return menuWrapper.listNodeVO(collect);
 	}
 
-	public void recursion(List<Menu> allMenus, List<Menu> routes, Menu roleMenu) {
+	private void recursion(List<Menu> allMenus, List<Menu> routes, Menu roleMenu) {
 		Optional<Menu> menu = allMenus.stream().filter(x -> Func.equals(x.getId(), roleMenu.getParentId())).findFirst();
 		if (menu.isPresent() && !routes.contains(menu.get())) {
 			routes.add(menu.get());
@@ -100,9 +107,20 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 	}
 
 	@Override
+	public List<MenuVO> grantScopeTree(BladeUser user) {
+		return ForestNodeMerger.merge(user.getTenantId().equals(BladeConstant.ADMIN_TENANT_ID) ? baseMapper.grantScopeTree() : baseMapper.grantScopeTreeByRole(Func.toLongList(user.getRoleId())));
+	}
+
+	@Override
 	public List<String> roleTreeKeys(String roleIds) {
 		List<RoleMenu> roleMenus = roleMenuService.list(Wrappers.<RoleMenu>query().lambda().in(RoleMenu::getRoleId, Func.toLongList(roleIds)));
 		return roleMenus.stream().map(roleMenu -> Func.toStr(roleMenu.getMenuId())).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<String> scopeTreeKeys(String roleIds) {
+		List<RoleScope> roleScopes = roleScopeService.list(Wrappers.<RoleScope>query().lambda().in(RoleScope::getRoleId, Func.toLongList(roleIds)));
+		return roleScopes.stream().map(roleScope -> Func.toStr(roleScope.getScopeId())).collect(Collectors.toList());
 	}
 
 	@Override

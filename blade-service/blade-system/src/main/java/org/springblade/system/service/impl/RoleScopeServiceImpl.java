@@ -14,61 +14,20 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.system.service;
+package org.springblade.system.service.impl;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
-import org.springblade.system.entity.Dept;
-import org.springblade.system.vo.DeptVO;
-
-import java.util.List;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springblade.system.entity.RoleScope;
+import org.springblade.system.mapper.RoleScopeMapper;
+import org.springblade.system.service.IRoleScopeService;
+import org.springframework.stereotype.Service;
 
 /**
- * 服务类
+ * 服务实现类
  *
  * @author Chill
  */
-public interface IDeptService extends IService<Dept> {
-
-	/**
-	 * 自定义分页
-	 *
-	 * @param page
-	 * @param dept
-	 * @return
-	 */
-	IPage<DeptVO> selectDeptPage(IPage<DeptVO> page, DeptVO dept);
-
-	/**
-	 * 树形结构
-	 *
-	 * @param tenantId
-	 * @return
-	 */
-	List<DeptVO> tree(String tenantId);
-
-	/**
-	 * 获取部门名
-	 *
-	 * @param deptIds
-	 * @return
-	 */
-	List<String> getDeptNames(String deptIds);
-
-	/**
-	 * 删除部门
-	 *
-	 * @param ids
-	 * @return
-	 */
-	boolean removeDept(String ids);
-
-	/**
-	 * 提交
-	 *
-	 * @param dept
-	 * @return
-	 */
-	boolean submit(Dept dept);
+@Service
+public class RoleScopeServiceImpl extends ServiceImpl<RoleScopeMapper, RoleScope> implements IRoleScopeService {
 
 }

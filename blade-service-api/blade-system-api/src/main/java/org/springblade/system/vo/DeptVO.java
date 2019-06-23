@@ -66,8 +66,13 @@ public class DeptVO extends Dept implements INode {
 	}
 
 	/**
-	 * 上级部门
+	 * 上级机构
 	 */
 	private String parentName;
+
+	/**
+	 * 机构类型名称
+	 */
+	private String deptCategoryName;
 
 }
