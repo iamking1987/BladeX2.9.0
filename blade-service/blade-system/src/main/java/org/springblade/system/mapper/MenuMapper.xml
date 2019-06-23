@@ -222,7 +222,7 @@
           AND menu_id IS NOT NULL
     </select>
 
-    <select id="authRoutes" resultType="org.springblade.modules.system.dto.MenuDTO">
+    <select id="authRoutes" resultType="org.springblade.system.dto.MenuDTO">
         SELECT
             GROUP_CONCAT(r.role_alias) as alias,
             m.path

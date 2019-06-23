@@ -41,6 +41,7 @@ public class DictClient implements IDictClient {
 	private IDictService service;
 
 	@Override
+	@GetMapping(GET_BY_ID)
 	public R<Dict> getById(Long id) {
 		return R.data(service.getById(id));
 	}
