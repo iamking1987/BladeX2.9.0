@@ -30,6 +30,7 @@ import org.springblade.system.entity.RoleMenu;
 import org.springblade.system.entity.RoleScope;
 import org.springblade.system.mapper.RoleMapper;
 import org.springblade.system.service.IRoleMenuService;
+import org.springblade.system.service.IRoleScopeService;
 import org.springblade.system.service.IRoleService;
 import org.springblade.system.vo.RoleVO;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,8 @@ import java.util.List;
 @AllArgsConstructor
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
-	IRoleMenuService roleMenuService;
+	private IRoleMenuService roleMenuService;
+	private IRoleScopeService roleScopeService;
 
 	@Override
 	public IPage<RoleVO> selectRolePage(IPage<RoleVO> page, RoleVO role) {
