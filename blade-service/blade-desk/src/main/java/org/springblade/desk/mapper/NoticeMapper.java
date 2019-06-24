@@ -18,7 +18,6 @@ package org.springblade.desk.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.springblade.core.datascope.annotation.DataAuth;
 import org.springblade.desk.entity.Notice;
 import org.springblade.desk.vo.NoticeVO;
 
@@ -33,18 +32,19 @@ public interface NoticeMapper extends BaseMapper<Notice> {
 
 	/**
 	 * 前N条数据
-	 * @param number
-	 * @return
+	 *
+	 * @param number 数量
+	 * @return List<Notice>
 	 */
 	List<Notice> topList(Integer number);
 
 	/**
 	 * 自定义分页
-	 * @param page
-	 * @param notice
-	 * @return
+	 *
+	 * @param page   分页
+	 * @param notice 实体
+	 * @return List<NoticeVO>
 	 */
-	@DataAuth(code = "desk")
 	List<NoticeVO> selectNoticePage(IPage page, NoticeVO notice);
 
 }
