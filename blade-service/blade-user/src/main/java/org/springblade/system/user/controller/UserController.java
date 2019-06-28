@@ -19,10 +19,7 @@ package org.springblade.system.user.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
@@ -60,7 +57,8 @@ public class UserController {
 	/**
 	 * 查询单条
 	 */
-	@ApiOperation(value = "查看详情", notes = "传入id", position = 1)
+	@ApiOperationSupport(order = 1)
+	@ApiOperation(value = "查看详情", notes = "传入id")
 	@GetMapping("/detail")
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
 	public R<UserVO> detail(User user) {
@@ -76,7 +74,8 @@ public class UserController {
 		@ApiImplicitParam(name = "account", value = "账号名", paramType = "query", dataType = "string"),
 		@ApiImplicitParam(name = "realName", value = "姓名", paramType = "query", dataType = "string")
 	})
-	@ApiOperation(value = "列表", notes = "传入account和realName", position = 2)
+	@ApiOperationSupport(order = 2)
+	@ApiOperation(value = "列表", notes = "传入account和realName")
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
 	public R<IPage<UserVO>> list(@ApiIgnore @RequestParam Map<String, Object> user, Query query, BladeUser bladeUser) {
 		QueryWrapper<User> queryWrapper = Condition.getQueryWrapper(user, User.class);
@@ -88,9 +87,10 @@ public class UserController {
 	 * 新增或修改
 	 */
 	@PostMapping("/submit")
-	@ApiOperation(value = "新增或修改", notes = "传入User", position = 3)
+	@ApiOperationSupport(order = 3)
+	@ApiOperation(value = "新增或修改", notes = "传入User")
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
-	@CacheEvict(cacheNames = {USER_CACHE})
+	@CacheEvict(cacheNames = {USER_CACHE}, allEntries = true)
 	public R submit(@Valid @RequestBody User user) {
 		return R.status(userService.submit(user));
 	}
@@ -99,9 +99,10 @@ public class UserController {
 	 * 修改
 	 */
 	@PostMapping("/update")
-	@ApiOperation(value = "修改", notes = "传入User", position = 4)
+	@ApiOperationSupport(order = 4)
+	@ApiOperation(value = "修改", notes = "传入User")
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
-	@CacheEvict(cacheNames = {USER_CACHE})
+	@CacheEvict(cacheNames = {USER_CACHE}, allEntries = true)
 	public R update(@Valid @RequestBody User user) {
 		return R.status(userService.updateById(user));
 	}
@@ -110,9 +111,10 @@ public class UserController {
 	 * 删除
 	 */
 	@PostMapping("/remove")
-	@ApiOperation(value = "删除", notes = "传入id集合", position = 5)
+	@ApiOperationSupport(order = 5)
+	@ApiOperation(value = "删除", notes = "传入id集合")
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
-	@CacheEvict(cacheNames = {USER_CACHE})
+	@CacheEvict(cacheNames = {USER_CACHE}, allEntries = true)
 	public R remove(@RequestParam String ids) {
 		return R.status(userService.removeUser(ids));
 	}
@@ -125,7 +127,8 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping("/grant")
-	@ApiOperation(value = "权限设置", notes = "传入roleId集合以及menuId集合", position = 6)
+	@ApiOperationSupport(order = 6)
+	@ApiOperation(value = "权限设置", notes = "传入roleId集合以及menuId集合")
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
 	public R grant(@ApiParam(value = "userId集合", required = true) @RequestParam String userIds,
 				   @ApiParam(value = "roleId集合", required = true) @RequestParam String roleIds) {
@@ -134,7 +137,8 @@ public class UserController {
 	}
 
 	@PostMapping("/reset-password")
-	@ApiOperation(value = "初始化密码", notes = "传入userId集合", position = 7)
+	@ApiOperationSupport(order = 7)
+	@ApiOperation(value = "初始化密码", notes = "传入userId集合")
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
 	public R resetPassword(@ApiParam(value = "userId集合", required = true) @RequestParam String userIds) {
 		boolean temp = userService.resetPassword(userIds);
@@ -148,7 +152,8 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("/user-list")
-	@ApiOperation(value = "用户列表", notes = "传入user", position = 8)
+	@ApiOperationSupport(order = 8)
+	@ApiOperation(value = "用户列表", notes = "传入user")
 	public R<List<User>> userList(User user) {
 		List<User> list = userService.list(Condition.getQueryWrapper(user));
 		return R.data(list);
