@@ -47,7 +47,7 @@ import static org.springblade.core.cache.constant.CacheConstant.SYS_CACHE;
 @RestController
 @AllArgsConstructor
 @RequestMapping("data-scope")
-@Api(value = "数据权限", tags = "接口")
+@Api(value = "数据权限", tags = "数据权限")
 public class DataScopeController extends BladeController {
 
 	private IDataScopeService dataScopeService;
