@@ -39,6 +39,11 @@
             <artifactId>blade-dict-api</artifactId>
             <version>${bladex.tool.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-datascope-api</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
