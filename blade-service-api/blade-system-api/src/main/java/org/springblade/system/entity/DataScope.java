@@ -30,7 +30,7 @@ import org.springblade.core.mp.base.BaseEntity;
  * @since 2019-06-23
  */
 @Data
-@TableName("blade_data_scope")
+@TableName("blade_scope_data")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "DataScope对象", description = "DataScope对象")
 public class DataScope extends BaseEntity {

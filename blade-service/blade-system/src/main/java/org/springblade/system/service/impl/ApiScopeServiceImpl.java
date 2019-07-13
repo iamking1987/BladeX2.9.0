@@ -14,24 +14,21 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.system.vo;
+package org.springblade.system.service.impl;
 
-import lombok.Data;
-
-import java.util.List;
+import org.springblade.core.mp.base.BaseServiceImpl;
+import org.springblade.system.entity.ApiScope;
+import org.springblade.system.mapper.ApiScopeMapper;
+import org.springblade.system.service.IApiScopeService;
+import org.springframework.stereotype.Service;
 
 /**
- * GrantTreeVO
+ * 服务实现类
  *
- * @author Chill
+ * @author BladeX
+ * @since 2019-06-23
  */
-@Data
-public class GrantTreeVO {
-
-	private List<MenuVO> menu;
-
-	private List<MenuVO> dataScope;
-
-	private List<MenuVO> apiScope;
+@Service
+public class ApiScopeServiceImpl extends BaseServiceImpl<ApiScopeMapper, ApiScope> implements IApiScopeService {
 
 }

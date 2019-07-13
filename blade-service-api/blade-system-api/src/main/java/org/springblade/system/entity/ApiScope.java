@@ -16,56 +16,57 @@
  */
 package org.springblade.system.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
+import org.springblade.core.mp.base.BaseEntity;
 
 /**
  * 实体类
  *
- * @author Chill
+ * @author BladeX
+ * @since 2019-06-23
  */
 @Data
-@TableName("blade_role_scope")
-@ApiModel(value = "RoleScope对象", description = "RoleScope对象")
-public class RoleScope implements Serializable {
+@TableName("blade_scope_api")
+@EqualsAndHashCode(callSuper = true)
+@ApiModel(value = "ApiScope对象", description = "ApiScope对象")
+public class ApiScope extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 主键
+	 * 菜单主键
 	 */
-	@JsonSerialize(using = ToStringSerializer.class)
-	@ApiModelProperty(value = "主键")
-	@TableId(value = "id", type = IdType.ID_WORKER)
-	private Long id;
-
+	@ApiModelProperty(value = "菜单主键")
+	private Long menuId;
 	/**
-	 * 权限类型
+	 * 资源编号
 	 */
-	@ApiModelProperty(value = "权限类型")
-	private Integer scopeCategory;
-
+	@ApiModelProperty(value = "资源编号")
+	private String resourceCode;
 	/**
-	 * 权限id
+	 * 接口权限名称
 	 */
-	@JsonSerialize(using = ToStringSerializer.class)
-	@ApiModelProperty(value = "权限id")
-	private Long scopeId;
-
+	@ApiModelProperty(value = "接口权限名称")
+	private String scopeName;
 	/**
-	 * 角色id
+	 * 接口权限字段
 	 */
-	@JsonSerialize(using = ToStringSerializer.class)
-	@ApiModelProperty(value = "角色id")
-	private Long roleId;
+	@ApiModelProperty(value = "接口权限字段")
+	private String scopePath;
+	/**
+	 * 接口权限类型
+	 */
+	@ApiModelProperty(value = "接口权限类型")
+	private Integer scopeType;
+	/**
+	 * 接口权限备注
+	 */
+	@ApiModelProperty(value = "接口权限备注")
+	private String remark;
 
 
 }
