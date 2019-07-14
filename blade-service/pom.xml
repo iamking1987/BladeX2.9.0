@@ -41,7 +41,7 @@
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
-            <artifactId>blade-datascope-api</artifactId>
+            <artifactId>blade-scope-api</artifactId>
             <version>${bladex.project.version}</version>
         </dependency>
     </dependencies>

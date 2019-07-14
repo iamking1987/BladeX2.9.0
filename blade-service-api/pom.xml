@@ -18,9 +18,9 @@
     <modules>
         <module>blade-desk-api</module>
         <module>blade-dict-api</module>
+        <module>blade-scope-api</module>
         <module>blade-system-api</module>
         <module>blade-user-api</module>
-        <module>blade-datascope-api</module>
     </modules>
 
     <dependencies>

@@ -25,7 +25,7 @@
             <exclusions>
                 <exclusion>
                     <groupId>org.springblade</groupId>
-                    <artifactId>blade-datascope-api</artifactId>
+                    <artifactId>blade-scope-api</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

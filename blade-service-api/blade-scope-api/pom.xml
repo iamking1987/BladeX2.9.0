@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>blade-datascope-api</artifactId>
+    <artifactId>blade-scope-api</artifactId>
     <name>${project.artifactId}</name>
     <version>${bladex.project.version}</version>
     <packaging>jar</packaging>
