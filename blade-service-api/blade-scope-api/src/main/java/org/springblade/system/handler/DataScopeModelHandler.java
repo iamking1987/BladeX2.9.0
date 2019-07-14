@@ -14,10 +14,10 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.system.rule;
+package org.springblade.system.handler;
 
+import org.springblade.core.datascope.handler.ScopeModelHandler;
 import org.springblade.core.datascope.model.DataScopeModel;
-import org.springblade.core.datascope.rule.ScopeModelRule;
 import org.springblade.system.cache.DataScopeCache;
 
 import java.util.List;
@@ -27,7 +27,7 @@ import java.util.List;
  *
  * @author Chill
  */
-public class DataScopeModelRule implements ScopeModelRule {
+public class DataScopeModelHandler implements ScopeModelHandler {
 
 	/**
 	 * 获取数据权限

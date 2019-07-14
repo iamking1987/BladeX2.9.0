@@ -34,8 +34,8 @@ import static org.springblade.core.cache.constant.CacheConstant.SYS_CACHE;
  */
 public class DataScopeCache {
 
-	private static final String SCOPE_CACHE_CODE = "scope:code:";
-	private static final String SCOPE_CACHE_CLASS = "scope:class:";
+	private static final String SCOPE_CACHE_CODE = "dataScope:code:";
+	private static final String SCOPE_CACHE_CLASS = "dataScope:class:";
 	private static final String DEPT_CACHE_ANCESTORS = "dept:ancestors:";
 
 	private static IDataScopeClient dataScopeClient;
