@@ -17,13 +17,11 @@
 package org.springblade.desk.feign;
 
 import org.springblade.core.launch.constant.AppConstant;
-import org.springblade.core.tool.api.R;
+import org.springblade.core.mp.support.BladePage;
 import org.springblade.desk.entity.Notice;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 /**
  * Notice Feign接口类
@@ -41,10 +39,11 @@ public interface INoticeClient {
 	/**
 	 * 获取notice列表
 	 *
-	 * @param number
+	 * @param current
+	 * @param size
 	 * @return
 	 */
 	@GetMapping(TOP)
-	R<List<Notice>> top(@RequestParam("number") Integer number);
+	BladePage<Notice> top(@RequestParam("current") Integer current, @RequestParam("size") Integer size);
 
 }

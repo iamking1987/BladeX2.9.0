@@ -21,11 +21,14 @@ import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springblade.common.cache.CacheNames;
 import org.springblade.core.boot.ctrl.BladeController;
+import org.springblade.core.mp.support.BladePage;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
+import org.springblade.core.secure.annotation.PreAuth;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.desk.entity.Notice;
+import org.springblade.desk.feign.INoticeClient;
 import org.springblade.desk.service.INoticeService;
 import org.springblade.desk.vo.NoticeVO;
 import org.springblade.desk.wrapper.NoticeWrapper;
@@ -47,9 +50,12 @@ public class NoticeController extends BladeController implements CacheNames {
 
 	private INoticeService noticeService;
 
+	private INoticeClient noticeClient;
+
 	/**
 	 * 详情
 	 */
+	@PreAuth("hasPermission('desk:notice:detail')")
 	@GetMapping("/detail")
 	@ApiOperationSupport(order = 1)
 	@ApiOperation(value = "详情", notes = "传入notice")
@@ -127,6 +133,17 @@ public class NoticeController extends BladeController implements CacheNames {
 	public R remove(@ApiParam(value = "主键集合") @RequestParam String ids) {
 		boolean temp = noticeService.deleteLogic(Func.toLongList(ids));
 		return R.status(temp);
+	}
+
+	/**
+	 * 远程调用分页接口
+	 */
+	@GetMapping("/top")
+	@ApiOperationSupport(order = 8)
+	@ApiOperation(value = "分页远程调用", notes = "传入current,size")
+	public R<BladePage<Notice>> top(@ApiParam(value = "当前页") @RequestParam Integer current, @ApiParam(value = "每页显示条数") @RequestParam Integer size) {
+		BladePage<Notice> page = noticeClient.top(current, size);
+		return R.data(page);
 	}
 
 }

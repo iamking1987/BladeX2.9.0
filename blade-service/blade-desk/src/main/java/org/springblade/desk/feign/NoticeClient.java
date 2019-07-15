@@ -16,15 +16,16 @@
  */
 package org.springblade.desk.feign;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
-import org.springblade.core.tool.api.R;
-import org.springblade.desk.mapper.NoticeMapper;
+import org.springblade.core.mp.support.BladePage;
+import org.springblade.core.mp.support.Condition;
+import org.springblade.core.mp.support.Query;
 import org.springblade.desk.entity.Notice;
+import org.springblade.desk.service.INoticeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
-
-import java.util.List;
 
 /**
  * Notice Feign
@@ -36,12 +37,16 @@ import java.util.List;
 @AllArgsConstructor
 public class NoticeClient implements INoticeClient {
 
-	NoticeMapper mapper;
+	private INoticeService service;
 
 	@Override
 	@GetMapping(TOP)
-	public R<List<Notice>> top(Integer number) {
-		return R.data(mapper.topList(number));
+	public BladePage<Notice> top(Integer current, Integer size) {
+		Query query = new Query();
+		query.setCurrent(current);
+		query.setSize(size);
+		IPage<Notice> page = service.page(Condition.getPage(query));
+		return BladePage.of(page);
 	}
 
 }
