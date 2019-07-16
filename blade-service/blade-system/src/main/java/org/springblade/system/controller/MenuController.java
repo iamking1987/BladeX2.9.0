@@ -27,7 +27,9 @@ import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.system.entity.Menu;
+import org.springblade.system.entity.TopMenu;
 import org.springblade.system.service.IMenuService;
+import org.springblade.system.service.ITopMenuService;
 import org.springblade.system.vo.CheckedTreeVO;
 import org.springblade.system.vo.GrantTreeVO;
 import org.springblade.system.vo.MenuVO;
@@ -55,6 +57,7 @@ import static org.springblade.core.cache.constant.CacheConstant.MENU_CACHE;
 public class MenuController extends BladeController {
 
 	private IMenuService menuService;
+	private ITopMenuService topMenuService;
 
 	/**
 	 * 详情
@@ -131,8 +134,8 @@ public class MenuController extends BladeController {
 	@GetMapping("/routes")
 	@ApiOperationSupport(order = 5)
 	@ApiOperation(value = "前端菜单数据", notes = "前端菜单数据")
-	public R<List<MenuVO>> routes(BladeUser user) {
-		List<MenuVO> list = menuService.routes((user == null) ? null : user.getRoleId());
+	public R<List<MenuVO>> routes(BladeUser user, Long topMenuId) {
+		List<MenuVO> list = menuService.routes((user == null) ? null : user.getRoleId(), topMenuId);
 		return R.data(list);
 	}
 
@@ -211,10 +214,21 @@ public class MenuController extends BladeController {
 	}
 
 	/**
+	 * 顶部菜单数据
+	 */
+	@GetMapping("/top-menu")
+	@ApiOperationSupport(order = 12)
+	@ApiOperation(value = "顶部菜单数据", notes = "顶部菜单数据")
+	public R<List<TopMenu>> topMenu() {
+		List<TopMenu> list = topMenuService.list();
+		return R.data(list);
+	}
+
+	/**
 	 * 获取配置的角色权限
 	 */
 	@GetMapping("auth-routes")
-	@ApiOperationSupport(order = 12)
+	@ApiOperationSupport(order = 13)
 	@ApiOperation(value = "菜单的角色权限")
 	public R<List<Kv>> authRoutes(BladeUser user) {
 		if (Func.isEmpty(user)) {

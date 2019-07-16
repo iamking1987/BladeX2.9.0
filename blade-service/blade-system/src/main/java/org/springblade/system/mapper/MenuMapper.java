@@ -119,9 +119,10 @@ public interface MenuMapper extends BaseMapper<Menu> {
 	 * 权限配置菜单
 	 *
 	 * @param roleId
+	 * @param topMenuId
 	 * @return
 	 */
-	List<Menu> roleMenu(List<Long> roleId);
+	List<Menu> roleMenu(List<Long> roleId, Long topMenuId);
 
 	/**
 	 * 菜单树形结构
