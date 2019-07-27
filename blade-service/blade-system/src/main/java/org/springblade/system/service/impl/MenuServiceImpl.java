@@ -22,7 +22,9 @@ import com.baomidou.mybatisplus.extension.exceptions.ApiException;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springblade.core.secure.BladeUser;
+import org.springblade.core.secure.utils.SecureUtil;
 import org.springblade.core.tool.constant.BladeConstant;
+import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.node.ForestNodeMerger;
 import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.Func;
@@ -70,6 +72,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 		if (StringUtil.isBlank(roleId)) {
 			return null;
 		}
+		String userRole = SecureUtil.getUserRole();
+		boolean isAdministrator = StringUtil.containsAny(userRole, RoleConstant.ADMINISTRATOR);
 		List<Menu> allMenus = baseMapper.allMenu();
 		List<Menu> roleMenus = baseMapper.roleMenu(Func.toLongList(roleId), topMenuId);
 		return buildRoutes(allMenus, roleMenus);
