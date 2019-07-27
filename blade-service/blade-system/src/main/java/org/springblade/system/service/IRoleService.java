@@ -75,4 +75,12 @@ public interface IRoleService extends IService<Role> {
 	 */
 	List<String> getRoleAliases(String roleIds);
 
+	/**
+	 * 提交
+	 *
+	 * @param role
+	 * @return
+	 */
+	boolean submit(Role role);
+
 }

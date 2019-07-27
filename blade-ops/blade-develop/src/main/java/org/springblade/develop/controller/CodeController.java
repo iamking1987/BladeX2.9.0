@@ -84,7 +84,7 @@ public class CodeController extends BladeController {
 	@ApiOperationSupport(order = 3)
 	@ApiOperation(value = "新增或修改", notes = "传入code")
 	public R submit(@Valid @RequestBody Code code) {
-		return R.status(codeService.saveOrUpdate(code));
+		return R.status(codeService.submit(code));
 	}
 
 

@@ -27,4 +27,12 @@ import org.springblade.develop.entity.Code;
  */
 public interface ICodeService extends IService<Code> {
 
+	/**
+	 * 提交
+	 *
+	 * @param code
+	 * @return
+	 */
+	boolean submit(Code code);
+
 }
