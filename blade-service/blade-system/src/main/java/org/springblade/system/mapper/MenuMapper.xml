@@ -71,8 +71,8 @@
             SELECT
                 id,
                 parent_id,
-                `code`,
-                `name`,
+                code,
+                name,
                 alias,
                 path,
                 source,
@@ -94,8 +94,8 @@
             SELECT
                 id,
                 parent_id,
-                `code`,
-                `name`,
+                code,
+                name,
                 alias,
                 path,
                 source,

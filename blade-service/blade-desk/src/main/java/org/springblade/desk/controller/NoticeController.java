@@ -24,7 +24,6 @@ import org.springblade.core.boot.ctrl.BladeController;
 import org.springblade.core.mp.support.BladePage;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
-import org.springblade.core.secure.annotation.PreAuth;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.desk.entity.Notice;
@@ -55,7 +54,6 @@ public class NoticeController extends BladeController implements CacheNames {
 	/**
 	 * 详情
 	 */
-	@PreAuth("hasPermission('desk:notice:detail')")
 	@GetMapping("/detail")
 	@ApiOperationSupport(order = 1)
 	@ApiOperation(value = "详情", notes = "传入notice")
