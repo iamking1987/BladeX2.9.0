@@ -135,6 +135,13 @@ public interface MenuMapper extends BaseMapper<Menu> {
 	/**
 	 * 按钮树形结构
 	 *
+	 * @return
+	 */
+	List<Menu> allButtons();
+
+	/**
+	 * 按钮树形结构
+	 *
 	 * @param roleId
 	 * @return
 	 */
@@ -142,6 +149,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
 
 	/**
 	 * 获取配置的角色权限
+	 *
 	 * @param roleIds
 	 * @return
 	 */
