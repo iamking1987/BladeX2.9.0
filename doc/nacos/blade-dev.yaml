@@ -36,8 +36,8 @@ blade:
       #username: postgres
       #password: 123456
       # Oracle
-      #url: jdbc:oracle:thin:@127.0.0.1:49161:xe
-      #username: BLADEX_BOOT
+      #url: jdbc:oracle:thin:@127.0.0.1:49161:orcl
+      #username: BLADEX
       #password: oracle
   document:
     resources:
