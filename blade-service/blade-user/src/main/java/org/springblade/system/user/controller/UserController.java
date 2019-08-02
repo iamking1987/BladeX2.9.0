@@ -104,7 +104,7 @@ public class UserController {
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
 	@CacheEvict(cacheNames = {USER_CACHE}, allEntries = true)
 	public R update(@Valid @RequestBody User user) {
-		return R.status(userService.submit(user));
+		return R.status(userService.updateUser(user));
 	}
 
 	/**
