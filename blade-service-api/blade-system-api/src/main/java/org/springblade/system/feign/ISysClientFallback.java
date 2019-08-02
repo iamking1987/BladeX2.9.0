@@ -20,6 +20,7 @@ import org.springblade.core.tool.api.R;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.entity.Menu;
 import org.springblade.system.entity.Role;
+import org.springblade.system.entity.Tenant;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -74,6 +75,11 @@ public class ISysClientFallback implements ISysClient {
 
 	@Override
 	public R<List<String>> getRoleAliases(String roleIds) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<Tenant> getTenant(Long id) {
 		return R.fail("获取数据失败");
 	}
 }

@@ -21,9 +21,11 @@ import org.springblade.core.tool.api.R;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.entity.Menu;
 import org.springblade.system.entity.Role;
+import org.springblade.system.entity.Tenant;
 import org.springblade.system.service.IDeptService;
 import org.springblade.system.service.IMenuService;
 import org.springblade.system.service.IRoleService;
+import org.springblade.system.service.ITenantService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
@@ -45,6 +47,8 @@ public class SysClient implements ISysClient {
 	private IRoleService roleService;
 
 	private IMenuService menuService;
+
+	private ITenantService tenantService;
 
 	@Override
 	@GetMapping(MENU)
@@ -98,6 +102,12 @@ public class SysClient implements ISysClient {
 	@GetMapping(ROLE_ALIASES)
 	public R<List<String>> getRoleAliases(String roleIds) {
 		return R.data(roleService.getRoleAliases(roleIds));
+	}
+
+	@Override
+	@GetMapping(TENANT)
+	public R<Tenant> getTenant(Long id) {
+		return R.data(tenantService.getById(id));
 	}
 
 }

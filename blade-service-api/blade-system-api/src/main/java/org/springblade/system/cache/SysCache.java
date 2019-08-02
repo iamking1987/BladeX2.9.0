@@ -22,6 +22,7 @@ import org.springblade.core.tool.utils.SpringUtil;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.entity.Menu;
 import org.springblade.system.entity.Role;
+import org.springblade.system.entity.Tenant;
 import org.springblade.system.feign.ISysClient;
 
 import java.util.List;
@@ -43,6 +44,7 @@ public class SysCache {
 	private static final String ROLE_NAMES_ID = "roleNames:id:";
 	private static final String ROLE_ALIAS_ID = "roleAlias:id:";
 	private static final String ROLE_ALIASES_ID = "roleAliases:id:";
+	private static final String TENANT_ID = "tenant:id:";
 
 	private static ISysClient sysClient;
 
@@ -164,6 +166,19 @@ public class SysCache {
 	public static List<String> getRoleAliases(String roleIds) {
 		return CacheUtil.get(SYS_CACHE, ROLE_ALIASES_ID, roleIds, () -> {
 			R<List<String>> result = sysClient.getRoleAliases(roleIds);
+			return result.getData();
+		});
+	}
+
+	/**
+	 * 获取租户
+	 *
+	 * @param id 主键
+	 * @return Tenant
+	 */
+	public static Tenant getTenant(Long id) {
+		return CacheUtil.get(SYS_CACHE, TENANT_ID, id, () -> {
+			R<Tenant> result = sysClient.getTenant(id);
 			return result.getData();
 		});
 	}

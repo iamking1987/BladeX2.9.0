@@ -21,6 +21,7 @@ import org.springblade.core.tool.api.R;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.entity.Menu;
 import org.springblade.system.entity.Role;
+import org.springblade.system.entity.Tenant;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,6 +49,7 @@ public interface ISysClient {
 	String ROLE_NAMES = API_PREFIX + "/role-names";
 	String ROLE_ALIAS = API_PREFIX + "/role-alias";
 	String ROLE_ALIASES = API_PREFIX + "/role-aliases";
+	String TENANT = API_PREFIX + "/tenant";
 
 	/**
 	 * 获取菜单
@@ -129,5 +131,14 @@ public interface ISysClient {
 	 */
 	@GetMapping(ROLE_ALIASES)
 	R<List<String>> getRoleAliases(@RequestParam("roleIds") String roleIds);
+
+	/**
+	 * 获取租户
+	 *
+	 * @param id 主键
+	 * @return Tenant>
+	 */
+	@GetMapping(TENANT)
+	R<Tenant> getTenant(@RequestParam("id") Long id);
 
 }
