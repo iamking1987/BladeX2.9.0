@@ -19,6 +19,7 @@ package org.springblade.common.launch;
 import org.springblade.common.constant.CommonConstant;
 import org.springblade.core.auto.service.AutoService;
 import org.springblade.core.launch.service.LauncherService;
+import org.springblade.core.launch.utils.PropsUtil;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import java.util.Properties;
@@ -34,9 +35,9 @@ public class LauncherServiceImpl implements LauncherService {
 	@Override
 	public void launcher(SpringApplicationBuilder builder, String appName, String profile, boolean isLocalDev) {
 		Properties props = System.getProperties();
-		props.setProperty("spring.cloud.nacos.discovery.server-addr", CommonConstant.nacosAddr(profile));
-		props.setProperty("spring.cloud.nacos.config.server-addr", CommonConstant.nacosAddr(profile));
-		props.setProperty("spring.cloud.sentinel.transport.dashboard", CommonConstant.sentinelAddr(profile));
+		PropsUtil.setProperty(props, "spring.cloud.nacos.discovery.server-addr", CommonConstant.nacosAddr(profile));
+		PropsUtil.setProperty(props, "spring.cloud.nacos.config.server-addr", CommonConstant.nacosAddr(profile));
+		PropsUtil.setProperty(props, "spring.cloud.sentinel.transport.dashboard", CommonConstant.sentinelAddr(profile));
 	}
 
 }
