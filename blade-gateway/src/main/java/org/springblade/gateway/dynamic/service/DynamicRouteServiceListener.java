@@ -16,6 +16,8 @@
  */
 package org.springblade.gateway.dynamic.service;
 
+import com.alibaba.cloud.nacos.NacosConfigProperties;
+import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -24,8 +26,6 @@ import com.alibaba.nacos.api.exception.NacosException;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.launch.constant.NacosConstant;
 import org.springblade.core.launch.props.BladeProperties;
-import org.springframework.cloud.alibaba.nacos.NacosConfigProperties;
-import org.springframework.cloud.alibaba.nacos.NacosDiscoveryProperties;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
