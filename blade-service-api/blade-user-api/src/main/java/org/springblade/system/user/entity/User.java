@@ -21,7 +21,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springblade.core.tenant.mp.TenantEntity;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -52,6 +51,10 @@ public class User extends TenantEntity {
 	 * 真名
 	 */
 	private String realName;
+	/**
+	 * 头像
+	 */
+	private String avatar;
 	/**
 	 * 邮箱
 	 */

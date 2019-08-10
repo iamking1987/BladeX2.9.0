@@ -73,7 +73,7 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 				throw new UsernameNotFoundException(TokenUtil.USER_NOT_FOUND);
 			}
 			return new BladeUserDetails(user.getId(),
-				user.getTenantId(), user.getName(), user.getDeptId(), user.getRoleId(), Func.join(result.getData().getRoles()), TokenUtil.DEFAULT_AVATAR,
+				user.getTenantId(), user.getName(), user.getDeptId(), user.getRoleId(), Func.join(result.getData().getRoles()), Func.toStr(user.getAvatar(), TokenUtil.DEFAULT_AVATAR),
 				username, AuthConstant.ENCRYPT + user.getPassword(), true, true, true, true,
 				AuthorityUtils.commaSeparatedStringToAuthorityList(Func.join(result.getData().getRoles())));
 		} else {
