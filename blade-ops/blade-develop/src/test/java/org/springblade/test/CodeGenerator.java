@@ -33,11 +33,11 @@ public class CodeGenerator {
 	/**
 	 * 代码所在服务名
 	 */
-	public static String SERVICE_NAME = "blade-oss";
+	public static String SERVICE_NAME = "blade-develop";
 	/**
 	 * 代码生成的包名
 	 */
-	public static String PACKAGE_NAME = "org.springblade.oss";
+	public static String PACKAGE_NAME = "org.springblade.develop";
 	/**
 	 * 前端代码生成所属系统
 	 */
@@ -53,7 +53,7 @@ public class CodeGenerator {
 	/**
 	 * 需要生成的表名(两者只能取其一)
 	 */
-	public static String[] INCLUDE_TABLES = {"blade_oss"};
+	public static String[] INCLUDE_TABLES = {"blade_datasource"};
 	/**
 	 * 需要排除的表名(两者只能取其一)
 	 */

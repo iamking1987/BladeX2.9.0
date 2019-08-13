@@ -14,25 +14,20 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.gateway.props;
+package org.springblade.develop.service.impl;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springblade.core.mp.base.BaseServiceImpl;
+import org.springblade.develop.entity.Datasource;
+import org.springblade.develop.mapper.DatasourceMapper;
+import org.springblade.develop.service.IDatasourceService;
+import org.springframework.stereotype.Service;
 
 /**
- * 权限过滤
+ * 数据源配置表 服务实现类
  *
  * @author Chill
  */
-@Data
-@RefreshScope
-@ConfigurationProperties("blade.secure")
-public class AuthProperties {
-
-	private final List<String> skipUrl = new ArrayList<>();
+@Service
+public class DatasourceServiceImpl extends BaseServiceImpl<DatasourceMapper, Datasource> implements IDatasourceService {
 
 }
