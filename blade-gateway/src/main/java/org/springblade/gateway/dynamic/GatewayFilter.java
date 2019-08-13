@@ -14,44 +14,28 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.gateway.dynamic.model;
-
+package org.springblade.gateway.dynamic;
 
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
- * Gateway的路由定义模型
+ * 过滤器定义模型
  *
  * @author Chill
  */
 @Data
-public class GatewayRoute {
+public class GatewayFilter {
 
 	/**
-	 * 路由的id
+	 * 过滤器对应的Name
 	 */
-	private String id;
+	private String name;
 
 	/**
-	 * 路由断言集合配置
+	 * 对应的路由规则
 	 */
-	private List<GatewayPredicate> predicates = new ArrayList<>();
-
-	/**
-	 * 路由过滤器集合配置
-	 */
-	private List<GatewayFilter> filters = new ArrayList<>();
-
-	/**
-	 * 路由规则转发的目标uri
-	 */
-	private String uri;
-
-	/**
-	 * 路由执行的顺序
-	 */
-	private int order = 0;
+	private Map<String, String> args = new LinkedHashMap<>();
 }

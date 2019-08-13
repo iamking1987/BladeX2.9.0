@@ -19,6 +19,7 @@ package org.springblade.gateway.config;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.gateway.handler.SwaggerResourceHandler;
+import org.springblade.gateway.props.AuthProperties;
 import org.springblade.gateway.props.RouteProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -40,7 +41,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Configuration
 @AllArgsConstructor
-@EnableConfigurationProperties(RouteProperties.class)
+@EnableConfigurationProperties({RouteProperties.class, AuthProperties.class})
 public class RouterFunctionConfiguration {
 
 	private final SwaggerResourceHandler swaggerResourceHandler;
@@ -48,12 +49,12 @@ public class RouterFunctionConfiguration {
 	@Bean
 	public RouterFunction routerFunction() {
 		return RouterFunctions.route(RequestPredicates.GET("/swagger-resources")
-				.and(RequestPredicates.accept(MediaType.ALL)), swaggerResourceHandler);
+			.and(RequestPredicates.accept(MediaType.ALL)), swaggerResourceHandler);
 
 	}
 
 	/**
-	 * 解决springboot2.0.5版本出现的 Only one connection receive subscriber allowed.
+	 * 解决 Only one connection receive subscriber allowed.
 	 * 参考：https://github.com/spring-cloud/spring-cloud-gateway/issues/541
 	 */
 	@Bean
