@@ -58,8 +58,8 @@ public class AuthFilter implements GlobalFilter, Ordered {
 			return chain.filter(exchange);
 		}
 		ServerHttpResponse resp = exchange.getResponse();
-		String headerToken = exchange.getRequest().getHeaders().getFirst(AuthProvider.AUTH_HEADER);
-		String paramToken = exchange.getRequest().getQueryParams().getFirst(AuthProvider.AUTH_HEADER);
+		String headerToken = exchange.getRequest().getHeaders().getFirst(AuthProvider.AUTH_KEY);
+		String paramToken = exchange.getRequest().getQueryParams().getFirst(AuthProvider.AUTH_KEY);
 		if (StringUtils.isAllBlank(headerToken, paramToken)) {
 			return unAuth(resp, "缺失令牌,鉴权失败");
 		}

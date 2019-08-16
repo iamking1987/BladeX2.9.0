@@ -99,10 +99,23 @@ public class CodeController extends BladeController {
 	}
 
 	/**
+	 * 复制
+	 */
+	@PostMapping("/copy")
+	@ApiOperationSupport(order = 5)
+	@ApiOperation(value = "复制", notes = "传入id")
+	public R copy(@ApiParam(value = "主键", required = true) @RequestParam Long id) {
+		Code code = codeService.getById(id);
+		code.setId(null);
+		code.setCodeName(code.getCodeName() + "-copy");
+		return R.status(codeService.save(code));
+	}
+
+	/**
 	 * 代码生成
 	 */
 	@PostMapping("/gen-code")
-	@ApiOperationSupport(order = 5)
+	@ApiOperationSupport(order = 6)
 	@ApiOperation(value = "代码生成", notes = "传入ids")
 	public R genCode(@ApiParam(value = "主键集合", required = true) @RequestParam String ids, @RequestParam(defaultValue = "sword") String system) {
 		Collection<Code> codes = codeService.listByIds(Func.toLongList(ids));
@@ -110,14 +123,15 @@ public class CodeController extends BladeController {
 			BladeCodeGenerator generator = new BladeCodeGenerator();
 			generator.setSystemName(system);
 			generator.setServiceName(code.getServiceName());
-			generator.setCodeName(code.getCodeName());
 			generator.setPackageName(code.getPackageName());
 			generator.setPackageDir(code.getApiPath());
 			generator.setPackageWebDir(code.getWebPath());
 			generator.setTablePrefix(Func.toStrArray(code.getTablePrefix()));
 			generator.setIncludeTables(Func.toStrArray(code.getTableName()));
 			// 设置是否继承基础业务字段
-			generator.setHasSuperEntity(false);
+			generator.setHasSuperEntity(code.getBaseMode() == 2);
+			// 设置是否开启包装器模式
+			generator.setHasWrapper(code.getWrapMode() == 2);
 			generator.run();
 		});
 		return R.success("代码生成成功");

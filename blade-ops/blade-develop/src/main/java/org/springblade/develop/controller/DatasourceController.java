@@ -32,6 +32,7 @@ import org.springblade.develop.service.IDatasourceService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 数据源配置表 控制器
@@ -107,6 +108,17 @@ public class DatasourceController extends BladeController {
 	@ApiOperation(value = "逻辑删除", notes = "传入ids")
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
 		return R.status(datasourceService.deleteLogic(Func.toLongList(ids)));
+	}
+
+	/**
+	 * 数据源列表
+	 */
+	@GetMapping("/select")
+	@ApiOperationSupport(order = 8)
+	@ApiOperation(value = "下拉数据源", notes = "查询列表")
+	public R<List<Datasource>> select() {
+		List<Datasource> list = datasourceService.list();
+		return R.data(list);
 	}
 
 

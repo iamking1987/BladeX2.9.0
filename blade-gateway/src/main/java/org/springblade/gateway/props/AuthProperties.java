@@ -33,6 +33,9 @@ import java.util.List;
 @ConfigurationProperties("blade.secure")
 public class AuthProperties {
 
+	/**
+	 * 放行API集合
+	 */
 	private final List<String> skipUrl = new ArrayList<>();
 
 }

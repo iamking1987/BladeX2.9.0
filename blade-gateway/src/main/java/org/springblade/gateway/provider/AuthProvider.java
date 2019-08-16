@@ -28,7 +28,7 @@ public class AuthProvider {
 
 	public static String TARGET = "/**";
 	public static String REPLACEMENT = "";
-	public static String AUTH_HEADER = "Blade-Auth";
+	public static String AUTH_KEY = "Blade-Auth";
 	private static List<String> defaultSkipUrl = new ArrayList<>();
 
 	static {
