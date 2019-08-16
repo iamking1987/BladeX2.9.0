@@ -27,7 +27,9 @@ import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.develop.entity.Code;
+import org.springblade.develop.entity.Datasource;
 import org.springblade.develop.service.ICodeService;
+import org.springblade.develop.service.IDatasourceService;
 import org.springblade.develop.support.BladeCodeGenerator;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -49,6 +51,7 @@ import java.util.Map;
 public class CodeController extends BladeController {
 
 	private ICodeService codeService;
+	private IDatasourceService datasourceService;
 
 	/**
 	 * 详情
@@ -121,6 +124,13 @@ public class CodeController extends BladeController {
 		Collection<Code> codes = codeService.listByIds(Func.toLongList(ids));
 		codes.forEach(code -> {
 			BladeCodeGenerator generator = new BladeCodeGenerator();
+			// 设置数据源
+			Datasource datasource = datasourceService.getById(code.getDatasourceId());
+			generator.setDriverName(datasource.getDriverClass());
+			generator.setUrl(datasource.getUrl());
+			generator.setUsername(datasource.getUsername());
+			generator.setPassword(datasource.getPassword());
+			// 设置基础配置
 			generator.setSystemName(system);
 			generator.setServiceName(code.getServiceName());
 			generator.setPackageName(code.getPackageName());
