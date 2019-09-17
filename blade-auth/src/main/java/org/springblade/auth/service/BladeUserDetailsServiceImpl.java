@@ -31,6 +31,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.common.exceptions.UserDeniedAuthorizationException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -68,7 +69,11 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 
 		// 判断返回信息
 		if (result.isSuccess()) {
-			User user = result.getData().getUser();
+			UserInfo userInfo = result.getData();
+			if (Func.isEmpty(userInfo.getRoles())) {
+				throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_ROLE);
+			}
+			User user = userInfo.getUser();
 			if (user == null) {
 				throw new UsernameNotFoundException(TokenUtil.USER_NOT_FOUND);
 			}
