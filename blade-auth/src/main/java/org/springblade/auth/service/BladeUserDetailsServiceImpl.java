@@ -28,7 +28,6 @@ import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserInfo;
 import org.springblade.system.user.feign.IUserClient;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.common.exceptions.UserDeniedAuthorizationException;
@@ -49,7 +48,7 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	@SneakyThrows
-	public UserDetails loadUserByUsername(String username) {
+	public BladeUserDetails loadUserByUsername(String username) {
 		HttpServletRequest request = WebUtil.getRequest();
 		// 获取租户
 		String tenantId = Func.toStr(request.getHeader(TokenUtil.TENANT_HEADER_KEY), TokenUtil.DEFAULT_TENANT_ID);
@@ -78,7 +77,7 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 				throw new UsernameNotFoundException(TokenUtil.USER_NOT_FOUND);
 			}
 			return new BladeUserDetails(user.getId(),
-				user.getTenantId(), user.getName(), user.getDeptId(), user.getRoleId(), Func.join(result.getData().getRoles()), Func.toStr(user.getAvatar(), TokenUtil.DEFAULT_AVATAR),
+				user.getTenantId(), user.getName(), user.getRealName(), user.getDeptId(), user.getRoleId(), Func.join(result.getData().getRoles()), Func.toStr(user.getAvatar(), TokenUtil.DEFAULT_AVATAR),
 				username, AuthConstant.ENCRYPT + user.getPassword(), true, true, true, true,
 				AuthorityUtils.commaSeparatedStringToAuthorityList(Func.join(result.getData().getRoles())));
 		} else {

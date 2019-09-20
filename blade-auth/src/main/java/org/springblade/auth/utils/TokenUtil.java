@@ -38,6 +38,7 @@ public class TokenUtil {
 	public final static String ACCOUNT = TokenConstant.ACCOUNT;
 	public final static String USER_NAME = TokenConstant.USER_NAME;
 	public final static String NICK_NAME = TokenConstant.NICK_NAME;
+	public final static String REAL_NAME = TokenConstant.REAL_NAME;
 	public final static String USER_ID = TokenConstant.USER_ID;
 	public final static String DEPT_ID = TokenConstant.DEPT_ID;
 	public final static String ROLE_ID = TokenConstant.ROLE_ID;
@@ -56,7 +57,7 @@ public class TokenUtil {
 	public final static String USER_HAS_NO_ROLE = "未获得用户的角色信息";
 	public final static String HEADER_KEY = "Authorization";
 	public final static String HEADER_PREFIX = "Basic ";
-	public final static String DEFAULT_AVATAR = "https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png";
+	public final static String DEFAULT_AVATAR = "";
 
 	/**
 	 * 解码
