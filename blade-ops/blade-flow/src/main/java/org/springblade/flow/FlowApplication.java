@@ -19,7 +19,7 @@ package org.springblade.flow;
 import org.springblade.core.cloud.feign.EnableBladeFeign;
 import org.springblade.core.launch.BladeApplication;
 import org.springblade.core.launch.constant.AppConstant;
-import org.springblade.transaction.annotation.SeataCloudApplication;
+import org.springblade.core.transaction.annotation.SeataCloudApplication;
 
 /**
  * Flowable启动器

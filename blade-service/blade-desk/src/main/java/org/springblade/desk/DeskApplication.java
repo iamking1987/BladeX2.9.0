@@ -19,7 +19,7 @@ package org.springblade.desk;
 import org.springblade.core.cloud.feign.EnableBladeFeign;
 import org.springblade.core.launch.BladeApplication;
 import org.springblade.core.launch.constant.AppConstant;
-import org.springblade.transaction.annotation.SeataCloudApplication;
+import org.springblade.core.transaction.annotation.SeataCloudApplication;
 
 /**
  * Desk启动器
