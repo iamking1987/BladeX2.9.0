@@ -14,7 +14,7 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.gateway.endpoint;
+package org.springblade.resource.endpoint;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
