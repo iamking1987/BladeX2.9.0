@@ -48,8 +48,11 @@ public class SysCache {
 
 	private static ISysClient sysClient;
 
-	static {
-		sysClient = SpringUtil.getBean(ISysClient.class);
+	private static ISysClient getSysClient() {
+		if (sysClient == null) {
+			sysClient = SpringUtil.getBean(ISysClient.class);
+		}
+		return sysClient;
 	}
 
 	/**
@@ -60,7 +63,7 @@ public class SysCache {
 	 */
 	public static Menu getMenu(Long id) {
 		return CacheUtil.get(SYS_CACHE, MENU_ID, id, () -> {
-			R<Menu> result = sysClient.getMenu(id);
+			R<Menu> result = getSysClient().getMenu(id);
 			return result.getData();
 		});
 	}
@@ -73,7 +76,7 @@ public class SysCache {
 	 */
 	public static Dept getDept(Long id) {
 		return CacheUtil.get(SYS_CACHE, DEPT_ID, id, () -> {
-			R<Dept> result = sysClient.getDept(id);
+			R<Dept> result = getSysClient().getDept(id);
 			return result.getData();
 		});
 	}
@@ -86,7 +89,7 @@ public class SysCache {
 	 */
 	public static String getDeptName(Long id) {
 		return CacheUtil.get(SYS_CACHE, DEPT_NAME_ID, id, () -> {
-			R<String> result = sysClient.getDeptName(id);
+			R<String> result = getSysClient().getDeptName(id);
 			return result.getData();
 		});
 	}
@@ -99,7 +102,7 @@ public class SysCache {
 	 */
 	public static Role getRole(Long id) {
 		return CacheUtil.get(SYS_CACHE, ROLE_ID, id, () -> {
-			R<Role> result = sysClient.getRole(id);
+			R<Role> result = getSysClient().getRole(id);
 			return result.getData();
 		});
 	}
@@ -112,7 +115,7 @@ public class SysCache {
 	 */
 	public static String getRoleName(Long id) {
 		return CacheUtil.get(SYS_CACHE, ROLE_NAME_ID, id, () -> {
-			R<String> result = sysClient.getRoleName(id);
+			R<String> result = getSysClient().getRoleName(id);
 			return result.getData();
 		});
 	}
@@ -125,7 +128,7 @@ public class SysCache {
 	 */
 	public static String getRoleAlias(Long id) {
 		return CacheUtil.get(SYS_CACHE, ROLE_ALIAS_ID, id, () -> {
-			R<String> result = sysClient.getRoleAlias(id);
+			R<String> result = getSysClient().getRoleAlias(id);
 			return result.getData();
 		});
 	}
@@ -139,7 +142,7 @@ public class SysCache {
 	 */
 	public static List<String> getDeptNames(String deptIds) {
 		return CacheUtil.get(SYS_CACHE, DEPT_NAMES_ID, deptIds, () -> {
-			R<List<String>> result = sysClient.getDeptNames(deptIds);
+			R<List<String>> result = getSysClient().getDeptNames(deptIds);
 			return result.getData();
 		});
 	}
@@ -152,7 +155,7 @@ public class SysCache {
 	 */
 	public static List<String> getRoleNames(String roleIds) {
 		return CacheUtil.get(SYS_CACHE, ROLE_NAMES_ID, roleIds, () -> {
-			R<List<String>> result = sysClient.getRoleNames(roleIds);
+			R<List<String>> result = getSysClient().getRoleNames(roleIds);
 			return result.getData();
 		});
 	}
@@ -165,7 +168,7 @@ public class SysCache {
 	 */
 	public static List<String> getRoleAliases(String roleIds) {
 		return CacheUtil.get(SYS_CACHE, ROLE_ALIASES_ID, roleIds, () -> {
-			R<List<String>> result = sysClient.getRoleAliases(roleIds);
+			R<List<String>> result = getSysClient().getRoleAliases(roleIds);
 			return result.getData();
 		});
 	}
@@ -178,7 +181,7 @@ public class SysCache {
 	 */
 	public static Tenant getTenant(Long id) {
 		return CacheUtil.get(SYS_CACHE, TENANT_ID, id, () -> {
-			R<Tenant> result = sysClient.getTenant(id);
+			R<Tenant> result = getSysClient().getTenant(id);
 			return result.getData();
 		});
 	}

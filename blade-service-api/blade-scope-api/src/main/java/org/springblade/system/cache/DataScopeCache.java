@@ -40,8 +40,11 @@ public class DataScopeCache {
 
 	private static IDataScopeClient dataScopeClient;
 
-	static {
-		dataScopeClient = SpringUtil.getBean(IDataScopeClient.class);
+	private static IDataScopeClient getDataScopeClient() {
+		if (dataScopeClient == null) {
+			dataScopeClient = SpringUtil.getBean(IDataScopeClient.class);
+		}
+		return dataScopeClient;
 	}
 
 	/**
@@ -54,7 +57,7 @@ public class DataScopeCache {
 	public static DataScopeModel getDataScopeByMapper(String mapperId, String roleId) {
 		DataScopeModel dataScope = CacheUtil.get(SYS_CACHE, SCOPE_CACHE_CLASS, mapperId + StringPool.COLON + roleId, DataScopeModel.class);
 		if (dataScope == null) {
-			dataScope = dataScopeClient.getDataScopeByMapper(mapperId, roleId);
+			dataScope = getDataScopeClient().getDataScopeByMapper(mapperId, roleId);
 			CacheUtil.put(SYS_CACHE, SCOPE_CACHE_CLASS, mapperId + StringPool.COLON + roleId, dataScope);
 		}
 		return dataScope;
@@ -69,7 +72,7 @@ public class DataScopeCache {
 	public static DataScopeModel getDataScopeByCode(String code) {
 		DataScopeModel dataScope = CacheUtil.get(SYS_CACHE, SCOPE_CACHE_CODE, code, DataScopeModel.class);
 		if (dataScope == null) {
-			dataScope = dataScopeClient.getDataScopeByCode(code);
+			dataScope = getDataScopeClient().getDataScopeByCode(code);
 			CacheUtil.put(SYS_CACHE, SCOPE_CACHE_CODE, code, dataScope);
 		}
 		return dataScope;
@@ -84,7 +87,7 @@ public class DataScopeCache {
 	public static List<Long> getDeptAncestors(Long deptId) {
 		List ancestors = CacheUtil.get(SYS_CACHE, DEPT_CACHE_ANCESTORS, deptId, List.class);
 		if (CollectionUtil.isEmpty(ancestors)) {
-			ancestors = dataScopeClient.getDeptAncestors(deptId);
+			ancestors = getDataScopeClient().getDeptAncestors(deptId);
 			CacheUtil.put(SYS_CACHE, DEPT_CACHE_ANCESTORS, deptId, ancestors);
 		}
 		return ancestors;

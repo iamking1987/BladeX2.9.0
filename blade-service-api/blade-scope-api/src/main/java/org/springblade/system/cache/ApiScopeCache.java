@@ -36,8 +36,11 @@ public class ApiScopeCache {
 
 	private static IApiScopeClient apiScopeClient;
 
-	static {
-		apiScopeClient = SpringUtil.getBean(IApiScopeClient.class);
+	private static IApiScopeClient getApiScopeClient() {
+		if (apiScopeClient == null) {
+			apiScopeClient = SpringUtil.getBean(IApiScopeClient.class);
+		}
+		return apiScopeClient;
 	}
 
 	/**
@@ -49,7 +52,7 @@ public class ApiScopeCache {
 	public static List<String> permissionPath(String roleId) {
 		List<String> permissions = CacheUtil.get(SYS_CACHE, SCOPE_CACHE_CODE, roleId, List.class);
 		if (permissions == null) {
-			permissions = apiScopeClient.permissionPath(roleId);
+			permissions = getApiScopeClient().permissionPath(roleId);
 			CacheUtil.put(SYS_CACHE, SCOPE_CACHE_CODE, roleId, permissions);
 		}
 		return permissions;
@@ -65,7 +68,7 @@ public class ApiScopeCache {
 	public static List<String> permissionCode(String permission, String roleId) {
 		List<String> permissions = CacheUtil.get(SYS_CACHE, SCOPE_CACHE_CODE, permission + StringPool.COLON + roleId, List.class);
 		if (permissions == null) {
-			permissions = apiScopeClient.permissionCode(permission, roleId);
+			permissions = getApiScopeClient().permissionCode(permission, roleId);
 			CacheUtil.put(SYS_CACHE, SCOPE_CACHE_CODE, permission + StringPool.COLON + roleId, permissions);
 		}
 		return permissions;

@@ -37,8 +37,11 @@ public class UserCache {
 
 	private static IUserClient userClient;
 
-	static {
-		userClient = SpringUtil.getBean(IUserClient.class);
+	private static IUserClient getUserClient() {
+		if (userClient == null) {
+			userClient = SpringUtil.getBean(IUserClient.class);
+		}
+		return userClient;
 	}
 
 	/**
@@ -60,7 +63,7 @@ public class UserCache {
 	 */
 	public static User getUser(Long userId) {
 		return CacheUtil.get(USER_CACHE, USER_CACHE_ID, userId, () -> {
-			R<User> result = userClient.userInfoById(userId);
+			R<User> result = getUserClient().userInfoById(userId);
 			return result.getData();
 		});
 	}

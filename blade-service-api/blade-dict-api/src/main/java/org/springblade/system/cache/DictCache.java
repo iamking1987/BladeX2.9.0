@@ -40,8 +40,11 @@ public class DictCache {
 
 	private static IDictClient dictClient;
 
-	static {
-		dictClient = SpringUtil.getBean(IDictClient.class);
+	private static IDictClient getDictClient() {
+		if (dictClient == null) {
+			dictClient = SpringUtil.getBean(IDictClient.class);
+		}
+		return dictClient;
 	}
 
 	/**
@@ -52,7 +55,7 @@ public class DictCache {
 	 */
 	public static Dict getById(Long id) {
 		return CacheUtil.get(DICT_CACHE, DICT_ID, id, () -> {
-			R<Dict> result = dictClient.getById(id);
+			R<Dict> result = getDictClient().getById(id);
 			return result.getData();
 		});
 	}
@@ -66,7 +69,7 @@ public class DictCache {
 	 */
 	public static String getValue(String code, Integer dictKey) {
 		return CacheUtil.get(DICT_CACHE, DICT_VALUE + code + StringPool.COLON, dictKey, () -> {
-			R<String> result = dictClient.getValue(code, dictKey);
+			R<String> result = getDictClient().getValue(code, dictKey);
 			return result.getData();
 		});
 	}
@@ -79,7 +82,7 @@ public class DictCache {
 	 */
 	public static List<Dict> getList(String code) {
 		return CacheUtil.get(DICT_CACHE, DICT_LIST, code, () -> {
-			R<List<Dict>> result = dictClient.getList(code);
+			R<List<Dict>> result = getDictClient().getList(code);
 			return result.getData();
 		});
 	}
