@@ -16,6 +16,8 @@
  */
 package org.springblade.gateway.provider;
 
+import org.springblade.core.launch.constant.TokenConstant;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class AuthProvider {
 
 	public static String TARGET = "/**";
 	public static String REPLACEMENT = "";
-	public static String AUTH_KEY = "Blade-Auth";
+	public static String AUTH_KEY = TokenConstant.HEADER;
 	private static List<String> defaultSkipUrl = new ArrayList<>();
 
 	static {
