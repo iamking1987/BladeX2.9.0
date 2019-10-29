@@ -73,10 +73,10 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
-        <!--Zipkin-->
+        <!-- 链路追踪、服务监控 -->
         <!--<dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zipkin</artifactId>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-trace</artifactId>
         </dependency>-->
     </dependencies>
 
