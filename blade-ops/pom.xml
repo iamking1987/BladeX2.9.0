@@ -21,6 +21,7 @@
         <module>blade-flow-design</module>
         <module>blade-log</module>
         <module>blade-resource</module>
+        <module>blade-turbine</module>
     </modules>
 
 </project>
