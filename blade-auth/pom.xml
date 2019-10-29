@@ -32,12 +32,10 @@
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-core-db</artifactId>
-            <version>${bladex.tool.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-core-cloud</artifactId>
-            <version>${bladex.tool.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springblade</groupId>
@@ -70,7 +68,6 @@
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-starter-swagger</artifactId>
-            <version>${bladex.tool.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>

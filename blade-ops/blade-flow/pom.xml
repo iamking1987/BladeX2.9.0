@@ -24,17 +24,14 @@
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-core-boot</artifactId>
-            <version>${bladex.tool.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-starter-swagger</artifactId>
-            <version>${bladex.tool.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-starter-transaction</artifactId>
-            <version>${bladex.tool.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
@@ -49,18 +46,17 @@
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-core-auto</artifactId>
-            <version>${bladex.tool.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-user-api</artifactId>
-            <version>${bladex.tool.version}</version>
+            <version>${bladex.project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-flow-api</artifactId>
-            <version>${bladex.tool.version}</version>
+            <version>${bladex.project.version}</version>
         </dependency>
         <!-- 工作流 -->
         <dependency>
