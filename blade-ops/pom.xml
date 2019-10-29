@@ -22,6 +22,7 @@
         <module>blade-log</module>
         <module>blade-resource</module>
         <module>blade-turbine</module>
+        <module>blade-zipkin</module>
     </modules>
 
 </project>

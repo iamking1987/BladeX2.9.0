@@ -19,7 +19,6 @@
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-common</artifactId>
-            <version>${bladex.project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>

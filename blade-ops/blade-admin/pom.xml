@@ -19,7 +19,6 @@
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-common</artifactId>
-            <version>${bladex.project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
@@ -32,12 +31,6 @@
         <dependency>
             <groupId>org.springblade</groupId>
             <artifactId>blade-core-cloud</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springblade</groupId>
-                    <artifactId>blade-core-secure</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <!--Admin-Server-->
         <dependency>
