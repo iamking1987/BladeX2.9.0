@@ -11,6 +11,6 @@ echo -e "${BLUE_COLOR}#                       Docker ELK UnDeploy Script        
 echo -e "${BLUE_COLOR}# ######################################################################${RES}"
 
 # 部署项目
-echo -e "${BLUE_COLOR}==================> Docker undeploy Start <==================${RES}"
+echo -e "${BLUE_COLOR}==================> Docker UnDeploy Start <==================${RES}"
 docker-compose stop
 docker-compose rm

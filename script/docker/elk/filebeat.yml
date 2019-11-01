@@ -8,6 +8,7 @@ filebeat.inputs:
     multiline.negate: true
     multiline.match: after
   - type: tcp
+    enabled: true
     max_message_size: 10MiB
     host: "0.0.0.0:9000"
 
