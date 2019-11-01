@@ -7,7 +7,7 @@ VIOLET_COLOR="\033[35m"
 RES="\033[0m"
 
 echo -e "${BLUE_COLOR}# ######################################################################${RES}"
-echo -e "${BLUE_COLOR}#                       Docker ELK UnDeploy Script                       #${RES}"
+echo -e "${BLUE_COLOR}#                       Docker ELK UnDeploy Script                     #${RES}"
 echo -e "${BLUE_COLOR}# ######################################################################${RES}"
 
 # 部署项目
