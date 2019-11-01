@@ -20,11 +20,8 @@ vm.max_map_count=262144
 ## 三、将本文件夹内的文件拷贝至服务器
 #### 1.对sh脚本赋予执行权限
 
-#### 2.执行 ./elk-deploy.sh
+#### 2.执行 ./deploy.sh
 
 #### 3.等待服务启动完毕即可
-<table>
-    <tr>
-        <td><img src="https://gitee.ltd/blade/BladeX/raw/master/script/docker/elk/deploy-elk.png"/></td>
-    </tr>
-</table>
+
+#### 4.卸载执行 ./undeploy.sh
