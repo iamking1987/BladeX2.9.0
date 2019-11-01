@@ -3,10 +3,13 @@ filebeat.inputs:
     enabled: true
     paths:
       # 当前目录下的所有.log文件
-      - /home/project/spring-boot-elasticsearch/logs/*.log
+      - /home/project/elk/logs/*.log
     multiline.pattern: ^\[
     multiline.negate: true
     multiline.match: after
+  - type: tcp
+    max_message_size: 10MiB
+    host: "0.0.0.0:9000"
 
 filebeat.config.modules:
   path: ${path.config}/modules.d/*.yml

@@ -83,12 +83,14 @@ services:
     volumes:
       - ./filebeat/conf/filebeat.yml:/usr/share/filebeat/filebeat.yml
       # 映射到容器中[作为数据源]
-      - ./logs:/home/project/spring-boot-elasticsearch/logs
+      - ./logs:/home/project/elk/logs
       - ./filebeat/logs:/usr/share/filebeat/logs
       - ./filebeat/data:/usr/share/filebeat/data
     # 将指定容器连接到当前连接，可以设置别名，避免ip方式导致的容器重启动态改变的无法连接情况
     links:
       - logstash
+    ports:
+      - 9000:9000
     # 依赖服务[可无]
     depends_on:
       - es-master
@@ -104,8 +106,7 @@ services:
     volumes:
       # 映射到容器中
       - ./logstash/conf/logstash-filebeat.conf:/usr/share/logstash/conf/logstash-filebeat.conf
-    environment:
-      - elasticsearch.hosts=http://es-master:9200
+      - ./logstash/conf/logstash.yml:/usr/share/logstash/config/logstash.yml
     ports:
       - 5044:5044
     depends_on:

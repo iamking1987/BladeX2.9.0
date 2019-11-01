@@ -65,10 +65,11 @@ if [ -f "./kibana.yml" ]; then
 mv ./kibana.yml ./kibana/conf
 fi
 
- echo -e "${GREEN_COLOR}---> move [logstash]config file start.${RES}"
- if [ -f "./logstash-filebeat.conf" ]; then
- mv ./logstash-filebeat.conf ./logstash/conf
- fi
+echo -e "${GREEN_COLOR}---> move [logstash]config file start.${RES}"
+if [ -f "./logstash.yml" ] && [ -f "./logstash-filebeat.conf" ]; then
+mv ./logstash-filebeat.conf ./logstash/conf
+mv ./logstash.yml ./logstash/conf
+fi
 
 echo -e "${GREEN_COLOR}---> move [filebeat]config file start.${RES}"
 if [ -f "./filebeat.yml" ]; then
