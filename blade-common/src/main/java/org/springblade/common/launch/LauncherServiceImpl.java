@@ -16,7 +16,7 @@
  */
 package org.springblade.common.launch;
 
-import org.springblade.common.constant.CommonConstant;
+import org.springblade.common.constant.LauncherConstant;
 import org.springblade.core.auto.service.AutoService;
 import org.springblade.core.launch.service.LauncherService;
 import org.springblade.core.launch.utils.PropsUtil;
@@ -35,12 +35,12 @@ public class LauncherServiceImpl implements LauncherService {
 	@Override
 	public void launcher(SpringApplicationBuilder builder, String appName, String profile, boolean isLocalDev) {
 		Properties props = System.getProperties();
-		PropsUtil.setProperty(props, "spring.cloud.nacos.discovery.server-addr", CommonConstant.nacosAddr(profile));
-		PropsUtil.setProperty(props, "spring.cloud.nacos.config.server-addr", CommonConstant.nacosAddr(profile));
-		PropsUtil.setProperty(props, "spring.cloud.sentinel.transport.dashboard", CommonConstant.sentinelAddr(profile));
-		PropsUtil.setProperty(props, "spring.zipkin.base-url", CommonConstant.zipkinAddr(profile));
+		PropsUtil.setProperty(props, "spring.cloud.nacos.discovery.server-addr", LauncherConstant.nacosAddr(profile));
+		PropsUtil.setProperty(props, "spring.cloud.nacos.config.server-addr", LauncherConstant.nacosAddr(profile));
+		PropsUtil.setProperty(props, "spring.cloud.sentinel.transport.dashboard", LauncherConstant.sentinelAddr(profile));
+		PropsUtil.setProperty(props, "spring.zipkin.base-url", LauncherConstant.zipkinAddr(profile));
 		// 开启elk日志
-		//PropsUtil.setProperty(props, "blade.log.elk.destination", CommonConstant.elkAddr(profile));
+		//PropsUtil.setProperty(props, "blade.log.elk.destination", LauncherConstant.elkAddr(profile));
 	}
 
 }
