@@ -57,7 +57,9 @@ public class AppLoginInSuccessHandler extends SavedRequestAwareAuthenticationSuc
 		log.info("【AppLoginInSuccessHandler】 onAuthenticationSuccess authentication={}", authentication);
 
 		String[] tokens = TokenUtil.extractAndDecodeHeader();
-		assert tokens.length == 2;
+		if (tokens.length != 2) {
+			throw new UnapprovedClientAuthenticationException("client对应的配置信息不存在");
+		}
 		String clientId = tokens[0];
 		String clientSecret = tokens[1];
 

@@ -27,6 +27,7 @@ import org.springblade.system.entity.Role;
 import org.springblade.system.vo.RoleVO;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -42,8 +43,7 @@ public class RoleWrapper extends BaseEntityWrapper<Role, RoleVO> {
 
 	@Override
 	public RoleVO entityVO(Role role) {
-		RoleVO roleVO = BeanUtil.copy(role, RoleVO.class);
-		assert roleVO != null;
+		RoleVO roleVO = Objects.requireNonNull(BeanUtil.copy(role, RoleVO.class));
 		if (Func.equals(role.getParentId(), BladeConstant.TOP_PARENT_ID)) {
 			roleVO.setParentName(BladeConstant.TOP_PARENT_NAME);
 		} else {

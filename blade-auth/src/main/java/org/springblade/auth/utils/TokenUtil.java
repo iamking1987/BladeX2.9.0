@@ -92,7 +92,6 @@ public class TokenUtil {
 	 */
 	public static String getClientIdFromHeader() {
 		String[] tokens = extractAndDecodeHeader();
-		assert tokens.length == 2;
 		return tokens[0];
 	}
 
