@@ -23,6 +23,7 @@
         <module>blade-resource</module>
         <module>blade-turbine</module>
         <module>blade-zipkin</module>
+        <module>blade-websocket</module>
     </modules>
 
 </project>
