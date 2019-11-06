@@ -23,6 +23,7 @@ import org.springblade.auth.enums.BladeUserEnum;
 import org.springblade.auth.utils.TokenUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.Func;
+import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.core.tool.utils.WebUtil;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserInfo;
@@ -51,7 +52,11 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 	public BladeUserDetails loadUserByUsername(String username) {
 		HttpServletRequest request = WebUtil.getRequest();
 		// 获取租户
-		String tenantId = Func.toStr(request.getHeader(TokenUtil.TENANT_HEADER_KEY), TokenUtil.DEFAULT_TENANT_ID);
+		String tenantId = request.getHeader(TokenUtil.TENANT_HEADER_KEY);
+		if (StringUtil.isBlank(tenantId)) {
+			throw new UserDeniedAuthorizationException(TokenUtil.TENANT_NOT_FOUND);
+		}
+
 		// 获取用户类型
 		String userType = Func.toStr(request.getHeader(TokenUtil.USER_TYPE_HEADER_KEY), TokenUtil.DEFAULT_USER_TYPE);
 
