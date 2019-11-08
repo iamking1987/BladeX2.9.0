@@ -78,7 +78,7 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 				throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_ROLE);
 			}
 			User user = userInfo.getUser();
-			if (user == null) {
+			if (user == null || user.getId() == null) {
 				throw new UsernameNotFoundException(TokenUtil.USER_NOT_FOUND);
 			}
 			return new BladeUserDetails(user.getId(),
