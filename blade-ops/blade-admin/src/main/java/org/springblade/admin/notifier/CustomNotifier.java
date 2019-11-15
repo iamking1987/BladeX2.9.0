@@ -14,7 +14,7 @@
  *  this software without specific prior written permission.
  *  Author: Jeckxu (chinajeckxu@163.com)
  */
-package org.springblade.admin.config;
+package org.springblade.admin.notifier;
 
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
@@ -38,11 +38,12 @@ import reactor.core.publisher.Mono;
  * {@code com.dingtalk.api.DingTalkClient}
  * {@code com.dingtalk.api.request.OapiRobotSendRequest}
  * {@code com.taobao.api.ApiException}
+ *
  * @author jeckxu
  */
-@Component
 @Slf4j
-public class CustomNotifier  extends AbstractEventNotifier {
+@Component
+public class CustomNotifier extends AbstractEventNotifier {
 
 	/**
 	 * massage template
@@ -71,25 +72,25 @@ public class CustomNotifier  extends AbstractEventNotifier {
 					// 健康检查没通过
 					case "DOWN":
 						log.info("发送 健康检查没通过 的通知！");
-						messageText = String.format(template, instance.getRegistration().getName(),event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(),"健康检查没通过",instance.getRegistration().getServiceUrl());
+						messageText = String.format(template, instance.getRegistration().getName(), event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(), "健康检查没通过", instance.getRegistration().getServiceUrl());
 						this.sendMessage(messageText);
 						break;
 					// 服务离线
 					case "OFFLINE":
 						log.info("发送 服务离线 的通知！");
-						messageText = String.format(template, instance.getRegistration().getName(),event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(),"服务离线",instance.getRegistration().getServiceUrl());
+						messageText = String.format(template, instance.getRegistration().getName(), event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(), "服务离线", instance.getRegistration().getServiceUrl());
 						this.sendMessage(messageText);
 						break;
 					//服务上线
 					case "UP":
 						log.info("发送 服务上线 的通知！");
-						messageText = String.format(template, instance.getRegistration().getName(),event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(),"服务上线",instance.getRegistration().getServiceUrl());
+						messageText = String.format(template, instance.getRegistration().getName(), event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(), "服务上线", instance.getRegistration().getServiceUrl());
 						this.sendMessage(messageText);
 						break;
 					// 服务未知异常
 					case "UNKNOWN":
 						log.info("发送 服务未知异常 的通知！");
-						messageText = String.format(template, instance.getRegistration().getName(),event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(),"服务未知异常",instance.getRegistration().getServiceUrl());
+						messageText = String.format(template, instance.getRegistration().getName(), event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(), "服务未知异常", instance.getRegistration().getServiceUrl());
 						this.sendMessage(messageText);
 						break;
 					default:
@@ -104,10 +105,11 @@ public class CustomNotifier  extends AbstractEventNotifier {
 
 	/**
 	 * massage send
+	 *
 	 * @param messageText
 	 */
-	private void sendMessage(String messageText){
-		DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/robot/send?access_token="+dingTalkToken);
+	private void sendMessage(String messageText) {
+		DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/robot/send?access_token=" + dingTalkToken);
 		OapiRobotSendRequest request = new OapiRobotSendRequest();
 		request.setMsgtype("text");
 		OapiRobotSendRequest.Text text = new OapiRobotSendRequest.Text();

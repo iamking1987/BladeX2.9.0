@@ -37,6 +37,12 @@
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-server</artifactId>
         </dependency>
+        <!--Taobao-Sdk-->
+        <dependency>
+            <groupId>com.taobao</groupId>
+            <artifactId>taobao-sdk</artifactId>
+            <version>20191114</version>
+        </dependency>
     </dependencies>
 
     <build>
