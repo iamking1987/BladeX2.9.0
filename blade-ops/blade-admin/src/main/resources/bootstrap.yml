@@ -17,3 +17,6 @@ spring:
         ignored-services:
           - consul
           - serverAddr
+      notify:
+        dingtalk:
+          webhook-token: Your DingDing Robot Token
