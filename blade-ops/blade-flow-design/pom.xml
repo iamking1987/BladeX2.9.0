@@ -77,8 +77,8 @@
         </dependency>
         <!-- Oracle -->
         <dependency>
-            <groupId>com.hynnet</groupId>
-            <artifactId>oracle-driver-ojdbc6</artifactId>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc7</artifactId>
         </dependency>
         <!-- PostgreSql -->
         <dependency>
