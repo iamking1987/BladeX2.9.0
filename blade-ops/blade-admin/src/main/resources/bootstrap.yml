@@ -19,4 +19,5 @@ spring:
           - serverAddr
       notify:
         dingtalk:
+          enabled: false
           webhook-token: Your DingDing Robot Token

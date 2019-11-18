@@ -18,6 +18,8 @@ package org.springblade.admin.config;
 
 import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
 import com.alibaba.cloud.nacos.discovery.NacosWatch;
+import de.codecentric.boot.admin.server.domain.entities.InstanceRepository;
+import org.springblade.admin.notifier.CustomNotifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +38,13 @@ public class AdminConfiguration {
 	@ConditionalOnProperty(value = "spring.cloud.nacos.discovery.watch.enabled", matchIfMissing = true)
 	public NacosWatch nacosWatch(NacosDiscoveryProperties nacosDiscoveryProperties) {
 		return new NacosWatch(nacosDiscoveryProperties);
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnProperty(value = "spring.boot.admin.notify.dingtalk.enabled", havingValue = "true")
+	public CustomNotifier customNotifier(InstanceRepository repository) {
+		return new CustomNotifier(repository);
 	}
 
 }

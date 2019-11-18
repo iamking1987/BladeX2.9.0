@@ -27,7 +27,6 @@ import de.codecentric.boot.admin.server.domain.events.InstanceStatusChangedEvent
 import de.codecentric.boot.admin.server.notify.AbstractEventNotifier;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 
@@ -42,7 +41,6 @@ import reactor.core.publisher.Mono;
  * @author jeckxu
  */
 @Slf4j
-@Component
 public class CustomNotifier extends AbstractEventNotifier {
 
 	/**
