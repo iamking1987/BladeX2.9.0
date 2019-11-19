@@ -74,12 +74,12 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 		// 判断返回信息
 		if (result.isSuccess()) {
 			UserInfo userInfo = result.getData();
-			if (Func.isEmpty(userInfo.getRoles())) {
-				throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_ROLE);
-			}
 			User user = userInfo.getUser();
 			if (user == null || user.getId() == null) {
 				throw new UsernameNotFoundException(TokenUtil.USER_NOT_FOUND);
+			}
+			if (Func.isEmpty(userInfo.getRoles())) {
+				throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_ROLE);
 			}
 			return new BladeUserDetails(user.getId(),
 				user.getTenantId(), user.getName(), user.getRealName(), user.getDeptId(), user.getRoleId(), Func.join(result.getData().getRoles()), Func.toStr(user.getAvatar(), TokenUtil.DEFAULT_AVATAR),

@@ -16,7 +16,6 @@
  */
 package org.springblade.desk.service.impl;
 
-import io.seata.spring.annotation.GlobalTransactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.log.exception.ServiceException;
@@ -50,8 +49,8 @@ public class LeaveServiceImpl extends BaseServiceImpl<LeaveMapper, ProcessLeave>
 	private IFlowClient flowClient;
 
 	@Override
-	@GlobalTransactional
 	@Transactional(rollbackFor = Exception.class)
+	// @GlobalTransactional
 	public boolean startProcess(ProcessLeave leave) {
 		String businessTable = FlowUtil.getBusinessTable(ProcessConstant.LEAVE_KEY);
 		if (Func.isEmpty(leave.getId())) {
