@@ -16,13 +16,15 @@
  */
 package org.springblade.system.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
+import org.springblade.common.constant.CommonConstant;
 import org.springblade.core.boot.ctrl.BladeController;
 import org.springblade.core.mp.support.Condition;
+import org.springblade.core.mp.support.Query;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.node.INode;
-import org.springblade.core.tool.utils.Func;
 import org.springblade.system.entity.Dict;
 import org.springblade.system.service.IDictService;
 import org.springblade.system.vo.DictVO;
@@ -35,7 +37,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
-import static org.springblade.core.cache.constant.CacheConstant.*;
+import static org.springblade.core.cache.constant.CacheConstant.DICT_CACHE;
 
 
 /**
@@ -80,12 +82,43 @@ public class DictController extends BladeController {
 	}
 
 	/**
+	 * 顶级列表
+	 */
+	@GetMapping("/parent-list")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "code", value = "字典编号", paramType = "query", dataType = "string"),
+		@ApiImplicitParam(name = "dictValue", value = "字典名称", paramType = "query", dataType = "string")
+	})
+	@ApiOperationSupport(order = 3)
+	@ApiOperation(value = "列表", notes = "传入dict")
+	public R<IPage<DictVO>> parentList(@ApiIgnore @RequestParam Map<String, Object> dict, Query query) {
+		IPage<Dict> page = dictService.page(Condition.getPage(query), Condition.getQueryWrapper(dict, Dict.class).lambda().eq(Dict::getParentId, CommonConstant.TOP_PARENT_ID).orderByAsc(Dict::getSort));
+		return R.data(DictWrapper.build().pageVO(page));
+	}
+
+	/**
+	 * 子列表
+	 */
+	@GetMapping("/child-list")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "code", value = "字典编号", paramType = "query", dataType = "string"),
+		@ApiImplicitParam(name = "dictValue", value = "字典名称", paramType = "query", dataType = "string"),
+		@ApiImplicitParam(name = "parentId", value = "字典名称", paramType = "query", dataType = "string")
+	})
+	@ApiOperationSupport(order = 4)
+	@ApiOperation(value = "列表", notes = "传入dict")
+	public R<IPage<DictVO>> childList(@ApiIgnore @RequestParam Map<String, Object> dict, Query query) {
+		IPage<Dict> page = dictService.page(Condition.getPage(query), Condition.getQueryWrapper(dict, Dict.class).lambda().orderByAsc(Dict::getSort));
+		return R.data(DictWrapper.build().pageVO(page));
+	}
+
+	/**
 	 * 获取字典树形结构
 	 *
 	 * @return
 	 */
 	@GetMapping("/tree")
-	@ApiOperationSupport(order = 3)
+	@ApiOperationSupport(order = 5)
 	@ApiOperation(value = "树形结构", notes = "树形结构")
 	public R<List<DictVO>> tree() {
 		List<DictVO> tree = dictService.tree();
@@ -96,7 +129,7 @@ public class DictController extends BladeController {
 	 * 新增或修改
 	 */
 	@PostMapping("/submit")
-	@ApiOperationSupport(order = 4)
+	@ApiOperationSupport(order = 6)
 	@ApiOperation(value = "新增或修改", notes = "传入dict")
 	@CacheEvict(cacheNames = {DICT_CACHE}, allEntries = true)
 	public R submit(@Valid @RequestBody Dict dict) {
@@ -108,7 +141,7 @@ public class DictController extends BladeController {
 	 * 删除
 	 */
 	@PostMapping("/remove")
-	@ApiOperationSupport(order = 5)
+	@ApiOperationSupport(order = 7)
 	@CacheEvict(cacheNames = {DICT_CACHE}, allEntries = true)
 	@ApiOperation(value = "删除", notes = "传入ids")
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
@@ -121,7 +154,7 @@ public class DictController extends BladeController {
 	 * @return
 	 */
 	@GetMapping("/dictionary")
-	@ApiOperationSupport(order = 6)
+	@ApiOperationSupport(order = 8)
 	@ApiOperation(value = "获取字典", notes = "获取字典")
 	public R<List<Dict>> dictionary(String code) {
 		List<Dict> tree = dictService.getList(code);
