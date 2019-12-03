@@ -17,57 +17,45 @@
 package org.springblade.system.feign;
 
 
-import org.springblade.core.launch.constant.AppConstant;
+import lombok.AllArgsConstructor;
 import org.springblade.core.tool.api.R;
-import org.springblade.system.entity.Dict;
-import org.springframework.cloud.openfeign.FeignClient;
+import org.springblade.system.entity.DictBiz;
+import org.springblade.system.service.IDictBizService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
+
 /**
- * Feign接口类
+ * 字典服务Feign实现类
  *
  * @author Chill
  */
-@FeignClient(
-	value = AppConstant.APPLICATION_SYSTEM_NAME,
-	fallback = IDictClientFallback.class
-)
-public interface IDictClient {
+@ApiIgnore
+@RestController
+@AllArgsConstructor
+public class DictBizClient implements IDictBizClient {
 
-	String API_PREFIX = "/client";
-	String GET_BY_ID = API_PREFIX + "/dict/get-by-id";
-	String GET_VALUE = API_PREFIX + "/dict/get-value";
-	String GET_LIST = API_PREFIX + "/dict/get-list";
+	private IDictBizService service;
 
-	/**
-	 * 获取字典实体
-	 *
-	 * @param id 主键
-	 * @return
-	 */
+	@Override
 	@GetMapping(GET_BY_ID)
-	R<Dict> getById(@RequestParam("id") Long id);
+	public R<DictBiz> getById(Long id) {
+		return R.data(service.getById(id));
+	}
 
-	/**
-	 * 获取字典表对应值
-	 *
-	 * @param code    字典编号
-	 * @param dictKey 字典序号
-	 * @return
-	 */
+	@Override
 	@GetMapping(GET_VALUE)
-	R<String> getValue(@RequestParam("code") String code, @RequestParam("dictKey") Integer dictKey);
+	public R<String> getValue(String code, Integer dictKey) {
+		return R.data(service.getValue(code, dictKey));
+	}
 
-	/**
-	 * 获取字典表
-	 *
-	 * @param code 字典编号
-	 * @return
-	 */
+	@Override
 	@GetMapping(GET_LIST)
-	R<List<Dict>> getList(@RequestParam("code") String code);
+	public R<List<DictBiz>> getList(String code) {
+		return R.data(service.getList(code));
+	}
 
 }

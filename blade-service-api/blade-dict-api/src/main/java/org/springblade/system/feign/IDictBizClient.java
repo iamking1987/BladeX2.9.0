@@ -19,7 +19,7 @@ package org.springblade.system.feign;
 
 import org.springblade.core.launch.constant.AppConstant;
 import org.springblade.core.tool.api.R;
-import org.springblade.system.entity.Dict;
+import org.springblade.system.entity.DictBiz;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,14 +33,14 @@ import java.util.List;
  */
 @FeignClient(
 	value = AppConstant.APPLICATION_SYSTEM_NAME,
-	fallback = IDictClientFallback.class
+	fallback = IDictBizClientFallback.class
 )
-public interface IDictClient {
+public interface IDictBizClient {
 
 	String API_PREFIX = "/client";
-	String GET_BY_ID = API_PREFIX + "/dict/get-by-id";
-	String GET_VALUE = API_PREFIX + "/dict/get-value";
-	String GET_LIST = API_PREFIX + "/dict/get-list";
+	String GET_BY_ID = API_PREFIX + "/dict-biz/get-by-id";
+	String GET_VALUE = API_PREFIX + "/dict-biz/get-value";
+	String GET_LIST = API_PREFIX + "/dict-biz/get-list";
 
 	/**
 	 * 获取字典实体
@@ -49,7 +49,7 @@ public interface IDictClient {
 	 * @return
 	 */
 	@GetMapping(GET_BY_ID)
-	R<Dict> getById(@RequestParam("id") Long id);
+	R<DictBiz> getById(@RequestParam("id") Long id);
 
 	/**
 	 * 获取字典表对应值
@@ -68,6 +68,6 @@ public interface IDictClient {
 	 * @return
 	 */
 	@GetMapping(GET_LIST)
-	R<List<Dict>> getList(@RequestParam("code") String code);
+	R<List<DictBiz>> getList(@RequestParam("code") String code);
 
 }

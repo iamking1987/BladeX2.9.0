@@ -14,52 +14,37 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.system.feign;
+package org.springblade.system.service;
 
 
-import org.springblade.core.launch.constant.AppConstant;
-import org.springblade.core.tool.api.R;
-import org.springblade.system.entity.Dict;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.baomidou.mybatisplus.extension.service.IService;
+import org.springblade.system.entity.DictBiz;
+import org.springblade.system.vo.DictBizVO;
 
 import java.util.List;
 
 /**
- * Feign接口类
+ * 服务类
  *
  * @author Chill
  */
-@FeignClient(
-	value = AppConstant.APPLICATION_SYSTEM_NAME,
-	fallback = IDictClientFallback.class
-)
-public interface IDictClient {
-
-	String API_PREFIX = "/client";
-	String GET_BY_ID = API_PREFIX + "/dict/get-by-id";
-	String GET_VALUE = API_PREFIX + "/dict/get-value";
-	String GET_LIST = API_PREFIX + "/dict/get-list";
+public interface IDictBizService extends IService<DictBiz> {
 
 	/**
-	 * 获取字典实体
+	 * 树形结构
 	 *
-	 * @param id 主键
 	 * @return
 	 */
-	@GetMapping(GET_BY_ID)
-	R<Dict> getById(@RequestParam("id") Long id);
+	List<DictBizVO> tree();
 
 	/**
-	 * 获取字典表对应值
+	 * 获取字典表对应中文
 	 *
 	 * @param code    字典编号
 	 * @param dictKey 字典序号
 	 * @return
 	 */
-	@GetMapping(GET_VALUE)
-	R<String> getValue(@RequestParam("code") String code, @RequestParam("dictKey") Integer dictKey);
+	String getValue(String code, Integer dictKey);
 
 	/**
 	 * 获取字典表
@@ -67,7 +52,22 @@ public interface IDictClient {
 	 * @param code 字典编号
 	 * @return
 	 */
-	@GetMapping(GET_LIST)
-	R<List<Dict>> getList(@RequestParam("code") String code);
+	List<DictBiz> getList(String code);
+
+	/**
+	 * 新增或修改
+	 *
+	 * @param dict
+	 * @return
+	 */
+	boolean submit(DictBiz dict);
+
+	/**
+	 * 删除字典
+	 *
+	 * @param ids
+	 * @return
+	 */
+	boolean removeDict(String ids);
 
 }
