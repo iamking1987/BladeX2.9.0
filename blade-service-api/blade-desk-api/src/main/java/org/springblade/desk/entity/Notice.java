@@ -20,7 +20,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springblade.core.mp.base.BaseEntity;
+import org.springblade.core.tenant.mp.TenantEntity;
 
 import java.util.Date;
 
@@ -32,7 +32,7 @@ import java.util.Date;
 @Data
 @TableName("blade_notice")
 @EqualsAndHashCode(callSuper = true)
-public class Notice extends BaseEntity {
+public class Notice extends TenantEntity {
 
 	private static final long serialVersionUID = 1L;
 

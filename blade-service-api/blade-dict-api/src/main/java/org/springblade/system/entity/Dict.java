@@ -65,7 +65,7 @@ public class Dict implements Serializable {
 	 * 字典值
 	 */
 	@ApiModelProperty(value = "字典值")
-	private Integer dictKey;
+	private String dictKey;
 
 	/**
 	 * 字典名称
