@@ -102,7 +102,7 @@ public class DeptController extends BladeController {
 	@PostMapping("/submit")
 	@ApiOperationSupport(order = 4)
 	@ApiOperation(value = "新增或修改", notes = "传入dept")
-	@CacheEvict(cacheNames = {SYS_CACHE})
+	@CacheEvict(cacheNames = {SYS_CACHE}, allEntries = true)
 	public R submit(@Valid @RequestBody Dept dept, BladeUser user) {
 		if (Func.isEmpty(dept.getId())) {
 			dept.setTenantId(user.getTenantId());
@@ -116,7 +116,7 @@ public class DeptController extends BladeController {
 	@PostMapping("/remove")
 	@ApiOperationSupport(order = 5)
 	@ApiOperation(value = "删除", notes = "传入ids")
-	@CacheEvict(cacheNames = {SYS_CACHE})
+	@CacheEvict(cacheNames = {SYS_CACHE}, allEntries = true)
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
 		return R.status(deptService.removeDept(ids));
 	}
