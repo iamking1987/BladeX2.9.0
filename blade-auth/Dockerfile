@@ -6,7 +6,7 @@ RUN mkdir -p /blade/auth
 
 WORKDIR /blade/auth
 
-EXPOSE 8010
+EXPOSE 8100
 
 ADD ./target/blade-auth.jar ./app.jar
 
