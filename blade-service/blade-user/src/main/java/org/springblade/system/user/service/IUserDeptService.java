@@ -14,40 +14,17 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.system.user.mapper;
+package org.springblade.system.user.service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.apache.ibatis.annotations.Param;
-import org.springblade.system.user.entity.User;
 
-import java.util.List;
+import com.baomidou.mybatisplus.extension.service.IService;
+import org.springblade.system.user.entity.UserDept;
 
 /**
- * Mapper 接口
+ * 服务类
  *
  * @author Chill
  */
-public interface UserMapper extends BaseMapper<User> {
-
-	/**
-	 * 自定义分页
-	 *
-	 * @param page
-	 * @param user
-	 * @param deptIdList
-	 * @param tenantId
-	 * @return
-	 */
-	List<User> selectUserPage(IPage<User> page, User user, @Param("deptIdList") List<Long> deptIdList, @Param("tenantId") String tenantId);
-
-	/**
-	 * 获取用户
-	 *
-	 * @param tenantId
-	 * @param account
-	 * @return
-	 */
-	User getUser(String tenantId, String account);
+public interface IUserDeptService extends IService<UserDept> {
 
 }

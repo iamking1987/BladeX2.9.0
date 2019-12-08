@@ -16,6 +16,7 @@
  */
 package org.springblade.system.feign;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
 import org.springblade.core.tool.api.R;
 import org.springblade.system.entity.Dept;
@@ -90,6 +91,12 @@ public class SysClient implements ISysClient {
 	@GetMapping(DEPT_NAMES)
 	public R<List<String>> getDeptNames(String deptIds) {
 		return R.data(deptService.getDeptNames(deptIds));
+	}
+
+	@Override
+	@GetMapping(DEPT_CHILD)
+	public R<List<Dept>> getDeptChild(Long deptId) {
+		return R.data(deptService.list(Wrappers.<Dept>query().lambda().like(Dept::getAncestors, deptId)));
 	}
 
 	@Override

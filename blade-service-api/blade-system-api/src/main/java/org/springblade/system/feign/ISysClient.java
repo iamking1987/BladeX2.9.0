@@ -44,6 +44,7 @@ public interface ISysClient {
 	String DEPT = API_PREFIX + "/dept";
 	String DEPT_NAME = API_PREFIX + "/dept-name";
 	String DEPT_NAMES = API_PREFIX + "/dept-names";
+	String DEPT_CHILD = API_PREFIX + "/dept-child";
 	String ROLE = API_PREFIX + "/role";
 	String ROLE_NAME = API_PREFIX + "/role-name";
 	String ROLE_NAMES = API_PREFIX + "/role-names";
@@ -113,6 +114,15 @@ public interface ISysClient {
 	 */
 	@GetMapping(DEPT_NAMES)
 	R<List<String>> getDeptNames(@RequestParam("deptIds") String deptIds);
+
+	/**
+	 * 获取子部门ID
+	 *
+	 * @param deptId
+	 * @return
+	 */
+	@GetMapping(DEPT_CHILD)
+	R<List<Dept>> getDeptChild(@RequestParam("deptId") Long deptId);
 
 	/**
 	 * 获取角色名
