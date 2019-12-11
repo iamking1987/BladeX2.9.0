@@ -17,11 +17,14 @@
 package org.springblade.system.service;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springblade.core.mp.support.Query;
 import org.springblade.system.entity.DictBiz;
 import org.springblade.system.vo.DictBizVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 服务类
@@ -76,5 +79,22 @@ public interface IDictBizService extends IService<DictBiz> {
 	 * @return
 	 */
 	boolean removeDict(String ids);
+
+	/**
+	 * 顶级列表
+	 * @param dict
+	 * @param query
+	 * @return
+	 */
+	IPage<DictBizVO> parentList(Map<String, Object> dict, Query query);
+
+	/**
+	 * 子列表
+	 * @param dict
+	 * @param parentId
+	 * @param query
+	 * @return
+	 */
+	IPage<DictBizVO> childList(Map<String, Object> dict, Long parentId, Query query);
 
 }

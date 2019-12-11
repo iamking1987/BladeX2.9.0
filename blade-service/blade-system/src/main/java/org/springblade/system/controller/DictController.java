@@ -19,7 +19,6 @@ package org.springblade.system.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
-import org.springblade.common.constant.CommonConstant;
 import org.springblade.core.boot.ctrl.BladeController;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
@@ -75,7 +74,6 @@ public class DictController extends BladeController {
 	@ApiOperationSupport(order = 2)
 	@ApiOperation(value = "列表", notes = "传入dict")
 	public R<List<INode>> list(@ApiIgnore @RequestParam Map<String, Object> dict) {
-		@SuppressWarnings("unchecked")
 		List<Dict> list = dictService.list(Condition.getQueryWrapper(dict, Dict.class).lambda().orderByAsc(Dict::getSort));
 		DictWrapper dictWrapper = new DictWrapper();
 		return R.data(dictWrapper.listNodeVO(list));
@@ -92,8 +90,7 @@ public class DictController extends BladeController {
 	@ApiOperationSupport(order = 3)
 	@ApiOperation(value = "列表", notes = "传入dict")
 	public R<IPage<DictVO>> parentList(@ApiIgnore @RequestParam Map<String, Object> dict, Query query) {
-		IPage<Dict> page = dictService.page(Condition.getPage(query), Condition.getQueryWrapper(dict, Dict.class).lambda().eq(Dict::getParentId, CommonConstant.TOP_PARENT_ID).orderByAsc(Dict::getSort));
-		return R.data(DictWrapper.build().pageVO(page));
+		return R.data(dictService.parentList(dict, query));
 	}
 
 	/**
@@ -108,9 +105,7 @@ public class DictController extends BladeController {
 	@ApiOperationSupport(order = 4)
 	@ApiOperation(value = "列表", notes = "传入dict")
 	public R<IPage<DictVO>> childList(@ApiIgnore @RequestParam Map<String, Object> dict, @RequestParam(required = false, defaultValue = "-1") Long parentId, Query query) {
-		dict.remove("parentId");
-		IPage<Dict> page = dictService.page(Condition.getPage(query), Condition.getQueryWrapper(dict, Dict.class).lambda().eq(Dict::getParentId, parentId).orderByAsc(Dict::getSort));
-		return R.data(DictWrapper.build().pageVO(page));
+		return R.data(dictService.childList(dict, parentId, query));
 	}
 
 	/**
