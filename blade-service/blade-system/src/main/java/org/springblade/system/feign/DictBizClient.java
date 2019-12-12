@@ -48,7 +48,7 @@ public class DictBizClient implements IDictBizClient {
 
 	@Override
 	@GetMapping(GET_VALUE)
-	public R<String> getValue(String code, Integer dictKey) {
+	public R<String> getValue(String code, String dictKey) {
 		return R.data(service.getValue(code, dictKey));
 	}
 

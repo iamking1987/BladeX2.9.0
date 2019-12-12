@@ -35,7 +35,7 @@ public class IDictClientFallback implements IDictClient {
 	}
 
 	@Override
-	public R<String> getValue(String code, Integer dictKey) {
+	public R<String> getValue(String code, String dictKey) {
 		return R.fail("获取数据失败");
 	}
 

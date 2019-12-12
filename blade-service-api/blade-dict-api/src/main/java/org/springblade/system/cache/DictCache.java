@@ -64,10 +64,24 @@ public class DictCache {
 	 * 获取字典值
 	 *
 	 * @param code    字典编号
-	 * @param dictKey 字典键
+	 * @param dictKey Integer型字典键
 	 * @return
 	 */
 	public static String getValue(String code, Integer dictKey) {
+		return CacheUtil.get(DICT_CACHE, DICT_VALUE + code + StringPool.COLON, String.valueOf(dictKey), () -> {
+			R<String> result = getDictClient().getValue(code, String.valueOf(dictKey));
+			return result.getData();
+		});
+	}
+
+	/**
+	 * 获取字典值
+	 *
+	 * @param code    字典编号
+	 * @param dictKey String型字典键
+	 * @return
+	 */
+	public static String getValue(String code, String dictKey) {
 		return CacheUtil.get(DICT_CACHE, DICT_VALUE + code + StringPool.COLON, dictKey, () -> {
 			R<String> result = getDictClient().getValue(code, dictKey);
 			return result.getData();
