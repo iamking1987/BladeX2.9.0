@@ -50,6 +50,7 @@ public class TokenUtil {
 
 
 	public final static String TENANT_HEADER_KEY = "Tenant-Id";
+	public final static String TENANT_PARAM_KEY = "tenant_id";
 	public final static String DEFAULT_TENANT_ID = "000000";
 	public final static String TENANT_NOT_FOUND = "租户ID未找到";
 	public final static String USER_TYPE_HEADER_KEY = "User-Type";

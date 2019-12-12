@@ -18,6 +18,7 @@ package org.springblade.auth.service;
 
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 import org.springblade.auth.constant.AuthConstant;
 import org.springblade.auth.enums.BladeUserEnum;
 import org.springblade.auth.utils.TokenUtil;
@@ -52,11 +53,13 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 	public BladeUserDetails loadUserByUsername(String username) {
 		HttpServletRequest request = WebUtil.getRequest();
 		// 获取租户
-		String tenantId = request.getHeader(TokenUtil.TENANT_HEADER_KEY);
-		if (StringUtil.isBlank(tenantId)) {
+		String headerTenant = request.getHeader(TokenUtil.TENANT_HEADER_KEY);
+		String paramTenant = request.getParameter(TokenUtil.TENANT_PARAM_KEY);
+		if (StringUtil.isAllBlank(headerTenant, paramTenant)) {
 			throw new UserDeniedAuthorizationException(TokenUtil.TENANT_NOT_FOUND);
 		}
-
+		// 租户ID
+		String tenantId = StringUtils.isBlank(headerTenant) ? paramTenant : headerTenant;
 		// 获取用户类型
 		String userType = Func.toStr(request.getHeader(TokenUtil.USER_TYPE_HEADER_KEY), TokenUtil.DEFAULT_USER_TYPE);
 
