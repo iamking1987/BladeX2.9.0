@@ -18,12 +18,24 @@ package org.springblade.common.constant;
 
 import org.springblade.core.launch.constant.AppConstant;
 
+import static org.springblade.core.launch.constant.AppConstant.APPLICATION_NAME_PREFIX;
+
 /**
  * 启动常量
  *
  * @author Chill
  */
 public interface LauncherConstant {
+
+	/**
+	 * xxljob
+	 */
+	String APPLICATION_XXLJOB_NAME = APPLICATION_NAME_PREFIX + "xxljob";
+
+	/**
+	 * xxljob
+	 */
+	String APPLICATION_XXLJOB_ADMIN_NAME = APPLICATION_NAME_PREFIX + "xxljob-admin";
 
 	/**
 	 * nacos dev 地址

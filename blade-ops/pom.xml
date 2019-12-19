@@ -23,6 +23,8 @@
         <module>blade-resource</module>
         <module>blade-turbine</module>
         <module>blade-zipkin</module>
+        <module>blade-xxljob</module>
+        <module>blade-xxljob-admin</module>
     </modules>
 
 </project>
