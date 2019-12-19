@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static org.springblade.core.cache.constant.CacheConstant.MENU_CACHE;
 import static org.springblade.core.cache.constant.CacheConstant.SYS_CACHE;
 
 /**
@@ -54,10 +55,10 @@ public class TopMenuController extends BladeController {
 	private ITopMenuService topMenuService;
 
 	/**
-	* 详情
-	*/
+	 * 详情
+	 */
 	@GetMapping("/detail")
-    @ApiOperationSupport(order = 1)
+	@ApiOperationSupport(order = 1)
 	@ApiOperation(value = "详情", notes = "传入topMenu")
 	public R<TopMenu> detail(TopMenu topMenu) {
 		TopMenu detail = topMenuService.getOne(Condition.getQueryWrapper(topMenu));
@@ -65,10 +66,10 @@ public class TopMenuController extends BladeController {
 	}
 
 	/**
-	* 分页 顶部菜单表
-	*/
+	 * 分页 顶部菜单表
+	 */
 	@GetMapping("/list")
-    @ApiOperationSupport(order = 2)
+	@ApiOperationSupport(order = 2)
 	@ApiOperation(value = "分页", notes = "传入topMenu")
 	public R<IPage<TopMenu>> list(TopMenu topMenu, Query query) {
 		IPage<TopMenu> pages = topMenuService.page(Condition.getPage(query), Condition.getQueryWrapper(topMenu));
@@ -76,30 +77,30 @@ public class TopMenuController extends BladeController {
 	}
 
 	/**
-	* 新增 顶部菜单表
-	*/
+	 * 新增 顶部菜单表
+	 */
 	@PostMapping("/save")
-    @ApiOperationSupport(order = 4)
+	@ApiOperationSupport(order = 4)
 	@ApiOperation(value = "新增", notes = "传入topMenu")
 	public R save(@Valid @RequestBody TopMenu topMenu) {
 		return R.status(topMenuService.save(topMenu));
 	}
 
 	/**
-	* 修改 顶部菜单表
-	*/
+	 * 修改 顶部菜单表
+	 */
 	@PostMapping("/update")
-    @ApiOperationSupport(order = 5)
+	@ApiOperationSupport(order = 5)
 	@ApiOperation(value = "修改", notes = "传入topMenu")
 	public R update(@Valid @RequestBody TopMenu topMenu) {
 		return R.status(topMenuService.updateById(topMenu));
 	}
 
 	/**
-	* 新增或修改 顶部菜单表
-	*/
+	 * 新增或修改 顶部菜单表
+	 */
 	@PostMapping("/submit")
-    @ApiOperationSupport(order = 6)
+	@ApiOperationSupport(order = 6)
 	@ApiOperation(value = "新增或修改", notes = "传入topMenu")
 	public R submit(@Valid @RequestBody TopMenu topMenu) {
 		return R.status(topMenuService.saveOrUpdate(topMenu));
@@ -107,10 +108,10 @@ public class TopMenuController extends BladeController {
 
 
 	/**
-	* 删除 顶部菜单表
-	*/
+	 * 删除 顶部菜单表
+	 */
 	@PostMapping("/remove")
-    @ApiOperationSupport(order = 7)
+	@ApiOperationSupport(order = 7)
 	@ApiOperation(value = "逻辑删除", notes = "传入ids")
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
 		return R.status(topMenuService.deleteLogic(Func.toLongList(ids)));
@@ -122,7 +123,7 @@ public class TopMenuController extends BladeController {
 	@PostMapping("/grant")
 	@ApiOperationSupport(order = 8)
 	@ApiOperation(value = "顶部菜单配置", notes = "传入topMenuId集合以及menuId集合")
-	@CacheEvict(cacheNames = {SYS_CACHE}, allEntries = true)
+	@CacheEvict(cacheNames = {SYS_CACHE, MENU_CACHE}, allEntries = true)
 	public R grant(@ApiParam(value = "topMenuId集合", required = true) @RequestParam String topMenuIds,
 				   @ApiParam(value = "menuId集合", required = true) @RequestParam String menuIds) {
 		boolean temp = topMenuService.grant(Func.toLongList(topMenuIds), Func.toLongList(menuIds));
