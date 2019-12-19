@@ -69,6 +69,7 @@ management:
 #blade配置
 blade:
   xss:
+    enable: true
     skip-url:
       - /weixin
       - /notice/submit

@@ -19,7 +19,7 @@ package org.springblade.system.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springblade.core.boot.ctrl.BladeController;
@@ -105,7 +105,7 @@ public class TopMenuController extends BladeController {
 		return R.status(topMenuService.saveOrUpdate(topMenu));
 	}
 
-	
+
 	/**
 	* 删除 顶部菜单表
 	*/
@@ -129,5 +129,5 @@ public class TopMenuController extends BladeController {
 		return R.status(temp);
 	}
 
-	
+
 }

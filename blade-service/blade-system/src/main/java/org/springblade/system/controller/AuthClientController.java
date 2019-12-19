@@ -19,7 +19,7 @@ package org.springblade.system.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springblade.core.boot.ctrl.BladeController;
@@ -63,7 +63,7 @@ public class AuthClientController extends BladeController {
 	}
 
 	/**
-	* 分页 
+	* 分页
 	*/
 	@GetMapping("/list")
 	@ApiOperationSupport(order = 2)
@@ -74,7 +74,7 @@ public class AuthClientController extends BladeController {
 	}
 
 	/**
-	* 新增 
+	* 新增
 	*/
 	@PostMapping("/save")
 	@ApiOperationSupport(order = 3)
@@ -84,7 +84,7 @@ public class AuthClientController extends BladeController {
 	}
 
 	/**
-	* 修改 
+	* 修改
 	*/
 	@PostMapping("/update")
 	@ApiOperationSupport(order = 4)
@@ -94,7 +94,7 @@ public class AuthClientController extends BladeController {
 	}
 
 	/**
-	* 新增或修改 
+	* 新增或修改
 	*/
 	@PostMapping("/submit")
 	@ApiOperationSupport(order = 5)
@@ -103,9 +103,9 @@ public class AuthClientController extends BladeController {
 		return R.status(clientService.saveOrUpdate(authClient));
 	}
 
-	
+
 	/**
-	* 删除 
+	* 删除
 	*/
 	@PostMapping("/remove")
 	@ApiOperationSupport(order = 6)
@@ -114,5 +114,5 @@ public class AuthClientController extends BladeController {
 		return R.status(clientService.deleteLogic(Func.toLongList(ids)));
 	}
 
-	
+
 }
