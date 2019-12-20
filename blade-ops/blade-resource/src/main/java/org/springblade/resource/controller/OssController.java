@@ -99,6 +99,7 @@ public class OssController extends BladeController {
 	@ApiOperationSupport(order = 4)
 	@ApiOperation(value = "新增", notes = "传入oss")
 	public R save(@Valid @RequestBody Oss oss) {
+		CacheUtil.evict(SYS_CACHE, OssBuilder.OSS_CODE, SecureUtil.getTenantId());
 		return R.status(ossService.save(oss));
 	}
 
@@ -109,6 +110,7 @@ public class OssController extends BladeController {
 	@ApiOperationSupport(order = 5)
 	@ApiOperation(value = "修改", notes = "传入oss")
 	public R update(@Valid @RequestBody Oss oss) {
+		CacheUtil.evict(SYS_CACHE, OssBuilder.OSS_CODE, SecureUtil.getTenantId());
 		return R.status(ossService.updateById(oss));
 	}
 
@@ -119,6 +121,7 @@ public class OssController extends BladeController {
 	@ApiOperationSupport(order = 6)
 	@ApiOperation(value = "新增或修改", notes = "传入oss")
 	public R submit(@Valid @RequestBody Oss oss) {
+		CacheUtil.evict(SYS_CACHE, OssBuilder.OSS_CODE, SecureUtil.getTenantId());
 		return R.status(ossService.saveOrUpdate(oss));
 	}
 
@@ -130,6 +133,7 @@ public class OssController extends BladeController {
 	@ApiOperationSupport(order = 7)
 	@ApiOperation(value = "逻辑删除", notes = "传入ids")
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
+		CacheUtil.evict(SYS_CACHE, OssBuilder.OSS_CODE, SecureUtil.getTenantId());
 		return R.status(ossService.deleteLogic(Func.toLongList(ids)));
 	}
 
