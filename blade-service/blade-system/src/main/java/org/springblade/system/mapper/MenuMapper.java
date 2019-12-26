@@ -17,12 +17,12 @@
 package org.springblade.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springblade.system.dto.MenuDTO;
 import org.springblade.system.entity.Menu;
 import org.springblade.system.vo.MenuVO;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -33,13 +33,13 @@ import java.util.List;
 public interface MenuMapper extends BaseMapper<Menu> {
 
 	/**
-	 * 自定义分页
+	 * 懒加载部门列表
 	 *
-	 * @param page
-	 * @param menu
+	 * @param parentId
+	 * @param param
 	 * @return
 	 */
-	List<MenuVO> selectMenuPage(IPage page, MenuVO menu);
+	List<MenuVO> lazyList(Long parentId, Map<String, Object> param);
 
 	/**
 	 * 树形结构
