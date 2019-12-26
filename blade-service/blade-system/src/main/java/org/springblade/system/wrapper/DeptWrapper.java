@@ -25,7 +25,6 @@ import org.springblade.core.tool.utils.Func;
 import org.springblade.system.cache.DictCache;
 import org.springblade.system.cache.SysCache;
 import org.springblade.system.entity.Dept;
-import org.springblade.system.vo.DeptLazyVO;
 import org.springblade.system.vo.DeptVO;
 
 import java.util.List;
@@ -68,7 +67,7 @@ public class DeptWrapper extends BaseEntityWrapper<Dept, DeptVO> {
 		return ForestNodeMerger.merge(collect);
 	}
 
-	public List<INode> listNodeLazyVO(List<DeptLazyVO> list) {
+	public List<INode> listNodeLazyVO(List<DeptVO> list) {
 		List<INode> collect = list.stream().peek(dept -> {
 			String category = DictCache.getValue("org_category", dept.getDeptCategory());
 			Objects.requireNonNull(dept).setDeptCategoryName(category);

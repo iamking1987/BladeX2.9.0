@@ -31,7 +31,6 @@ import org.springblade.core.tool.node.INode;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.service.IDeptService;
-import org.springblade.system.vo.DeptLazyVO;
 import org.springblade.system.vo.DeptVO;
 import org.springblade.system.wrapper.DeptWrapper;
 import org.springframework.cache.annotation.CacheEvict;
@@ -96,7 +95,7 @@ public class DeptController extends BladeController {
 	@ApiOperationSupport(order = 3)
 	@ApiOperation(value = "懒加载列表", notes = "传入dept")
 	public R<List<INode>> lazyList(@ApiIgnore @RequestParam Map<String, Object> dept, @RequestParam(required = false, defaultValue = "0") Long parentId, BladeUser bladeUser) {
-		List<DeptLazyVO> list = deptService.lazyList(bladeUser.getTenantId(), parentId, dept);
+		List<DeptVO> list = deptService.lazyList(bladeUser.getTenantId(), parentId, dept);
 		return R.data(DeptWrapper.build().listNodeLazyVO(list));
 	}
 
