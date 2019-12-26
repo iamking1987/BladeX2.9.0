@@ -31,6 +31,7 @@ import org.springblade.core.tool.node.INode;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.service.IDeptService;
+import org.springblade.system.vo.DeptLazyVO;
 import org.springblade.system.vo.DeptVO;
 import org.springblade.system.wrapper.DeptWrapper;
 import org.springframework.cache.annotation.CacheEvict;
@@ -85,12 +86,27 @@ public class DeptController extends BladeController {
 	}
 
 	/**
+	 * 懒加载列表
+	 */
+	@GetMapping("/lazy-list")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "deptName", value = "部门名称", paramType = "query", dataType = "string"),
+		@ApiImplicitParam(name = "fullName", value = "部门全称", paramType = "query", dataType = "string")
+	})
+	@ApiOperationSupport(order = 3)
+	@ApiOperation(value = "懒加载列表", notes = "传入dept")
+	public R<List<INode>> lazyList(@ApiIgnore @RequestParam Map<String, Object> dept, @RequestParam(required = false, defaultValue = "0") Long parentId, BladeUser bladeUser) {
+		List<DeptLazyVO> list = deptService.lazyList(bladeUser.getTenantId(), parentId, dept);
+		return R.data(DeptWrapper.build().listNodeLazyVO(list));
+	}
+
+	/**
 	 * 获取部门树形结构
 	 *
 	 * @return
 	 */
 	@GetMapping("/tree")
-	@ApiOperationSupport(order = 3)
+	@ApiOperationSupport(order = 4)
 	@ApiOperation(value = "树形结构", notes = "树形结构")
 	public R<List<DeptVO>> tree(String tenantId, BladeUser bladeUser) {
 		List<DeptVO> tree = deptService.tree(Func.toStrWithEmpty(tenantId, bladeUser.getTenantId()));
@@ -98,10 +114,21 @@ public class DeptController extends BladeController {
 	}
 
 	/**
+	 * 懒加载获取部门树形结构
+	 */
+	@GetMapping("/lazy-tree")
+	@ApiOperationSupport(order = 5)
+	@ApiOperation(value = "懒加载树形结构", notes = "树形结构")
+	public R<List<DeptVO>> lazyTree(String tenantId, @RequestParam(required = false, defaultValue = "0") Long parentId, BladeUser bladeUser) {
+		List<DeptVO> tree = deptService.lazyTree(Func.toStrWithEmpty(tenantId, bladeUser.getTenantId()), parentId);
+		return R.data(tree);
+	}
+
+	/**
 	 * 新增或修改
 	 */
 	@PostMapping("/submit")
-	@ApiOperationSupport(order = 4)
+	@ApiOperationSupport(order = 6)
 	@ApiOperation(value = "新增或修改", notes = "传入dept")
 	@CacheEvict(cacheNames = {SYS_CACHE}, allEntries = true)
 	public R submit(@Valid @RequestBody Dept dept) {
@@ -112,7 +139,7 @@ public class DeptController extends BladeController {
 	 * 删除
 	 */
 	@PostMapping("/remove")
-	@ApiOperationSupport(order = 5)
+	@ApiOperationSupport(order = 7)
 	@ApiOperation(value = "删除", notes = "传入ids")
 	@CacheEvict(cacheNames = {SYS_CACHE}, allEntries = true)
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
