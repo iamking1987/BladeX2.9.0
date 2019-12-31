@@ -17,10 +17,7 @@
 package org.springblade.system.feign;
 
 import org.springblade.core.tool.api.R;
-import org.springblade.system.entity.Dept;
-import org.springblade.system.entity.Menu;
-import org.springblade.system.entity.Role;
-import org.springblade.system.entity.Tenant;
+import org.springblade.system.entity.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -85,6 +82,16 @@ public class ISysClientFallback implements ISysClient {
 
 	@Override
 	public R<Tenant> getTenant(Long id) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<Param> getParam(Long id) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<String> getParamValue(Long paramKey) {
 		return R.fail("获取数据失败");
 	}
 }

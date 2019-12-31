@@ -18,10 +18,7 @@ package org.springblade.system.feign;
 
 import org.springblade.core.launch.constant.AppConstant;
 import org.springblade.core.tool.api.R;
-import org.springblade.system.entity.Dept;
-import org.springblade.system.entity.Menu;
-import org.springblade.system.entity.Role;
-import org.springblade.system.entity.Tenant;
+import org.springblade.system.entity.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,6 +48,8 @@ public interface ISysClient {
 	String ROLE_ALIAS = API_PREFIX + "/role-alias";
 	String ROLE_ALIASES = API_PREFIX + "/role-aliases";
 	String TENANT = API_PREFIX + "/tenant";
+	String PARAM = API_PREFIX + "/param";
+	String PARAM_VALUE = API_PREFIX + "/param-value";
 
 	/**
 	 * 获取菜单
@@ -146,9 +145,27 @@ public interface ISysClient {
 	 * 获取租户
 	 *
 	 * @param id 主键
-	 * @return Tenant>
+	 * @return Tenant
 	 */
 	@GetMapping(TENANT)
 	R<Tenant> getTenant(@RequestParam("id") Long id);
+
+	/**
+	 * 获取参数
+	 *
+	 * @param id 主键
+	 * @return Param
+	 */
+	@GetMapping(PARAM)
+	R<Param> getParam(@RequestParam("id") Long id);
+
+	/**
+	 * 获取参数配置
+	 *
+	 * @param paramKey 参数key
+	 * @return String
+	 */
+	@GetMapping(PARAM_VALUE)
+	R<String> getParamValue(@RequestParam("paramKey") String paramKey);
 
 }

@@ -16,17 +16,10 @@
  */
 package org.springblade.system.feign;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
 import org.springblade.core.tool.api.R;
-import org.springblade.system.entity.Dept;
-import org.springblade.system.entity.Menu;
-import org.springblade.system.entity.Role;
-import org.springblade.system.entity.Tenant;
-import org.springblade.system.service.IDeptService;
-import org.springblade.system.service.IMenuService;
-import org.springblade.system.service.IRoleService;
-import org.springblade.system.service.ITenantService;
+import org.springblade.system.entity.*;
+import org.springblade.system.service.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
@@ -50,6 +43,8 @@ public class SysClient implements ISysClient {
 	private IMenuService menuService;
 
 	private ITenantService tenantService;
+
+	private IParamService paramService;
 
 	@Override
 	@GetMapping(MENU)
@@ -96,7 +91,7 @@ public class SysClient implements ISysClient {
 	@Override
 	@GetMapping(DEPT_CHILD)
 	public R<List<Dept>> getDeptChild(Long deptId) {
-		return R.data(deptService.list(Wrappers.<Dept>query().lambda().like(Dept::getAncestors, deptId)));
+		return R.data(deptService.getDeptChild(deptId));
 	}
 
 	@Override
@@ -115,6 +110,18 @@ public class SysClient implements ISysClient {
 	@GetMapping(TENANT)
 	public R<Tenant> getTenant(Long id) {
 		return R.data(tenantService.getById(id));
+	}
+
+	@Override
+	@GetMapping(PARAM)
+	public R<Param> getParam(Long id) {
+		return R.data(paramService.getById(id));
+	}
+
+	@Override
+	@GetMapping(PARAM_VALUE)
+	public R<String> getParamValue(String paramKey) {
+		return R.data(paramService.getValue(paramKey));
 	}
 
 }

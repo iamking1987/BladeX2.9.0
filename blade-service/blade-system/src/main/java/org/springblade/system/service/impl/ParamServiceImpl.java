@@ -16,12 +16,11 @@
  */
 package org.springblade.system.service.impl;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springblade.core.mp.base.BaseServiceImpl;
 import org.springblade.system.entity.Param;
 import org.springblade.system.mapper.ParamMapper;
 import org.springblade.system.service.IParamService;
-import org.springblade.system.vo.ParamVO;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,8 +32,9 @@ import org.springframework.stereotype.Service;
 public class ParamServiceImpl extends BaseServiceImpl<ParamMapper, Param> implements IParamService {
 
 	@Override
-	public IPage<ParamVO> selectParamPage(IPage<ParamVO> page, ParamVO param) {
-		return page.setRecords(baseMapper.selectParamPage(page, param));
+	public String getValue(String paramKey) {
+		Param param = this.getOne(Wrappers.<Param>query().lambda().eq(Param::getParamKey, paramKey));
+		return param.getParamValue();
 	}
 
 }

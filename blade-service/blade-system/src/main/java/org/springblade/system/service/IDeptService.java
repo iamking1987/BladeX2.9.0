@@ -19,7 +19,6 @@ package org.springblade.system.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.vo.DeptVO;
-import org.springblade.system.vo.DeptVO;
 
 import java.util.List;
 import java.util.Map;
@@ -65,6 +64,14 @@ public interface IDeptService extends IService<Dept> {
 	 * @return
 	 */
 	List<String> getDeptNames(String deptIds);
+
+	/**
+	 * 获取子部门
+	 *
+	 * @param deptId
+	 * @return
+	 */
+	List<Dept> getDeptChild(Long deptId);
 
 	/**
 	 * 删除部门
