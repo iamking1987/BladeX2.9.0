@@ -91,7 +91,7 @@ public class ISysClientFallback implements ISysClient {
 	}
 
 	@Override
-	public R<String> getParamValue(Long paramKey) {
+	public R<String> getParamValue(String paramKey) {
 		return R.fail("获取数据失败");
 	}
 }
