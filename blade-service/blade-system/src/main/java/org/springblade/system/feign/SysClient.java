@@ -113,6 +113,12 @@ public class SysClient implements ISysClient {
 	}
 
 	@Override
+	@GetMapping(TENANT_ID)
+	public R<Tenant> getTenant(String tenantId) {
+		return R.data(tenantService.getByTenantId(tenantId));
+	}
+
+	@Override
 	@GetMapping(PARAM)
 	public R<Param> getParam(Long id) {
 		return R.data(paramService.getById(id));

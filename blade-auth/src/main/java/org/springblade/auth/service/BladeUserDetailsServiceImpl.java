@@ -23,9 +23,12 @@ import org.springblade.auth.constant.AuthConstant;
 import org.springblade.auth.enums.BladeUserEnum;
 import org.springblade.auth.utils.TokenUtil;
 import org.springblade.core.tool.api.R;
+import org.springblade.core.tool.utils.DateUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.core.tool.utils.WebUtil;
+import org.springblade.system.entity.Tenant;
+import org.springblade.system.feign.ISysClient;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserInfo;
 import org.springblade.system.user.feign.IUserClient;
@@ -36,6 +39,7 @@ import org.springframework.security.oauth2.common.exceptions.UserDeniedAuthoriza
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * 用户信息
@@ -47,19 +51,31 @@ import javax.servlet.http.HttpServletRequest;
 public class BladeUserDetailsServiceImpl implements UserDetailsService {
 
 	private IUserClient userClient;
+	private ISysClient sysClient;
 
 	@Override
 	@SneakyThrows
 	public BladeUserDetails loadUserByUsername(String username) {
 		HttpServletRequest request = WebUtil.getRequest();
-		// 获取租户
+		// 获取租户ID
 		String headerTenant = request.getHeader(TokenUtil.TENANT_HEADER_KEY);
 		String paramTenant = request.getParameter(TokenUtil.TENANT_PARAM_KEY);
 		if (StringUtil.isAllBlank(headerTenant, paramTenant)) {
 			throw new UserDeniedAuthorizationException(TokenUtil.TENANT_NOT_FOUND);
 		}
-		// 租户ID
 		String tenantId = StringUtils.isBlank(headerTenant) ? paramTenant : headerTenant;
+
+		// 获取租户信息
+		R<Tenant> tenant = sysClient.getTenant(tenantId);
+		if (tenant.isSuccess()) {
+			Date expireTime = tenant.getData().getExpireTime();
+			if (expireTime != null && expireTime.before(DateUtil.now())) {
+				throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_TENANT_PERMISSION);
+			}
+		} else {
+			throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_TENANT);
+		}
+
 		// 获取用户类型
 		String userType = Func.toStr(request.getHeader(TokenUtil.USER_TYPE_HEADER_KEY), TokenUtil.DEFAULT_USER_TYPE);
 

@@ -48,6 +48,7 @@ public interface ISysClient {
 	String ROLE_ALIAS = API_PREFIX + "/role-alias";
 	String ROLE_ALIASES = API_PREFIX + "/role-aliases";
 	String TENANT = API_PREFIX + "/tenant";
+	String TENANT_ID = API_PREFIX + "/tenant-id";
 	String PARAM = API_PREFIX + "/param";
 	String PARAM_VALUE = API_PREFIX + "/param-value";
 
@@ -149,6 +150,15 @@ public interface ISysClient {
 	 */
 	@GetMapping(TENANT)
 	R<Tenant> getTenant(@RequestParam("id") Long id);
+
+	/**
+	 * 获取租户
+	 *
+	 * @param tenantId 租户id
+	 * @return Tenant
+	 */
+	@GetMapping(TENANT_ID)
+	R<Tenant> getTenant(@RequestParam("tenantId") String tenantId);
 
 	/**
 	 * 获取参数
