@@ -19,21 +19,25 @@ package org.springblade.system.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
+import org.springblade.core.log.exception.ServiceException;
 import org.springblade.core.mp.base.BaseServiceImpl;
 import org.springblade.core.tenant.TenantId;
+import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.utils.Func;
-import org.springblade.system.entity.Dept;
-import org.springblade.system.entity.Role;
-import org.springblade.system.entity.Tenant;
+import org.springblade.system.entity.*;
 import org.springblade.system.mapper.DeptMapper;
+import org.springblade.system.mapper.MenuMapper;
 import org.springblade.system.mapper.RoleMapper;
 import org.springblade.system.mapper.TenantMapper;
+import org.springblade.system.service.IRoleMenuService;
 import org.springblade.system.service.ITenantService;
+import org.springblade.system.user.entity.User;
+import org.springblade.system.user.feign.IUserClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -47,7 +51,17 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 
 	private final TenantId tenantId;
 	private final RoleMapper roleMapper;
+	private final MenuMapper menuMapper;
 	private final DeptMapper deptMapper;
+	private final IRoleMenuService roleMenuService;
+	private final IUserClient userClient;
+
+	/**
+	 * 新建默认租户角色所分配的菜单主节点
+	 */
+	private final List<String> menuCodes = Arrays.asList(
+		"desk", "flow", "work", "monitor", "resource", "role", "user", "dept", "dictbiz", "topmenu", "param"
+	);
 
 	@Override
 	public IPage<Tenant> selectTenantPage(IPage<Tenant> page, Tenant tenant) {
@@ -77,6 +91,17 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			role.setSort(2);
 			role.setIsDeleted(0);
 			roleMapper.insert(role);
+			// 新建租户对应的角色菜单权限
+			LinkedList<Menu> userMenus = new LinkedList<>();
+			List<Menu> menus = getMenus(menuCodes, userMenus);
+			List<RoleMenu> roleMenus = new ArrayList<>();
+			menus.forEach(menu -> {
+				RoleMenu roleMenu = new RoleMenu();
+				roleMenu.setMenuId(menu.getId());
+				roleMenu.setRoleId(role.getId());
+				roleMenus.add(roleMenu);
+			});
+			roleMenuService.saveBatch(roleMenus);
 			// 新建租户对应的默认部门
 			Dept dept = new Dept();
 			dept.setTenantId(tenantId);
@@ -88,6 +113,22 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			dept.setSort(2);
 			dept.setIsDeleted(0);
 			deptMapper.insert(dept);
+			// 新建租户对应的默认管理用户
+			User user = new User();
+			user.setTenantId(tenantId);
+			user.setName("admin");
+			user.setRealName("admin");
+			user.setAccount("admin");
+			user.setPassword("admin");
+			user.setRoleId(String.valueOf(role.getId()));
+			user.setDeptId(String.valueOf(dept.getId()));
+			user.setBirthday(new Date());
+			user.setSex(1);
+			user.setIsDeleted(0);
+			R<Boolean> result = userClient.saveUser(user);
+			if (!result.isSuccess()) {
+				throw new ServiceException(result.getMsg());
+			}
 		}
 		return super.saveOrUpdate(tenant);
 	}
@@ -98,6 +139,21 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			return getTenantId(codes);
 		}
 		return code;
+	}
+
+	private List<Menu> getMenus(List<String> codes, LinkedList<Menu> menus) {
+		codes.forEach(code -> {
+			Menu menu = menuMapper.selectOne(Wrappers.<Menu>query().lambda().eq(Menu::getCode, code).eq(Menu::getIsDeleted, BladeConstant.DB_NOT_DELETED));
+			menus.add(menu);
+			recursion(menu.getId(), menus);
+		});
+		return menus;
+	}
+
+	private void recursion(Long parentId, LinkedList<Menu> menus) {
+		List<Menu> menuList = menuMapper.selectList(Wrappers.<Menu>query().lambda().eq(Menu::getParentId, parentId).eq(Menu::getIsDeleted, BladeConstant.DB_NOT_DELETED));
+		menus.addAll(menuList);
+		menuList.forEach(menu -> recursion(menu.getId(), menus));
 	}
 
 }

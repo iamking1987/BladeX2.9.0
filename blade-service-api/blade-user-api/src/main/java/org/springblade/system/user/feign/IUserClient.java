@@ -23,6 +23,8 @@ import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -38,6 +40,7 @@ public interface IUserClient {
 	String API_PREFIX = "/client";
 	String USER_INFO = API_PREFIX + "/user-info";
 	String USER_INFO_BY_ID = API_PREFIX + "/user-info-by-id";
+	String SAVE_USER = API_PREFIX + "/save-user";
 
 	/**
 	 * 获取用户信息
@@ -52,10 +55,19 @@ public interface IUserClient {
 	 * 获取用户信息
 	 *
 	 * @param tenantId 租户ID
-	 * @param account    账号
+	 * @param account  账号
 	 * @return
 	 */
 	@GetMapping(USER_INFO)
 	R<UserInfo> userInfo(@RequestParam("tenantId") String tenantId, @RequestParam("account") String account);
+
+	/**
+	 * 新建用户
+	 *
+	 * @param user 用户实体
+	 * @return
+	 */
+	@PostMapping(SAVE_USER)
+	R<Boolean> saveUser(@RequestBody User user);
 
 }

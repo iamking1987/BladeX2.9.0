@@ -22,6 +22,8 @@ import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserInfo;
 import org.springblade.system.user.service.IUserService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -33,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class UserClient implements IUserClient {
 
-	IUserService service;
+	private IUserService service;
 
 	@Override
 	@GetMapping(USER_INFO_BY_ID)
@@ -45,6 +47,12 @@ public class UserClient implements IUserClient {
 	@GetMapping(USER_INFO)
 	public R<UserInfo> userInfo(String tenantId, String account) {
 		return R.data(service.userInfo(tenantId, account));
+	}
+
+	@Override
+	@PostMapping(SAVE_USER)
+	public R<Boolean> saveUser(@RequestBody User user) {
+		return R.data(service.submit(user));
 	}
 
 }
