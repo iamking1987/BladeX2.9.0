@@ -28,6 +28,7 @@ import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.utils.DateUtil;
 import org.springblade.core.tool.utils.DigestUtil;
 import org.springblade.core.tool.utils.Func;
+import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.system.cache.SysCache;
 import org.springblade.system.entity.Tenant;
 import org.springblade.system.user.entity.User;
@@ -56,6 +57,9 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public boolean submit(User user) {
+		if (StringUtil.isBlank(user.getTenantId())) {
+			user.setTenantId(BladeConstant.ADMIN_TENANT_ID);
+		}
 		String tenantId = user.getTenantId();
 		Tenant tenant = SysCache.getTenant(tenantId);
 		Integer accountNumber = tenant.getAccountNumber();
