@@ -46,6 +46,7 @@ public class AuthProvider {
 		defaultSkipUrl.add("/menu/routes");
 		defaultSkipUrl.add("/menu/auth-routes");
 		defaultSkipUrl.add("/menu/top-menu");
+		defaultSkipUrl.add("/tenant/info");
 		defaultSkipUrl.add("/process/resource-view");
 		defaultSkipUrl.add("/process/diagram-view");
 		defaultSkipUrl.add("/manager/check-upload");

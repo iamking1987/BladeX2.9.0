@@ -30,6 +30,7 @@ import org.springblade.core.secure.annotation.PreAuth;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.constant.RoleConstant;
+import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.system.entity.Tenant;
 import org.springblade.system.service.ITenantService;
@@ -169,6 +170,26 @@ public class TenantController extends BladeController {
 		List<Tenant> list = tenantService.list(Wrappers.<Tenant>query().lambda().like(Tenant::getTenantName, name));
 		return R.data(list);
 	}
+
+	/**
+	 * 根据域名查询信息
+	 *
+	 * @param domain 域名
+	 */
+	@GetMapping("/info")
+	@ApiOperationSupport(order = 9)
+	@ApiOperation(value = "配置信息", notes = "传入domain")
+	public R<Kv> info(String domain) {
+		Tenant tenant = tenantService.getOne(Wrappers.<Tenant>query().lambda().eq(Tenant::getDomain, domain));
+		Kv kv = Kv.create();
+		if (tenant != null) {
+			kv.set("tenantId", tenant.getTenantId())
+				.set("domain", tenant.getDomain())
+				.set("backgroundUrl", tenant.getBackgroundUrl());
+		}
+		return R.data(kv);
+	}
+
 
 
 }
