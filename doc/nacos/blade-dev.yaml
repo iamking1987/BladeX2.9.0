@@ -24,6 +24,10 @@ spring:
 
 #项目模块集中配置
 blade:
+  #分布式锁配置
+  lock:
+     enabled: false
+     address: redis://127.0.0.1:6379
   #通用开发生产环境数据库地址(特殊情况可在对应的子工程里配置覆盖)
   datasource:
     dev:

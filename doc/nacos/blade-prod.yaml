@@ -20,9 +20,13 @@ spring:
       validation-query: select 1
       # Oracle校验
       #validation-query: select 1 from dual
-      
+
 #项目模块集中配置
 blade:
+  #分布式锁配置
+  lock:
+    enabled: false
+    address: redis://192.168.0.157:3379
   #通用开发生产环境数据库地址(特殊情况可在对应的子工程里配置覆盖)
   datasource:
     prod:
