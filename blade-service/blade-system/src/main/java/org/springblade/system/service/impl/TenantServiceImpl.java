@@ -121,12 +121,15 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			user.setBirthday(new Date());
 			user.setSex(1);
 			user.setIsDeleted(0);
+			boolean temp = super.saveOrUpdate(tenant);
 			R<Boolean> result = userClient.saveUser(user);
 			if (!result.isSuccess()) {
 				throw new ServiceException(result.getMsg());
 			}
+			return temp;
+		} else {
+			return super.saveOrUpdate(tenant);
 		}
-		return super.saveOrUpdate(tenant);
 	}
 
 	private String getTenantId(List<String> codes) {
