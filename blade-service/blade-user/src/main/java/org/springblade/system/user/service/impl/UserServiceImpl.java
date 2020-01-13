@@ -24,6 +24,7 @@ import org.springblade.common.constant.CommonConstant;
 import org.springblade.core.log.exception.ServiceException;
 import org.springblade.core.mp.base.BaseServiceImpl;
 import org.springblade.core.secure.utils.SecureUtil;
+import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.utils.DateUtil;
 import org.springblade.core.tool.utils.DigestUtil;
@@ -31,6 +32,7 @@ import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.system.cache.SysCache;
 import org.springblade.system.entity.Tenant;
+import org.springblade.system.feign.ISysClient;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserDept;
 import org.springblade.system.user.entity.UserInfo;
@@ -53,6 +55,7 @@ import java.util.List;
 public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implements IUserService {
 
 	private IUserDeptService userDeptService;
+	private ISysClient sysClient;
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -111,8 +114,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 		User user = baseMapper.getUser(tenantId, account);
 		userInfo.setUser(user);
 		if (Func.isNotEmpty(user)) {
-			List<String> roleAlias = SysCache.getRoleAliases(user.getRoleId());
-			userInfo.setRoles(roleAlias);
+			R<List<String>> result = sysClient.getRoleAliases(user.getRoleId());
+			if (result.isSuccess()) {
+				List<String> roleAlias = result.getData();
+				userInfo.setRoles(roleAlias);
+			}
 		}
 		return userInfo;
 	}
