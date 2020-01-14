@@ -90,7 +90,7 @@ public class GlobalRequestLogFilter implements GlobalFilter, Ordered {
 				String value = headerValue.get(0);
 				String token = JwtUtil.getToken(value);
 				Claims claims = JwtUtil.parseJWT(token);
-				beforeReqArgs.add(claims.toString());
+				beforeReqArgs.add((claims == null) ? "" : claims.toString());
 				beforeReqLog.append("===Headers===  {}: {}\n");
 				beforeReqArgs.add(headerName.concat("-original"));
 				beforeReqArgs.add(StringUtils.join(headerValue));
