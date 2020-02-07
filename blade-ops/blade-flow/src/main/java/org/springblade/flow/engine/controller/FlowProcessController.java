@@ -29,7 +29,7 @@ import org.flowable.image.ProcessDiagramGenerator;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.flow.core.entity.BladeFlow;
-import org.springblade.flow.engine.service.FlowService;
+import org.springblade.flow.engine.service.FlowEngineService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,7 +61,7 @@ public class FlowProcessController {
 	private RuntimeService runtimeService;
 	private HistoryService historyService;
 	private ProcessEngine processEngine;
-	private FlowService flowService;
+	private FlowEngineService flowEngineService;
 
 	/**
 	 * 获取流转历史列表
@@ -72,7 +72,7 @@ public class FlowProcessController {
 	 */
 	@GetMapping(value = "history-flow-list")
 	public R<List<BladeFlow>> historyFlowList(@RequestParam String processInstanceId, String startActivityId, String endActivityId) {
-		return R.data(flowService.historyFlowList(processInstanceId, startActivityId, endActivityId));
+		return R.data(flowEngineService.historyFlowList(processInstanceId, startActivityId, endActivityId));
 	}
 
 	/**

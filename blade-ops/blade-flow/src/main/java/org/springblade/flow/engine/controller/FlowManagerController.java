@@ -17,9 +17,9 @@
 package org.springblade.flow.engine.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springblade.core.mp.support.Condition;
@@ -28,9 +28,10 @@ import org.springblade.core.secure.annotation.PreAuth;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.support.Kv;
+import org.springblade.core.tool.utils.Func;
 import org.springblade.flow.engine.constant.FlowEngineConstant;
 import org.springblade.flow.engine.entity.FlowProcess;
-import org.springblade.flow.engine.service.FlowService;
+import org.springblade.flow.engine.service.FlowEngineService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,7 +50,7 @@ import java.util.Objects;
 @PreAuth(RoleConstant.HAS_ROLE_ADMINISTRATOR)
 public class FlowManagerController {
 
-	private FlowService flowService;
+	private FlowEngineService flowEngineService;
 
 	/**
 	 * 分页
@@ -57,10 +58,11 @@ public class FlowManagerController {
 	@GetMapping("list")
 	@ApiOperationSupport(order = 1)
 	@ApiOperation(value = "分页", notes = "传入流程类型")
-	public R<IPage<FlowProcess>> list(@ApiParam("流程类型") String category, Query query) {
-		IPage<FlowProcess> pages = flowService.selectProcessPage(Condition.getPage(query), category);
+	public R<IPage<FlowProcess>> list(@ApiParam("流程类型") String category, Query query, @RequestParam(required = false, defaultValue = "1") Integer mode) {
+		IPage<FlowProcess> pages = flowEngineService.selectProcessPage(Condition.getPage(query), category, mode);
 		return R.data(pages);
 	}
+
 
 	/**
 	 * 变更流程状态
@@ -72,7 +74,7 @@ public class FlowManagerController {
 	@ApiOperationSupport(order = 2)
 	@ApiOperation(value = "变更流程状态", notes = "传入state,processId")
 	public R changeState(@RequestParam String state, @RequestParam String processId) {
-		String msg = flowService.changeState(state, processId);
+		String msg = flowEngineService.changeState(state, processId);
 		return R.success(msg);
 	}
 
@@ -85,13 +87,13 @@ public class FlowManagerController {
 	@ApiOperationSupport(order = 3)
 	@ApiOperation(value = "删除部署流程", notes = "部署流程id集合")
 	public R deleteDeployment(String deploymentIds) {
-		return R.status(flowService.deleteDeployment(deploymentIds));
+		return R.status(flowEngineService.deleteDeployment(deploymentIds));
 	}
 
 	/**
 	 * 检查流程文件格式
 	 *
-	 * @param file    流程文件
+	 * @param file 流程文件
 	 */
 	@PostMapping("check-upload")
 	@ApiOperationSupport(order = 4)
@@ -110,8 +112,10 @@ public class FlowManagerController {
 	@PostMapping("deploy-upload")
 	@ApiOperationSupport(order = 5)
 	@ApiOperation(value = "上传部署流程文件", notes = "传入文件")
-	public R deployUpload(@RequestParam List<MultipartFile> files, @RequestParam String category) {
-		return R.status(flowService.deployUpload(files, category));
+	public R deployUpload(@RequestParam List<MultipartFile> files,
+						  @RequestParam String category,
+						  @RequestParam(required = false, defaultValue = "") String tenantIds) {
+		return R.status(flowEngineService.deployUpload(files, category, Func.toStrList(tenantIds)));
 	}
 
 }

@@ -30,7 +30,7 @@ import org.springblade.flow.business.service.FlowBusinessService;
 import org.springblade.flow.core.entity.BladeFlow;
 import org.springblade.flow.core.utils.TaskUtil;
 import org.springblade.flow.engine.entity.FlowProcess;
-import org.springblade.flow.engine.service.FlowService;
+import org.springblade.flow.engine.service.FlowEngineService;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.*;
 public class WorkController {
 
 	private TaskService taskService;
-	private FlowService flowService;
+	private FlowEngineService flowEngineService;
 	private FlowBusinessService flowBusinessService;
 
 	/**
@@ -54,8 +54,8 @@ public class WorkController {
 	@GetMapping("start-list")
 	@ApiOperationSupport(order = 1)
 	@ApiOperation(value = "发起事务列表页", notes = "传入流程类型")
-	public R<IPage<FlowProcess>> startList(@ApiParam("流程类型") String category, Query query) {
-		IPage<FlowProcess> pages = flowService.selectProcessPage(Condition.getPage(query), category);
+	public R<IPage<FlowProcess>> startList(@ApiParam("流程类型") String category, Query query, @RequestParam(required = false, defaultValue = "1") Integer mode) {
+		IPage<FlowProcess> pages = flowEngineService.selectProcessPage(Condition.getPage(query), category, mode);
 		return R.data(pages);
 	}
 

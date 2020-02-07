@@ -27,7 +27,7 @@ import org.springblade.core.secure.annotation.PreAuth;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.flow.engine.entity.FlowExecution;
-import org.springblade.flow.engine.service.FlowService;
+import org.springblade.flow.engine.service.FlowEngineService;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.*;
 @PreAuth(RoleConstant.HAS_ROLE_ADMINISTRATOR)
 public class FlowFollowController {
 
-	private FlowService flowService;
+	private FlowEngineService flowEngineService;
 
 	/**
 	 * 流程状态列表
@@ -50,7 +50,7 @@ public class FlowFollowController {
 	@ApiOperationSupport(order = 1)
 	@ApiOperation(value = "分页", notes = "传入notice")
 	public R<IPage<FlowExecution>> list(Query query, @ApiParam(value = "流程实例id") String processInstanceId, @ApiParam(value = "流程key") String processDefinitionKey) {
-		IPage<FlowExecution> pages = flowService.selectFollowPage(Condition.getPage(query), processInstanceId, processDefinitionKey);
+		IPage<FlowExecution> pages = flowEngineService.selectFollowPage(Condition.getPage(query), processInstanceId, processDefinitionKey);
 		return R.data(pages);
 	}
 
@@ -61,7 +61,7 @@ public class FlowFollowController {
 	@ApiOperationSupport(order = 2)
 	@ApiOperation(value = "删除", notes = "传入主键集合")
 	public R deleteProcessInstance(@ApiParam(value = "流程实例id") @RequestParam String processInstanceId, @ApiParam(value = "删除原因") @RequestParam String deleteReason) {
-		boolean temp = flowService.deleteProcessInstance(processInstanceId, deleteReason);
+		boolean temp = flowEngineService.deleteProcessInstance(processInstanceId, deleteReason);
 		return R.status(temp);
 	}
 

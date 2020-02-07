@@ -30,7 +30,7 @@ import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.flow.engine.entity.FlowModel;
-import org.springblade.flow.engine.service.FlowService;
+import org.springblade.flow.engine.service.FlowEngineService;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -47,7 +47,7 @@ import java.util.Map;
 @PreAuth(RoleConstant.HAS_ROLE_ADMINISTRATOR)
 public class FlowModelController {
 
-	private FlowService flowService;
+	private FlowEngineService flowEngineService;
 
 	/**
 	 * 分页
@@ -60,7 +60,7 @@ public class FlowModelController {
 	@ApiOperationSupport(order = 1)
 	@ApiOperation(value = "分页", notes = "传入notice")
 	public R<IPage<FlowModel>> list(@ApiIgnore @RequestParam Map<String, Object> flow, Query query) {
-		IPage<FlowModel> pages = flowService.page(Condition.getPage(query), Condition.getQueryWrapper(flow, FlowModel.class));
+		IPage<FlowModel> pages = flowEngineService.page(Condition.getPage(query), Condition.getQueryWrapper(flow, FlowModel.class));
 		return R.data(pages);
 	}
 
@@ -71,7 +71,7 @@ public class FlowModelController {
 	@ApiOperationSupport(order = 2)
 	@ApiOperation(value = "删除", notes = "传入主键集合")
 	public R remove(@ApiParam(value = "主键集合") @RequestParam String ids) {
-		boolean temp = flowService.removeByIds(Func.toStrList(ids));
+		boolean temp = flowEngineService.removeByIds(Func.toStrList(ids));
 		return R.status(temp);
 	}
 
@@ -81,9 +81,10 @@ public class FlowModelController {
 	@PostMapping("/deploy")
 	@ApiOperationSupport(order = 3)
 	@ApiOperation(value = "部署", notes = "传入模型id和分类")
-	public R deploy(@ApiParam(value = "模型id") @RequestParam String modelId, @ApiParam(value = "工作流分类") @RequestParam String category) {
-		boolean temp = flowService.deployModel(modelId, category);
+	public R deploy(@ApiParam(value = "模型id") @RequestParam String modelId,
+					@ApiParam(value = "工作流分类") @RequestParam String category,
+					@ApiParam(value = "租户ID") @RequestParam(required = false, defaultValue = "") String tenantIds) {
+		boolean temp = flowEngineService.deployModel(modelId, category, Func.toStrList(tenantIds));
 		return R.status(temp);
 	}
-
 }
