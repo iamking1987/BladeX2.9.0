@@ -48,7 +48,9 @@ public class TokenUtil {
 	public final static String LICENSE = TokenConstant.LICENSE;
 	public final static String LICENSE_NAME = TokenConstant.LICENSE_NAME;
 
-
+	public final static String CAPTCHA_HEADER_KEY = "Captcha-Key";
+	public final static String CAPTCHA_HEADER_CODE = "Captcha-Code";
+	public final static String CAPTCHA_NOT_CORRECT = "验证码不正确";
 	public final static String TENANT_HEADER_KEY = "Tenant-Id";
 	public final static String TENANT_PARAM_KEY = "tenant_id";
 	public final static String DEFAULT_TENANT_ID = "000000";

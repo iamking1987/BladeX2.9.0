@@ -14,15 +14,20 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.common.cache;
+package org.springblade.auth.props;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
- * 缓存名
+ * AuthProperties
  *
  * @author Chill
  */
-public interface CacheNames {
-
-	String CAPTCHA_KEY = "blade:auth::blade:captcha:";
+@Data
+@RefreshScope
+@ConfigurationProperties(prefix = "blade.oauth")
+public class AuthProperties {
 
 }
