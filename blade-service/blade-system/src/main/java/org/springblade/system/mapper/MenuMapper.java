@@ -26,7 +26,7 @@ import java.util.Map;
 
 
 /**
- * Mapper 接口
+ * MenuMapper 接口
  *
  * @author Chill
  */

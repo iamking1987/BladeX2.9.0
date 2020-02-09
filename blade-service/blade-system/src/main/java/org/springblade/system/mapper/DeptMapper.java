@@ -19,13 +19,12 @@ package org.springblade.system.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.vo.DeptVO;
-import org.springblade.system.vo.DeptVO;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Mapper 接口
+ * DeptMapper 接口
  *
  * @author Chill
  */
