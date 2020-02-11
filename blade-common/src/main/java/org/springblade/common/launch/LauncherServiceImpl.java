@@ -39,8 +39,16 @@ public class LauncherServiceImpl implements LauncherService {
 		PropsUtil.setProperty(props, "spring.cloud.nacos.config.server-addr", LauncherConstant.nacosAddr(profile));
 		PropsUtil.setProperty(props, "spring.cloud.sentinel.transport.dashboard", LauncherConstant.sentinelAddr(profile));
 		PropsUtil.setProperty(props, "spring.zipkin.base-url", LauncherConstant.zipkinAddr(profile));
+
 		// 开启elk日志
 		//PropsUtil.setProperty(props, "blade.log.elk.destination", LauncherConstant.elkAddr(profile));
+
+		// 开启seata注册
+		//PropsUtil.setProperty(props, "seata.tx-service-group", LauncherConstant.seataServiceGroup(appName));
+		//PropsUtil.setProperty(props, "seata.registry.type", LauncherConstant.NACOS_MODE);
+		//PropsUtil.setProperty(props, "seata.registry.nacos.server-addr", LauncherConstant.nacosAddr(profile));
+		//PropsUtil.setProperty(props, "seata.config.type", LauncherConstant.NACOS_MODE);
+		//PropsUtil.setProperty(props, "seata.config.nacos.server-addr", LauncherConstant.nacosAddr(profile));
 	}
 
 }

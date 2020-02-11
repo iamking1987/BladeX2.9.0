@@ -98,6 +98,31 @@ public interface LauncherConstant {
 	String ELK_TEST_ADDR = "172.30.0.58:9000";
 
 	/**
+	 * seata file模式
+	 */
+	String FILE_MODE = "file";
+
+	/**
+	 * seata nacos模式
+	 */
+	String NACOS_MODE = "nacos";
+
+	/**
+	 * seata group后缀
+	 */
+	String GROUP_NAME = "-group";
+
+	/**
+	 * seata 服务组格式
+	 *
+	 * @param appName 服务名
+	 * @return group
+	 */
+	static String seataServiceGroup(String appName) {
+		return appName.concat(GROUP_NAME);
+	}
+
+	/**
 	 * 动态获取nacos地址
 	 *
 	 * @param profile 环境变量
