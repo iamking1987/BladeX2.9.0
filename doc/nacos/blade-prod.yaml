@@ -2,6 +2,8 @@
 spring:
   redis:
     ##redis 单机环境配置
+    ##将docker脚本部署的redis服务映射为宿主机ip
+    ##生产环境推荐使用阿里云高可用redis服务并设置密码
     host: 192.168.0.157
     port: 3379
     password:
