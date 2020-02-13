@@ -26,7 +26,9 @@ spring:
 blade:
   #分布式锁配置
   lock:
+    ##是否启用分布式锁
     enabled: false
+    ##将docker脚本部署的redis服务映射为宿主机ip
     address: redis://192.168.0.157:3379
   #通用开发生产环境数据库地址(特殊情况可在对应的子工程里配置覆盖)
   datasource:
