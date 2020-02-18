@@ -20,7 +20,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
-import org.springblade.common.cache.CacheNames;
 import org.springblade.core.boot.ctrl.BladeController;
 import org.springblade.core.mp.support.BladePage;
 import org.springblade.core.mp.support.Condition;
@@ -46,7 +45,7 @@ import java.util.Map;
 @RequestMapping("notice")
 @AllArgsConstructor
 @Api(value = "用户博客", tags = "博客接口")
-public class NoticeController extends BladeController implements CacheNames {
+public class NoticeController extends BladeController {
 
 	private INoticeService noticeService;
 
