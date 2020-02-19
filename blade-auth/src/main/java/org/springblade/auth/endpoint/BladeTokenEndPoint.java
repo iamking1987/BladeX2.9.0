@@ -23,12 +23,12 @@ import org.springblade.common.cache.CacheNames;
 import org.springblade.core.redis.cache.BladeRedisCache;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.support.Kv;
+import org.springblade.core.tool.utils.StringUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Duration;
-import java.util.UUID;
 
 /**
  * BladeEndPoint
@@ -51,7 +51,7 @@ public class BladeTokenEndPoint {
 	public Kv captcha() {
 		SpecCaptcha specCaptcha = new SpecCaptcha(130, 48, 5);
 		String verCode = specCaptcha.text().toLowerCase();
-		String key = UUID.randomUUID().toString();
+		String key = StringUtil.randomUUID();
 		// 存入redis并设置过期时间为30分钟
 		redisCache.setEx(CacheNames.CAPTCHA_KEY + key, verCode, Duration.ofMinutes(30));
 		// 将key和base64返回给前端

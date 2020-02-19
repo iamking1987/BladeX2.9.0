@@ -38,6 +38,11 @@ public class Oss extends TenantEntity {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * 资源编号
+	 */
+	@ApiModelProperty(value = "资源编号")
+	private String ossCode;
+	/**
 	 * 所属分类
 	 */
 	@ApiModelProperty(value = "所属分类")
