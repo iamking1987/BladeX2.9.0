@@ -14,31 +14,33 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.resource.config;
+package org.springblade.resource.vo;
 
-import lombok.AllArgsConstructor;
-import org.springblade.core.oss.props.OssProperties;
-import org.springblade.resource.builder.oss.OssBuilder;
-import org.springblade.resource.mapper.OssMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springblade.resource.entity.Sms;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import io.swagger.annotations.ApiModel;
 
 /**
- * Oss配置类
+ * 短信配置表视图实体类
  *
- * @author Chill
+ * @author BladeX
+ * @since 2020-02-20
  */
-@Configuration
-@AllArgsConstructor
-public class BladeOssConfiguration {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ApiModel(value = "SmsVO对象", description = "短信配置表")
+public class SmsVO extends Sms {
+	private static final long serialVersionUID = 1L;
 
-	private OssProperties ossProperties;
+	/**
+	 * 分类名
+	 */
+	private String categoryName;
 
-	private OssMapper ossMapper;
-
-	@Bean
-	public OssBuilder ossBuilder() {
-		return new OssBuilder(ossProperties, ossMapper);
-	}
+	/**
+	 * 是否启用
+	 */
+	private String statusName;
 
 }

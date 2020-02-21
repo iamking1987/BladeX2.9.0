@@ -19,7 +19,7 @@ package org.springblade.resource.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springblade.resource.entity.Oss;
-import org.springblade.resource.entity.OssVO;
+import org.springblade.resource.vo.OssVO;
 
 import java.util.List;
 

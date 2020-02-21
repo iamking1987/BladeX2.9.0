@@ -19,7 +19,7 @@ package org.springblade.resource.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springblade.core.mp.base.BaseService;
 import org.springblade.resource.entity.Oss;
-import org.springblade.resource.entity.OssVO;
+import org.springblade.resource.vo.OssVO;
 
 /**
  * 服务类

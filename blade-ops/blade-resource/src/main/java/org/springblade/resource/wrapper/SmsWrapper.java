@@ -18,32 +18,32 @@ package org.springblade.resource.wrapper;
 
 import org.springblade.core.mp.support.BaseEntityWrapper;
 import org.springblade.core.tool.utils.BeanUtil;
-import org.springblade.resource.entity.Oss;
-import org.springblade.resource.vo.OssVO;
+import org.springblade.resource.entity.Sms;
+import org.springblade.resource.vo.SmsVO;
 import org.springblade.system.cache.DictCache;
 
 import java.util.Objects;
 
 /**
- * 包装类,返回视图层所需的字段
+ * 短信配置表包装类,返回视图层所需的字段
  *
  * @author BladeX
- * @since 2019-05-26
+ * @since 2020-02-20
  */
-public class OssWrapper extends BaseEntityWrapper<Oss, OssVO> {
+public class SmsWrapper extends BaseEntityWrapper<Sms, SmsVO> {
 
-	public static OssWrapper build() {
-		return new OssWrapper();
+	public static SmsWrapper build() {
+		return new SmsWrapper();
 	}
 
 	@Override
-	public OssVO entityVO(Oss oss) {
-		OssVO ossVO = Objects.requireNonNull(BeanUtil.copy(oss, OssVO.class));
-		String categoryName = DictCache.getValue("oss", oss.getCategory());
-		String statusName = DictCache.getValue("yes_no", oss.getStatus());
-		ossVO.setCategoryName(categoryName);
-		ossVO.setStatusName(statusName);
-		return ossVO;
+	public SmsVO entityVO(Sms sms) {
+		SmsVO smsVO = Objects.requireNonNull(BeanUtil.copy(sms, SmsVO.class));
+		String categoryName = DictCache.getValue("sms", sms.getCategory());
+		String statusName = DictCache.getValue("yes_no", sms.getStatus());
+		smsVO.setCategoryName(categoryName);
+		smsVO.setStatusName(statusName);
+		return smsVO;
 	}
 
 }
