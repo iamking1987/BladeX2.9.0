@@ -42,6 +42,11 @@ public class SmsUtil {
 
 	private static ISmsClient smsClient;
 
+	/**
+	 * 获取短信服务构建类
+	 *
+	 * @return SmsBuilder
+	 */
 	public static ISmsClient getSmsClient() {
 		if (smsClient == null) {
 			smsClient = SpringUtil.getBean(ISmsClient.class);
