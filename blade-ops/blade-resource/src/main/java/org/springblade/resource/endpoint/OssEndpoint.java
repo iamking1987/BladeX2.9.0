@@ -40,6 +40,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Api(value = "对象存储端点", tags = "对象存储端点")
 public class OssEndpoint {
 
+	/**
+	 * 对象存储构建类
+	 */
 	private OssBuilder ossBuilder;
 
 	/**

@@ -17,6 +17,7 @@
 
     <modules>
         <module>blade-flow-api</module>
+        <module>blade-resource-api</module>
     </modules>
 
     <dependencies>

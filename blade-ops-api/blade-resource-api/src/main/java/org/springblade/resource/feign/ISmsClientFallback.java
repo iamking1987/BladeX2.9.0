@@ -14,33 +14,30 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.resource.vo;
+package org.springblade.resource.feign;
 
-import org.springblade.resource.entity.Sms;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import io.swagger.annotations.ApiModel;
+import org.springblade.core.tool.api.R;
+import org.springframework.stereotype.Component;
 
 /**
- * 短信配置表视图实体类
+ * 流程远程调用失败处理类
  *
- * @author BladeX
- * @since 2020-02-20
+ * @author Chill
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "SmsVO对象", description = "短信配置表")
-public class SmsVO extends Sms {
-	private static final long serialVersionUID = 1L;
+@Component
+public class ISmsClientFallback implements ISmsClient {
+	@Override
+	public R sendMessage(String code, String params, String phones) {
+		return R.fail("远程调用失败");
+	}
 
-	/**
-	 * 分类名
-	 */
-	private String categoryName;
+	@Override
+	public R sendValidate(String code, String phone) {
+		return R.fail("远程调用失败");
+	}
 
-	/**
-	 * 是否启用
-	 */
-	private String statusName;
-
+	@Override
+	public R validateMessage(String code, String id, String value) {
+		return R.fail("远程调用失败");
+	}
 }

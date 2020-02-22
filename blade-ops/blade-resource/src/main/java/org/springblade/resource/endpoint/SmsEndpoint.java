@@ -24,8 +24,6 @@ import org.springblade.core.sms.model.SmsData;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.jackson.JsonUtil;
 import org.springblade.core.tool.utils.Func;
-import org.springblade.core.tool.utils.RandomType;
-import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.resource.builder.sms.SmsBuilder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.springblade.resource.utils.SmsUtil.*;
 
 /**
  * 短信服务端点
@@ -46,12 +46,9 @@ import java.util.Map;
 @Api(value = "短信服务端点", tags = "短信服务端点")
 public class SmsEndpoint {
 
-	private static final String PARAM_KEY = "code";
-	private static final String SEND_SUCCESS = "短信发送成功";
-	private static final String SEND_FAIL = "短信发送失败";
-	private static final String VALIDATE_SUCCESS = "短信校验成功";
-	private static final String VALIDATE_FAIL = "短信校验失败";
-
+	/**
+	 * 短信服务构建类
+	 */
 	private SmsBuilder smsBuilder;
 
 	//================================= 短信服务校验 =================================
@@ -64,8 +61,7 @@ public class SmsEndpoint {
 	@SneakyThrows
 	@PostMapping("/send-validate")
 	public R sendValidate(@RequestParam String phone) {
-		Map<String, String> params = new HashMap<>(1);
-		params.put(PARAM_KEY, StringUtil.random(6, RandomType.INT));
+		Map<String, String> params = getValidateParams();
 		SmsCode smsCode = smsBuilder.template().sendValidate(new SmsData(params).setKey(PARAM_KEY), phone);
 		return smsCode.isSuccess() ? R.data(smsCode, SEND_SUCCESS) : R.fail(SEND_FAIL);
 	}

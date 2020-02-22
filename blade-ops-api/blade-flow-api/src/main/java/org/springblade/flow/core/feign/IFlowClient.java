@@ -39,11 +39,11 @@ import java.util.Map;
 public interface IFlowClient {
 
 	String API_PREFIX = "/client";
-	String START_PROCESS_INSTANCE_BY_ID = API_PREFIX + "start-process-instance-by-id";
-	String START_PROCESS_INSTANCE_BY_KEY = API_PREFIX + "start-process-instance-by-key";
-	String COMPLETE_TASK = API_PREFIX + "complete-task";
-	String TASK_VARIABLE = API_PREFIX + "task-variable";
-	String TASK_VARIABLES = API_PREFIX + "task-variables";
+	String START_PROCESS_INSTANCE_BY_ID = API_PREFIX + "/start-process-instance-by-id";
+	String START_PROCESS_INSTANCE_BY_KEY = API_PREFIX + "/start-process-instance-by-key";
+	String COMPLETE_TASK = API_PREFIX + "/complete-task";
+	String TASK_VARIABLE = API_PREFIX + "/task-variable";
+	String TASK_VARIABLES = API_PREFIX + "/task-variables";
 
 	/**
 	 * 开启流程
