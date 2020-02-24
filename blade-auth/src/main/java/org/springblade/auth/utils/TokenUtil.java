@@ -18,14 +18,19 @@ package org.springblade.auth.utils;
 
 import lombok.SneakyThrows;
 import org.springblade.core.launch.constant.TokenConstant;
+import org.springblade.core.secure.utils.AuthUtil;
 import org.springblade.core.tool.utils.Charsets;
+import org.springblade.core.tool.utils.DateUtil;
 import org.springblade.core.tool.utils.StringPool;
 import org.springblade.core.tool.utils.WebUtil;
+import org.springblade.system.entity.Tenant;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;
+import org.springframework.security.oauth2.common.exceptions.UserDeniedAuthorizationException;
 
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * 认证工具类
@@ -123,6 +128,26 @@ public class TokenUtil {
 	 */
 	public static int getRefreshTokenValiditySeconds() {
 		return 60 * 60 * 24 * 15;
+	}
+
+	/**
+	 * 判断租户权限
+	 *
+	 * @param tenant 租户信息
+	 * @return boolean
+	 */
+	public static boolean judgeTenant(Tenant tenant) {
+		if (tenant == null) {
+			throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_TENANT);
+		}
+		if (AuthUtil.isAdministrator()) {
+			return false;
+		}
+		Date expireTime = tenant.getExpireTime();
+		if (expireTime != null && expireTime.before(DateUtil.now())) {
+			throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_TENANT_PERMISSION);
+		}
+		return false;
 	}
 
 }

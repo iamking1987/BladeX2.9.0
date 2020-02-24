@@ -23,7 +23,6 @@ import org.springblade.auth.constant.AuthConstant;
 import org.springblade.auth.enums.BladeUserEnum;
 import org.springblade.auth.utils.TokenUtil;
 import org.springblade.core.tool.api.R;
-import org.springblade.core.tool.utils.DateUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.core.tool.utils.WebUtil;
@@ -39,7 +38,6 @@ import org.springframework.security.oauth2.common.exceptions.UserDeniedAuthoriza
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 /**
  * 用户信息
@@ -68,8 +66,7 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 		// 获取租户信息
 		R<Tenant> tenant = sysClient.getTenant(tenantId);
 		if (tenant.isSuccess()) {
-			Date expireTime = tenant.getData().getExpireTime();
-			if (expireTime != null && expireTime.before(DateUtil.now())) {
+			if (TokenUtil.judgeTenant(tenant.getData())) {
 				throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_TENANT_PERMISSION);
 			}
 		} else {
