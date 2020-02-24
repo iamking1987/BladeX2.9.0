@@ -63,7 +63,7 @@ public class BladeTokenEndPoint {
 	@GetMapping("/oauth/logout")
 	public Kv logout() {
 		BladeUser user = AuthUtil.getUser();
-		return Kv.create().set("success", "true").set("account", user.getAccount());
+		return Kv.create().set("success", "true").set("account", user.getAccount()).set("msg", "success");
 	}
 
 }
