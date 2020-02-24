@@ -21,6 +21,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.common.cache.CacheNames;
 import org.springblade.core.redis.cache.BladeRedisCache;
+import org.springblade.core.secure.BladeUser;
+import org.springblade.core.secure.utils.AuthUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.StringUtil;
@@ -56,6 +58,12 @@ public class BladeTokenEndPoint {
 		redisCache.setEx(CacheNames.CAPTCHA_KEY + key, verCode, Duration.ofMinutes(30));
 		// 将key和base64返回给前端
 		return Kv.create().set("key", key).set("image", specCaptcha.toBase64());
+	}
+
+	@GetMapping("/oauth/logout")
+	public Kv logout() {
+		BladeUser user = AuthUtil.getUser();
+		return Kv.create().set("success", "true").set("account", user.getAccount());
 	}
 
 }

@@ -51,6 +51,7 @@ public class BladeResourceServerConfiguration extends ResourceServerConfigurerAd
 				"/actuator/**",
 				"/token/**",
 				"/oauth/captcha",
+				"/oauth/logout",
 				"/mobile/**",
 				"/v2/api-docs",
 				"/v2/api-docs-ext").permitAll()

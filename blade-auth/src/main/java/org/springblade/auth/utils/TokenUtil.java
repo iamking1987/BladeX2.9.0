@@ -18,11 +18,8 @@ package org.springblade.auth.utils;
 
 import lombok.SneakyThrows;
 import org.springblade.core.launch.constant.TokenConstant;
-import org.springblade.core.secure.utils.AuthUtil;
-import org.springblade.core.tool.utils.Charsets;
-import org.springblade.core.tool.utils.DateUtil;
-import org.springblade.core.tool.utils.StringPool;
-import org.springblade.core.tool.utils.WebUtil;
+import org.springblade.core.tool.constant.BladeConstant;
+import org.springblade.core.tool.utils.*;
 import org.springblade.system.entity.Tenant;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;
@@ -140,7 +137,7 @@ public class TokenUtil {
 		if (tenant == null) {
 			throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_TENANT);
 		}
-		if (AuthUtil.isAdministrator()) {
+		if (StringUtil.equalsIgnoreCase(tenant.getTenantId(), BladeConstant.ADMIN_TENANT_ID)) {
 			return false;
 		}
 		Date expireTime = tenant.getExpireTime();
