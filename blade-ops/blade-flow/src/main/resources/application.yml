@@ -1,3 +1,8 @@
+#服务器端口
+server:
+  port: 8008
+
+#flowable配置
 flowable:
   activity-font-name: \u5B8B\u4F53
   label-font-name: \u5B8B\u4F53
