@@ -17,6 +17,7 @@
 package org.springblade.system.cache;
 
 import org.springblade.core.cache.utils.CacheUtil;
+import org.springblade.core.secure.utils.AuthUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.SpringUtil;
 import org.springblade.core.tool.utils.StringPool;
@@ -34,9 +35,9 @@ import static org.springblade.core.cache.constant.CacheConstant.DICT_CACHE;
  */
 public class DictBizCache {
 
-	private static final String DICT_ID = "dictBiz:id:";
-	private static final String DICT_VALUE = "dictBiz:value:";
-	private static final String DICT_LIST = "dictBiz:list:";
+	private static final String DICT_ID = "dictBiz:id";
+	private static final String DICT_VALUE = "dictBiz:value";
+	private static final String DICT_LIST = "dictBiz:list";
 
 	private static IDictBizClient dictClient;
 
@@ -54,7 +55,8 @@ public class DictBizCache {
 	 * @return
 	 */
 	public static DictBiz getById(Long id) {
-		return CacheUtil.get(DICT_CACHE, DICT_ID, id, () -> {
+		String keyPrefix = DICT_ID.concat(StringPool.DASH).concat(AuthUtil.getTenantId()).concat(StringPool.COLON);
+		return CacheUtil.get(DICT_CACHE, keyPrefix, id, () -> {
 			R<DictBiz> result = getDictClient().getById(id);
 			return result.getData();
 		});
@@ -68,7 +70,8 @@ public class DictBizCache {
 	 * @return
 	 */
 	public static String getValue(String code, Integer dictKey) {
-		return CacheUtil.get(DICT_CACHE, DICT_VALUE + code + StringPool.COLON, String.valueOf(dictKey), () -> {
+		String keyPrefix = DICT_VALUE.concat(StringPool.DASH).concat(AuthUtil.getTenantId()).concat(StringPool.COLON);
+		return CacheUtil.get(DICT_CACHE, keyPrefix + code + StringPool.COLON, String.valueOf(dictKey), () -> {
 			R<String> result = getDictClient().getValue(code, String.valueOf(dictKey));
 			return result.getData();
 		});
@@ -82,7 +85,8 @@ public class DictBizCache {
 	 * @return
 	 */
 	public static String getValue(String code, String dictKey) {
-		return CacheUtil.get(DICT_CACHE, DICT_VALUE + code + StringPool.COLON, dictKey, () -> {
+		String keyPrefix = DICT_VALUE.concat(StringPool.DASH).concat(AuthUtil.getTenantId()).concat(StringPool.COLON);
+		return CacheUtil.get(DICT_CACHE, keyPrefix + code + StringPool.COLON, dictKey, () -> {
 			R<String> result = getDictClient().getValue(code, dictKey);
 			return result.getData();
 		});
@@ -95,7 +99,8 @@ public class DictBizCache {
 	 * @return
 	 */
 	public static List<DictBiz> getList(String code) {
-		return CacheUtil.get(DICT_CACHE, DICT_LIST, code, () -> {
+		String keyPrefix = DICT_LIST.concat(StringPool.DASH).concat(AuthUtil.getTenantId()).concat(StringPool.COLON);
+		return CacheUtil.get(DICT_CACHE, keyPrefix, code, () -> {
 			R<List<DictBiz>> result = getDictClient().getList(code);
 			return result.getData();
 		});
