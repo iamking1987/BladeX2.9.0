@@ -108,6 +108,11 @@ public interface LauncherConstant {
 	String NACOS_MODE = "nacos";
 
 	/**
+	 * seata default模式
+	 */
+	String DEFAULT_MODE = "default";
+
+	/**
 	 * seata group后缀
 	 */
 	String GROUP_NAME = "-group";
