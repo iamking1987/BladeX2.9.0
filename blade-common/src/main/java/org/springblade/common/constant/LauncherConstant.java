@@ -68,6 +68,21 @@ public interface LauncherConstant {
 	String SENTINEL_TEST_ADDR = "172.30.0.58:8858";
 
 	/**
+	 * seata dev 地址
+	 */
+	String SEATA_DEV_ADDR = "127.0.0.1:8091";
+
+	/**
+	 * seata prod 地址
+	 */
+	String SEATA_PROD_ADDR = "172.30.0.68:8091";
+
+	/**
+	 * seata test 地址
+	 */
+	String SEATA_TEST_ADDR = "172.30.0.68:8091";
+
+	/**
 	 * zipkin dev 地址
 	 */
 	String ZIPKIN_DEV_ADDR = "http://127.0.0.1:9411";
@@ -75,12 +90,12 @@ public interface LauncherConstant {
 	/**
 	 * zipkin prod 地址
 	 */
-	String ZIPKIN_PROD_ADDR = "http://172.30.0.58:9411";
+	String ZIPKIN_PROD_ADDR = "http://172.30.0.71:9411";
 
 	/**
 	 * zipkin test 地址
 	 */
-	String ZIPKIN_TEST_ADDR = "http://172.30.0.58:9411";
+	String ZIPKIN_TEST_ADDR = "http://172.30.0.71:9411";
 
 	/**
 	 * elk dev 地址
@@ -90,12 +105,12 @@ public interface LauncherConstant {
 	/**
 	 * elk prod 地址
 	 */
-	String ELK_PROD_ADDR = "172.30.0.58:9000";
+	String ELK_PROD_ADDR = "172.30.0.72:9000";
 
 	/**
 	 * elk test 地址
 	 */
-	String ELK_TEST_ADDR = "172.30.0.58:9000";
+	String ELK_TEST_ADDR = "172.30.0.72:9000";
 
 	/**
 	 * seata file模式
@@ -158,6 +173,23 @@ public interface LauncherConstant {
 				return SENTINEL_TEST_ADDR;
 			default:
 				return SENTINEL_DEV_ADDR;
+		}
+	}
+
+	/**
+	 * 动态获取seata地址
+	 *
+	 * @param profile 环境变量
+	 * @return addr
+	 */
+	static String seataAddr(String profile) {
+		switch (profile) {
+			case (AppConstant.PROD_CODE):
+				return SEATA_PROD_ADDR;
+			case (AppConstant.TEST_CODE):
+				return SEATA_TEST_ADDR;
+			default:
+				return SEATA_DEV_ADDR;
 		}
 	}
 

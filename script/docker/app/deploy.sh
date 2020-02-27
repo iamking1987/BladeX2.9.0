@@ -39,7 +39,7 @@ mount(){
 
 #启动基础模块
 base(){
-	docker-compose up -d nacos sentinel web-nginx blade-nginx blade-redis
+	docker-compose up -d nacos sentinel seata-server web-nginx blade-nginx blade-redis
 }
 
 #启动监控模块

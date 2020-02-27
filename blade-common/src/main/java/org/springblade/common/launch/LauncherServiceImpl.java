@@ -35,6 +35,7 @@ public class LauncherServiceImpl implements LauncherService {
 	@Override
 	public void launcher(SpringApplicationBuilder builder, String appName, String profile, boolean isLocalDev) {
 		Properties props = System.getProperties();
+		// 通用注册
 		PropsUtil.setProperty(props, "spring.cloud.nacos.discovery.server-addr", LauncherConstant.nacosAddr(profile));
 		PropsUtil.setProperty(props, "spring.cloud.nacos.config.server-addr", LauncherConstant.nacosAddr(profile));
 		PropsUtil.setProperty(props, "spring.cloud.sentinel.transport.dashboard", LauncherConstant.sentinelAddr(profile));
@@ -43,6 +44,8 @@ public class LauncherServiceImpl implements LauncherService {
 		// 开启elk日志
 		// PropsUtil.setProperty(props, "blade.log.elk.destination", LauncherConstant.elkAddr(profile));
 
+		// seata注册地址
+		// PropsUtil.setProperty(props, "seata.service.grouplist.default", LauncherConstant.seataAddr(profile));
 		// seata注册group格式
 		// PropsUtil.setProperty(props, "seata.tx-service-group", LauncherConstant.seataServiceGroup(appName));
 		// seata配置服务group

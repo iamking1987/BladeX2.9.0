@@ -27,6 +27,19 @@ services:
       blade_net:
         ipv4_address: 172.30.0.58
 
+  seata-server:
+    image: seataio/seata-server:1.1.0
+    hostname: "seata-server"
+    ports:
+      - 8091:8091
+    environment:
+      - TZ=Asia/Shanghai
+      - SEATA_PORT=8091
+      - STORE_MODE=file
+    networks:
+      blade_net:
+        ipv4_address: 172.30.0.68
+
   blade-nginx:
     image: nginx:stable-alpine-perl
     hostname: "blade-nginx"
