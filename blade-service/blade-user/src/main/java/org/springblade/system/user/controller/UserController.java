@@ -153,10 +153,6 @@ public class UserController {
 
 	/**
 	 * 设置菜单权限
-	 *
-	 * @param userIds
-	 * @param roleIds
-	 * @return
 	 */
 	@PostMapping("/grant")
 	@ApiOperationSupport(order = 7)
@@ -179,11 +175,6 @@ public class UserController {
 
 	/**
 	 * 修改密码
-	 *
-	 * @param oldPassword
-	 * @param newPassword
-	 * @param newPassword1
-	 * @return
 	 */
 	@PostMapping("/update-password")
 	@ApiOperationSupport(order = 9)
@@ -208,9 +199,6 @@ public class UserController {
 
 	/**
 	 * 用户列表
-	 *
-	 * @param user
-	 * @return
 	 */
 	@GetMapping("/user-list")
 	@ApiOperationSupport(order = 11)
