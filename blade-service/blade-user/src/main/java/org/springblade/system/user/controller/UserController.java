@@ -196,13 +196,24 @@ public class UserController {
 	}
 
 	/**
+	 * 修改基本信息
+	 */
+	@PostMapping("/update-info")
+	@ApiOperationSupport(order = 10)
+	@ApiOperation(value = "修改基本信息", notes = "传入User")
+	@CacheEvict(cacheNames = {USER_CACHE}, allEntries = true)
+	public R updateInfo(@Valid @RequestBody User user) {
+		return R.status(userService.updateUserInfo(user));
+	}
+
+	/**
 	 * 用户列表
 	 *
 	 * @param user
 	 * @return
 	 */
 	@GetMapping("/user-list")
-	@ApiOperationSupport(order = 10)
+	@ApiOperationSupport(order = 11)
 	@ApiOperation(value = "用户列表", notes = "传入user")
 	public R<List<User>> userList(User user, BladeUser bladeUser) {
 		QueryWrapper<User> queryWrapper = Condition.getQueryWrapper(user);

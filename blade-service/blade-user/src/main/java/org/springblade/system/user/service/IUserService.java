@@ -46,10 +46,20 @@ public interface IUserService extends BaseService<User> {
 	boolean updateUser(User user);
 
 	/**
+	 * 修改用户基本信息
+	 *
+	 * @param user
+	 * @return
+	 */
+	boolean updateUserInfo(User user);
+
+	/**
 	 * 自定义分页
 	 *
 	 * @param page
 	 * @param user
+	 * @param deptId
+	 * @param tenantId
 	 * @return
 	 */
 	IPage<User> selectUserPage(IPage<User> page, User user, Long deptId, String tenantId);
