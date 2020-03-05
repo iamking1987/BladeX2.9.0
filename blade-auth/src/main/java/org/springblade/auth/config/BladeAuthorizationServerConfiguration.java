@@ -22,7 +22,7 @@ import org.springblade.auth.constant.AuthConstant;
 import org.springblade.auth.granter.BladeTokenGranter;
 import org.springblade.auth.props.AuthProperties;
 import org.springblade.auth.service.BladeClientDetailsServiceImpl;
-import org.springblade.core.redis.cache.BladeRedisCache;
+import org.springblade.core.redis.cache.BladeRedis;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -67,12 +67,12 @@ public class BladeAuthorizationServerConfiguration extends AuthorizationServerCo
 
 	private JwtAccessTokenConverter jwtAccessTokenConverter;
 
-	private BladeRedisCache redisCache;
+	private BladeRedis bladeRedis;
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
 		//获取自定义tokenGranter
-		TokenGranter tokenGranter = BladeTokenGranter.getTokenGranter(authenticationManager, endpoints, redisCache);
+		TokenGranter tokenGranter = BladeTokenGranter.getTokenGranter(authenticationManager, endpoints, bladeRedis);
 
 		//配置端点
 		endpoints.tokenStore(tokenStore)

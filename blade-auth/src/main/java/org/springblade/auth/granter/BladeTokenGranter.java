@@ -16,7 +16,7 @@
  */
 package org.springblade.auth.granter;
 
-import org.springblade.core.redis.cache.BladeRedisCache;
+import org.springblade.core.redis.cache.BladeRedis;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
@@ -36,11 +36,11 @@ public class BladeTokenGranter {
 	/**
 	 * 自定义tokenGranter
 	 */
-	public static TokenGranter getTokenGranter(final AuthenticationManager authenticationManager, final AuthorizationServerEndpointsConfigurer endpoints, BladeRedisCache redisCache) {
+	public static TokenGranter getTokenGranter(final AuthenticationManager authenticationManager, final AuthorizationServerEndpointsConfigurer endpoints, BladeRedis bladeRedis) {
 		// 默认tokenGranter集合
 		List<TokenGranter> granters = new ArrayList<>(Collections.singletonList(endpoints.getTokenGranter()));
 		// 增加验证码模式
-		granters.add(new CaptchaTokenGranter(authenticationManager, endpoints.getTokenServices(), endpoints.getClientDetailsService(), endpoints.getOAuth2RequestFactory(), redisCache));
+		granters.add(new CaptchaTokenGranter(authenticationManager, endpoints.getTokenServices(), endpoints.getClientDetailsService(), endpoints.getOAuth2RequestFactory(), bladeRedis));
 		// 组合tokenGranter集合
 		return new CompositeTokenGranter(granters);
 	}

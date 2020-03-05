@@ -20,7 +20,7 @@ import com.wf.captcha.SpecCaptcha;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.common.cache.CacheNames;
-import org.springblade.core.redis.cache.BladeRedisCache;
+import org.springblade.core.redis.cache.BladeRedis;
 import org.springblade.core.secure.BladeUser;
 import org.springblade.core.secure.utils.AuthUtil;
 import org.springblade.core.tool.api.R;
@@ -42,7 +42,7 @@ import java.time.Duration;
 @AllArgsConstructor
 public class BladeTokenEndPoint {
 
-	private BladeRedisCache redisCache;
+	private BladeRedis bladeRedis;
 
 	@GetMapping("/oauth/user-info")
 	public R<Authentication> currentUser(Authentication authentication) {
@@ -55,7 +55,7 @@ public class BladeTokenEndPoint {
 		String verCode = specCaptcha.text().toLowerCase();
 		String key = StringUtil.randomUUID();
 		// 存入redis并设置过期时间为30分钟
-		redisCache.setEx(CacheNames.CAPTCHA_KEY + key, verCode, Duration.ofMinutes(30));
+		bladeRedis.setEx(CacheNames.CAPTCHA_KEY + key, verCode, Duration.ofMinutes(30));
 		// 将key和base64返回给前端
 		return Kv.create().set("key", key).set("image", specCaptcha.toBase64());
 	}

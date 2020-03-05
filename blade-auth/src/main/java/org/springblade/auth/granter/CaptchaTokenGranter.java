@@ -2,7 +2,7 @@ package org.springblade.auth.granter;
 
 import org.springblade.auth.utils.TokenUtil;
 import org.springblade.common.cache.CacheNames;
-import org.springblade.core.redis.cache.BladeRedisCache;
+import org.springblade.core.redis.cache.BladeRedis;
 import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.core.tool.utils.WebUtil;
 import org.springframework.security.authentication.*;
@@ -28,12 +28,12 @@ public class CaptchaTokenGranter extends AbstractTokenGranter {
 
 	private final AuthenticationManager authenticationManager;
 
-	private BladeRedisCache redisCache;
+	private BladeRedis bladeRedis;
 
 	public CaptchaTokenGranter(AuthenticationManager authenticationManager,
-							   AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory, BladeRedisCache redisCache) {
+							   AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory, BladeRedis bladeRedis) {
 		this(authenticationManager, tokenServices, clientDetailsService, requestFactory, GRANT_TYPE);
-		this.redisCache = redisCache;
+		this.bladeRedis = bladeRedis;
 	}
 
 	protected CaptchaTokenGranter(AuthenticationManager authenticationManager, AuthorizationServerTokenServices tokenServices,
@@ -49,7 +49,7 @@ public class CaptchaTokenGranter extends AbstractTokenGranter {
 		String key = request.getHeader(TokenUtil.CAPTCHA_HEADER_KEY);
 		String code = request.getHeader(TokenUtil.CAPTCHA_HEADER_CODE);
 		// 获取验证码
-		String redisCode = redisCache.get(CacheNames.CAPTCHA_KEY + key);
+		String redisCode = bladeRedis.get(CacheNames.CAPTCHA_KEY + key);
 		// 判断验证码
 		if (code == null || !StringUtil.equalsIgnoreCase(redisCode, code)) {
 			throw new UserDeniedAuthorizationException(TokenUtil.CAPTCHA_NOT_CORRECT);
