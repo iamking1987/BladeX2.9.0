@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springblade.core.sms.model.SmsCode;
 import org.springblade.core.sms.model.SmsData;
+import org.springblade.core.sms.model.SmsResponse;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.jackson.JsonUtil;
 import org.springblade.core.tool.utils.Func;
@@ -153,8 +154,8 @@ public class SmsEndpoint {
 	 * @return 是否发送成功
 	 */
 	private R send(SmsData smsData, String phones) {
-		boolean temp = smsBuilder.template().sendMulti(smsData, Func.toStrList(phones));
-		return temp ? R.success(SEND_SUCCESS) : R.fail(SEND_FAIL);
+		SmsResponse response = smsBuilder.template().sendMessage(smsData, Func.toStrList(phones));
+		return response.isSuccess() ? R.success(SEND_SUCCESS) : R.fail(SEND_FAIL);
 	}
 
 }

@@ -17,6 +17,7 @@
 package org.springblade.resource.feign;
 
 import org.springblade.core.launch.constant.AppConstant;
+import org.springblade.core.sms.model.SmsResponse;
 import org.springblade.core.tool.api.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +47,7 @@ public interface ISmsClient {
 	 * @return R
 	 */
 	@PostMapping(SEND_MESSAGE)
-	R sendMessage(@RequestParam("code") String code, @RequestParam("params") String params, @RequestParam("phones") String phones);
+	R<SmsResponse> sendMessage(@RequestParam("code") String code, @RequestParam("params") String params, @RequestParam("phones") String phones);
 
 	/**
 	 * 短信验证码发送

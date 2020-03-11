@@ -19,6 +19,7 @@ package org.springblade.resource.feign;
 import lombok.AllArgsConstructor;
 import org.springblade.core.sms.model.SmsCode;
 import org.springblade.core.sms.model.SmsData;
+import org.springblade.core.sms.model.SmsResponse;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.jackson.JsonUtil;
 import org.springblade.core.tool.utils.Func;
@@ -43,10 +44,10 @@ public class SmsClient implements ISmsClient {
 
 	@Override
 	@PostMapping(SEND_MESSAGE)
-	public R sendMessage(String code, String params, String phones) {
+	public R<SmsResponse> sendMessage(String code, String params, String phones) {
 		SmsData smsData = new SmsData(JsonUtil.readMap(params, String.class, String.class));
-		boolean temp = smsBuilder.template(code).sendMulti(smsData, Func.toStrList(phones));
-		return temp ? R.success(SEND_SUCCESS) : R.fail(SEND_FAIL);
+		SmsResponse response = smsBuilder.template(code).sendMessage(smsData, Func.toStrList(phones));
+		return R.data(response);
 	}
 
 	@Override

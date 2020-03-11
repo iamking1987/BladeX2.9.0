@@ -17,6 +17,7 @@
 package org.springblade.resource.utils;
 
 import org.springblade.core.sms.model.SmsCode;
+import org.springblade.core.sms.model.SmsResponse;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.jackson.JsonUtil;
 import org.springblade.core.tool.utils.RandomType;
@@ -73,9 +74,9 @@ public class SmsUtil {
 	 * @param phones 手机号集合
 	 * @return 发送结果
 	 */
-	public static boolean sendMessage(String code, Map<String, String> params, String phones) {
-		R result = getSmsClient().sendMessage(code, JsonUtil.toJson(params), phones);
-		return result.isSuccess();
+	public static SmsResponse sendMessage(String code, Map<String, String> params, String phones) {
+		R<SmsResponse> result = getSmsClient().sendMessage(code, JsonUtil.toJson(params), phones);
+		return result.getData();
 	}
 
 	/**
