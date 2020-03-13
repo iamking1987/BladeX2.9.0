@@ -25,6 +25,7 @@ import org.springblade.core.tenant.TenantId;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.utils.Func;
+import org.springblade.system.cache.ParamCache;
 import org.springblade.system.entity.*;
 import org.springblade.system.mapper.TenantMapper;
 import org.springblade.system.service.*;
@@ -33,8 +34,13 @@ import org.springblade.system.user.feign.IUserClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springblade.common.constant.TenantConstant.*;
 
 /**
  * 服务实现类
@@ -51,13 +57,6 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 	private final IDeptService deptService;
 	private final IRoleMenuService roleMenuService;
 	private final IUserClient userClient;
-
-	/**
-	 * 新建默认租户角色所分配的菜单主节点
-	 */
-	private final List<String> menuCodes = Arrays.asList(
-		"desk", "flow", "work", "monitor", "resource", "role", "user", "dept", "dictbiz", "topmenu"
-	);
 
 	@Override
 	public IPage<Tenant> selectTenantPage(IPage<Tenant> page, Tenant tenant) {
@@ -77,7 +76,9 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			List<String> codes = tenants.stream().map(Tenant::getTenantId).collect(Collectors.toList());
 			String tenantId = getTenantId(codes);
 			tenant.setTenantId(tenantId);
-			tenant.setAccountNumber(-1);
+			// 获取参数配置的账号额度
+			int accountNumber = Func.toInt(ParamCache.getValue(ACCOUNT_NUMBER_KEY), DEFAULT_ACCOUNT_NUMBER);
+			tenant.setAccountNumber(accountNumber);
 			// 新建租户对应的默认角色
 			Role role = new Role();
 			role.setTenantId(tenantId);
@@ -89,7 +90,9 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			roleService.save(role);
 			// 新建租户对应的角色菜单权限
 			LinkedList<Menu> userMenus = new LinkedList<>();
-			List<Menu> menus = getMenus(menuCodes, userMenus);
+			// 获取参数配置的默认菜单集合，逗号隔开
+			List<String> menuCodes = Func.toStrList(ParamCache.getValue(ACCOUNT_MENU_CODE_KEY));
+			List<Menu> menus = getMenus((menuCodes.size() > 0 ? menuCodes : MENU_CODES), userMenus);
 			List<RoleMenu> roleMenus = new ArrayList<>();
 			menus.forEach(menu -> {
 				RoleMenu roleMenu = new RoleMenu();
@@ -115,7 +118,9 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			user.setName("admin");
 			user.setRealName("admin");
 			user.setAccount("admin");
-			user.setPassword("admin");
+			// 获取参数配置的密码
+			String password = Func.toStr(ParamCache.getValue(PASSWORD_KEY), DEFAULT_PASSWORD);
+			user.setPassword(password);
 			user.setRoleId(String.valueOf(role.getId()));
 			user.setDeptId(String.valueOf(dept.getId()));
 			user.setBirthday(new Date());
