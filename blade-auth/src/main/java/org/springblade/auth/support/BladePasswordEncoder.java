@@ -28,7 +28,7 @@ public class BladePasswordEncoder implements PasswordEncoder {
 
 	@Override
 	public String encode(CharSequence rawPassword) {
-		return DigestUtil.encrypt((String) rawPassword);
+		return DigestUtil.hex((String) rawPassword);
 	}
 
 	@Override
