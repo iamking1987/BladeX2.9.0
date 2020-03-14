@@ -70,7 +70,7 @@ services:
       - blade_net
 
   blade-redis:
-    image: redis:5.0.2-alpine
+    image: redis:5.0.8-alpine
     hostname: "blade-redis"
     environment:
       - TZ=Asia/Shanghai
