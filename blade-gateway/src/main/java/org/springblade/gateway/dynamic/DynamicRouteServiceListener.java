@@ -20,6 +20,7 @@ import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.NacosFactory;
+import com.alibaba.nacos.api.PropertyKeyConst;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
@@ -31,6 +32,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.Executor;
 
 /**
@@ -63,8 +65,10 @@ public class DynamicRouteServiceListener {
 		try {
 			String dataId = NacosConstant.dataId(bladeProperties.getName(), bladeProperties.getEnv(), NacosConstant.NACOS_CONFIG_JSON_FORMAT);
 			String group = nacosConfigProperties.getGroup();
-			String serverAddr = nacosDiscoveryProperties.getServerAddr();
-			ConfigService configService = NacosFactory.createConfigService(serverAddr);
+			Properties properties = new Properties();
+			properties.setProperty(PropertyKeyConst.SERVER_ADDR, nacosDiscoveryProperties.getServerAddr());
+			properties.setProperty(PropertyKeyConst.NAMESPACE, nacosDiscoveryProperties.getNamespace());
+			ConfigService configService = NacosFactory.createConfigService(properties);
 			configService.addListener(dataId, group, new Listener() {
 				@Override
 				public void receiveConfigInfo(String configInfo) {

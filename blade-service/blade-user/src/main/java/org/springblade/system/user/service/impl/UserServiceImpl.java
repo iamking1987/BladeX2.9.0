@@ -69,7 +69,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 			Integer accountNumber = tenant.getAccountNumber();
 			Integer tenantCount = baseMapper.selectCount(Wrappers.<User>query().lambda().eq(User::getTenantId, tenantId));
 			if (accountNumber != null && accountNumber > 0 && accountNumber < tenantCount) {
-				throw new ServiceException("当前租户已到最大账号额度");
+				throw new ServiceException("当前租户已到最大账号额度!");
 			}
 		}
 		if (Func.isNotEmpty(user.getPassword())) {
