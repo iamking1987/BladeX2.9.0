@@ -85,11 +85,6 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public boolean updateUser(User user) {
-		return updateUserInfo(user) && submitUserDept(user);
-	}
-
-	@Override
-	public boolean updateUserInfo(User user) {
 		String tenantId = user.getTenantId();
 		Integer userCount = baseMapper.selectCount(
 			Wrappers.<User>query().lambda()
@@ -100,6 +95,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 		if (userCount > 0) {
 			throw new ServiceException("当前用户已存在!");
 		}
+		return updateUserInfo(user) && submitUserDept(user);
+	}
+
+	@Override
+	public boolean updateUserInfo(User user) {
 		user.setPassword(null);
 		return updateById(user);
 	}
