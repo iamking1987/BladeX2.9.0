@@ -55,6 +55,7 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 	private final IRoleService roleService;
 	private final IMenuService menuService;
 	private final IDeptService deptService;
+	private final IPostService postService;
 	private final IRoleMenuService roleMenuService;
 	private final IUserClient userClient;
 
@@ -112,6 +113,14 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			dept.setSort(2);
 			dept.setIsDeleted(0);
 			deptService.save(dept);
+			// 新建租户对应的默认岗位
+			Post post = new Post();
+			post.setTenantId(tenantId);
+			post.setCategory(1);
+			post.setPostCode("ceo");
+			post.setPostName("首席执行官");
+			post.setSort(1);
+			postService.save(post);
 			// 新建租户对应的默认管理用户
 			User user = new User();
 			user.setTenantId(tenantId);
@@ -123,6 +132,7 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			user.setPassword(password);
 			user.setRoleId(String.valueOf(role.getId()));
 			user.setDeptId(String.valueOf(dept.getId()));
+			user.setPostId(String.valueOf(post.getId()));
 			user.setBirthday(new Date());
 			user.setSex(1);
 			user.setIsDeleted(0);
@@ -148,8 +158,10 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 	private List<Menu> getMenus(List<String> codes, LinkedList<Menu> menus) {
 		codes.forEach(code -> {
 			Menu menu = menuService.getOne(Wrappers.<Menu>query().lambda().eq(Menu::getCode, code).eq(Menu::getIsDeleted, BladeConstant.DB_NOT_DELETED));
-			menus.add(menu);
-			recursion(menu.getId(), menus);
+			if (menu != null) {
+				menus.add(menu);
+				recursion(menu.getId(), menus);
+			}
 		});
 		return menus;
 	}
