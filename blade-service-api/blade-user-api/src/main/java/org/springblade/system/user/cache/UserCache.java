@@ -20,6 +20,7 @@ import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.SpringUtil;
+import org.springblade.core.tool.utils.StringPool;
 import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.feign.IUserClient;
@@ -34,6 +35,7 @@ import static org.springblade.core.launch.constant.FlowConstant.TASK_USR_PREFIX;
  */
 public class UserCache {
 	private static final String USER_CACHE_ID = "user:id:";
+	private static final String USER_CACHE_ACCOUNT = "user:account:";
 
 	private static IUserClient userClient;
 
@@ -56,7 +58,7 @@ public class UserCache {
 	}
 
 	/**
-	 * 获取用户名
+	 * 获取用户
 	 *
 	 * @param userId 用户id
 	 * @return
@@ -66,6 +68,26 @@ public class UserCache {
 			R<User> result = getUserClient().userInfoById(userId);
 			return result.getData();
 		});
+	}
+
+	/**
+	 * 获取用户
+	 *
+	 * @param tenantId 租户id
+	 * @param account  账号名
+	 * @return
+	 */
+	public static User getUser(String tenantId, String account) {
+		User userCache = CacheUtil.get(USER_CACHE, USER_CACHE_ACCOUNT, tenantId + StringPool.DASH + account, User.class);
+		if (userCache == null || userCache.getId() == null) {
+			R<User> result = getUserClient().userByAccount(tenantId, account);
+			User user = result.getData();
+			if (user != null && user.getId() != null) {
+				CacheUtil.put(USER_CACHE, USER_CACHE_ACCOUNT, tenantId + StringPool.DASH + account, user);
+				return user;
+			}
+		}
+		return userCache;
 	}
 
 }

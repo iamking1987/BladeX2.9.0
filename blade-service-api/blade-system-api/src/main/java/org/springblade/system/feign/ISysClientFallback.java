@@ -41,22 +41,12 @@ public class ISysClientFallback implements ISysClient {
 	}
 
 	@Override
+	public R<String> getDeptIds(String tenantId, String deptNames) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
 	public R<String> getDeptName(Long id) {
-		return R.fail("获取数据失败");
-	}
-
-	@Override
-	public R<Role> getRole(Long id) {
-		return R.fail("获取数据失败");
-	}
-
-	@Override
-	public R<String> getRoleName(Long id) {
-		return R.fail("获取数据失败");
-	}
-
-	@Override
-	public R<String> getRoleAlias(Long id) {
 		return R.fail("获取数据失败");
 	}
 
@@ -67,6 +57,46 @@ public class ISysClientFallback implements ISysClient {
 
 	@Override
 	public R<List<Dept>> getDeptChild(Long deptId) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<Post> getPost(Long id) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<String> getPostIds(String tenantId, String postNames) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<String> getPostName(Long id) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<List<String>> getPostNames(String postIds) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<Role> getRole(Long id) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<String> getRoleIds(String tenantId, String roleNames) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<String> getRoleName(Long id) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<String> getRoleAlias(Long id) {
 		return R.fail("获取数据失败");
 	}
 

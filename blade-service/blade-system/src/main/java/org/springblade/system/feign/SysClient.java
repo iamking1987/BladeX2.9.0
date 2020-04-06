@@ -38,6 +38,8 @@ public class SysClient implements ISysClient {
 
 	private IDeptService deptService;
 
+	private IPostService postService;
+
 	private IRoleService roleService;
 
 	private IMenuService menuService;
@@ -59,27 +61,14 @@ public class SysClient implements ISysClient {
 	}
 
 	@Override
+	public R<String> getDeptIds(String tenantId, String deptNames) {
+		return R.data(deptService.getDeptIds(tenantId, deptNames));
+	}
+
+	@Override
 	@GetMapping(DEPT_NAME)
 	public R<String> getDeptName(Long id) {
 		return R.data(deptService.getById(id).getDeptName());
-	}
-
-	@Override
-	@GetMapping(ROLE)
-	public R<Role> getRole(Long id) {
-		return R.data(roleService.getById(id));
-	}
-
-	@Override
-	@GetMapping(ROLE_NAME)
-	public R<String> getRoleName(Long id) {
-		return R.data(roleService.getById(id).getRoleName());
-	}
-
-	@Override
-	@GetMapping(ROLE_ALIAS)
-	public R<String> getRoleAlias(Long id) {
-		return R.data(roleService.getById(id).getRoleAlias());
 	}
 
 	@Override
@@ -92,6 +81,49 @@ public class SysClient implements ISysClient {
 	@GetMapping(DEPT_CHILD)
 	public R<List<Dept>> getDeptChild(Long deptId) {
 		return R.data(deptService.getDeptChild(deptId));
+	}
+
+	@Override
+	public R<Post> getPost(Long id) {
+		return R.data(postService.getById(id));
+	}
+
+	@Override
+	public R<String> getPostIds(String tenantId, String postNames) {
+		return R.data(postService.getPostIds(tenantId, postNames));
+	}
+
+	@Override
+	public R<String> getPostName(Long id) {
+		return R.data(postService.getById(id).getPostName());
+	}
+
+	@Override
+	public R<List<String>> getPostNames(String postIds) {
+		return R.data(postService.getPostNames(postIds));
+	}
+
+	@Override
+	@GetMapping(ROLE)
+	public R<Role> getRole(Long id) {
+		return R.data(roleService.getById(id));
+	}
+
+	@Override
+	public R<String> getRoleIds(String tenantId, String roleNames) {
+		return R.data(roleService.getRoleIds(tenantId, roleNames));
+	}
+
+	@Override
+	@GetMapping(ROLE_NAME)
+	public R<String> getRoleName(Long id) {
+		return R.data(roleService.getById(id).getRoleName());
+	}
+
+	@Override
+	@GetMapping(ROLE_ALIAS)
+	public R<String> getRoleAlias(Long id) {
+		return R.data(roleService.getById(id).getRoleAlias());
 	}
 
 	@Override

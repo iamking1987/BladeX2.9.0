@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 服务实现类
@@ -73,6 +74,14 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
 		return ForestNodeMerger.merge(baseMapper.lazyTree(tenantId, parentId));
 	}
 
+	@Override
+	public String getDeptIds(String tenantId, String deptNames) {
+		List<Dept> deptList = baseMapper.selectList(Wrappers.<Dept>query().lambda().eq(Dept::getTenantId, tenantId).in(Dept::getDeptName, Func.toStrList(deptNames)));
+		if (deptList != null && deptList.size() > 0) {
+			return deptList.stream().map(dept -> Func.toStr(dept.getId())).distinct().collect(Collectors.joining(","));
+		}
+		return null;
+	}
 
 	@Override
 	public List<String> getDeptNames(String deptIds) {
