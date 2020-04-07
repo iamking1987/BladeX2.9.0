@@ -55,6 +55,10 @@ public class BladeUserDetails extends User {
 	 */
 	private String deptId;
 	/**
+	 * 岗位id
+	 */
+	private String postId;
+	/**
 	 * 角色id
 	 */
 	private String roleId;
@@ -67,7 +71,7 @@ public class BladeUserDetails extends User {
 	 */
 	private String avatar;
 
-	public BladeUserDetails(Long userId, String tenantId, String name, String realName, String deptId, String roleId, String roleName, String avatar, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+	public BladeUserDetails(Long userId, String tenantId, String name, String realName, String deptId, String postId, String roleId, String roleName, String avatar, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.userId = userId;
 		this.tenantId = tenantId;
@@ -75,6 +79,7 @@ public class BladeUserDetails extends User {
 		this.realName = realName;
 		this.account = username;
 		this.deptId = deptId;
+		this.postId = postId;
 		this.roleId = roleId;
 		this.roleName = roleName;
 		this.avatar = avatar;

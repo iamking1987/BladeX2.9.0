@@ -98,7 +98,7 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 				throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_ROLE);
 			}
 			return new BladeUserDetails(user.getId(),
-				user.getTenantId(), user.getName(), user.getRealName(), user.getDeptId(), user.getRoleId(), Func.join(result.getData().getRoles()), Func.toStr(user.getAvatar(), TokenUtil.DEFAULT_AVATAR),
+				user.getTenantId(), user.getName(), user.getRealName(), user.getDeptId(), user.getPostId(),user.getRoleId(), Func.join(result.getData().getRoles()), Func.toStr(user.getAvatar(), TokenUtil.DEFAULT_AVATAR),
 				username, AuthConstant.ENCRYPT + user.getPassword(), true, true, true, true,
 				AuthorityUtils.commaSeparatedStringToAuthorityList(Func.join(result.getData().getRoles())));
 		} else {
