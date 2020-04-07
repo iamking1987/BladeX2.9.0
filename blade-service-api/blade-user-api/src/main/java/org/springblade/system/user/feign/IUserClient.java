@@ -42,6 +42,7 @@ public interface IUserClient {
 	String USER_INFO_BY_ID = API_PREFIX + "/user-info-by-id";
 	String USER_INFO_BY_ACCOUNT = API_PREFIX + "/user-info-by-account";
 	String SAVE_USER = API_PREFIX + "/save-user";
+	String REMOVE_USER = API_PREFIX + "/remove-user";
 
 	/**
 	 * 获取用户信息
@@ -81,5 +82,14 @@ public interface IUserClient {
 	 */
 	@PostMapping(SAVE_USER)
 	R<Boolean> saveUser(@RequestBody User user);
+
+	/**
+	 * 删除用户
+	 *
+	 * @param tenantIds 租户id集合
+	 * @return
+	 */
+	@PostMapping(REMOVE_USER)
+	R<Boolean> removeUser(@RequestParam("tenantIds") String tenantIds);
 
 }

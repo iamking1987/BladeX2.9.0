@@ -25,6 +25,7 @@ import org.springblade.core.tenant.TenantId;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.utils.Func;
+import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.system.cache.ParamCache;
 import org.springblade.system.entity.*;
 import org.springblade.system.mapper.TenantMapper;
@@ -145,6 +146,22 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 		} else {
 			return super.saveOrUpdate(tenant);
 		}
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public boolean removeTenant(List<Long> ids) {
+		List<Tenant> tenantList = this.list(Wrappers.<Tenant>query().lambda().in(Tenant::getId, ids));
+		List<String> tenantIds = tenantList.stream().map(tenant -> Func.toStr(tenant.getTenantId())).distinct().collect(Collectors.toList());
+		if (tenantIds.contains(BladeConstant.ADMIN_TENANT_ID)) {
+			throw new ServiceException("不可删除管理租户!");
+		}
+		boolean tenantTemp = this.deleteLogic(ids);
+		R<Boolean> result = userClient.removeUser(StringUtil.join(tenantIds));
+		if (!result.isSuccess()) {
+			throw new ServiceException(result.getMsg());
+		}
+		return tenantTemp;
 	}
 
 	private String getTenantId(List<String> codes) {
