@@ -78,16 +78,10 @@ public class UserCache {
 	 * @return
 	 */
 	public static User getUser(String tenantId, String account) {
-		User userCache = CacheUtil.get(USER_CACHE, USER_CACHE_ACCOUNT, tenantId + StringPool.DASH + account, User.class);
-		if (userCache == null || userCache.getId() == null) {
+		return CacheUtil.get(USER_CACHE, USER_CACHE_ACCOUNT, tenantId + StringPool.DASH + account, () -> {
 			R<User> result = getUserClient().userByAccount(tenantId, account);
-			User user = result.getData();
-			if (user != null && user.getId() != null) {
-				CacheUtil.put(USER_CACHE, USER_CACHE_ACCOUNT, tenantId + StringPool.DASH + account, user);
-				return user;
-			}
-		}
-		return userCache;
+			return result.getData();
+		});
 	}
 
 }
