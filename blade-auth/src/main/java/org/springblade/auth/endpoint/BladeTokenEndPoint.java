@@ -20,6 +20,8 @@ import com.wf.captcha.SpecCaptcha;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.common.cache.CacheNames;
+import org.springblade.core.cache.constant.CacheConstant;
+import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.redis.cache.BladeRedis;
 import org.springblade.core.secure.BladeUser;
 import org.springblade.core.secure.utils.AuthUtil;
@@ -64,6 +66,19 @@ public class BladeTokenEndPoint {
 	public Kv logout() {
 		BladeUser user = AuthUtil.getUser();
 		return Kv.create().set("success", "true").set("account", user.getAccount()).set("msg", "success");
+	}
+
+	@GetMapping("/oauth/clear-cache")
+	public Kv clearCache() {
+		CacheUtil.clear(CacheConstant.BIZ_CACHE);
+		CacheUtil.clear(CacheConstant.MENU_CACHE);
+		CacheUtil.clear(CacheConstant.USER_CACHE);
+		CacheUtil.clear(CacheConstant.DICT_CACHE);
+		CacheUtil.clear(CacheConstant.FLOW_CACHE);
+		CacheUtil.clear(CacheConstant.SYS_CACHE);
+		CacheUtil.clear(CacheConstant.RESOURCE_CACHE);
+		CacheUtil.clear(CacheConstant.PARAM_CACHE);
+		return Kv.create().set("success", "true").set("msg", "success");
 	}
 
 }
