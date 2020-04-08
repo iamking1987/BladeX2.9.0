@@ -19,9 +19,7 @@ package org.springblade.system.wrapper;
 import org.springblade.core.mp.support.BaseEntityWrapper;
 import org.springblade.core.tool.utils.BeanUtil;
 import org.springblade.system.cache.DictCache;
-import org.springblade.system.cache.SysCache;
 import org.springblade.system.entity.Post;
-import org.springblade.system.entity.Tenant;
 import org.springblade.system.vo.PostVO;
 
 import java.util.Objects;
@@ -40,9 +38,7 @@ public class PostWrapper extends BaseEntityWrapper<Post, PostVO> {
 	@Override
 	public PostVO entityVO(Post post) {
 		PostVO postVO = Objects.requireNonNull(BeanUtil.copy(post, PostVO.class));
-		Tenant tenant = SysCache.getTenant(post.getTenantId());
 		String categoryName = DictCache.getValue("post", post.getCategory());
-		postVO.setTenantName(tenant.getTenantName());
 		postVO.setCategoryName(categoryName);
 		return postVO;
 	}
