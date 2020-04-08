@@ -41,7 +41,7 @@
         <dependency>
             <groupId>com.taobao</groupId>
             <artifactId>taobao-sdk</artifactId>
-            <version>20191114</version>
+            <version>20200408</version>
         </dependency>
     </dependencies>
 
