@@ -17,12 +17,13 @@
 package org.springblade.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springblade.core.boot.ctrl.BladeController;
+import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
 import org.springblade.core.secure.annotation.PreAuth;
@@ -123,9 +124,10 @@ public class TopMenuController extends BladeController {
 	@PostMapping("/grant")
 	@ApiOperationSupport(order = 8)
 	@ApiOperation(value = "顶部菜单配置", notes = "传入topMenuId集合以及menuId集合")
-	@CacheEvict(cacheNames = {SYS_CACHE, MENU_CACHE}, allEntries = true)
 	public R grant(@ApiParam(value = "topMenuId集合", required = true) @RequestParam String topMenuIds,
 				   @ApiParam(value = "menuId集合", required = true) @RequestParam String menuIds) {
+		CacheUtil.clear(SYS_CACHE);
+		CacheUtil.clear(MENU_CACHE);
 		boolean temp = topMenuService.grant(Func.toLongList(topMenuIds), Func.toLongList(menuIds));
 		return R.status(temp);
 	}

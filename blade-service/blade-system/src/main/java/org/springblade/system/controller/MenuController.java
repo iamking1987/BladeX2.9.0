@@ -20,6 +20,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springblade.core.boot.ctrl.BladeController;
+import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.secure.BladeUser;
 import org.springblade.core.secure.annotation.PreAuth;
@@ -44,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.springblade.core.cache.constant.CacheConstant.MENU_CACHE;
+import static org.springblade.core.cache.constant.CacheConstant.RESOURCE_CACHE;
 
 
 /**
@@ -140,11 +142,11 @@ public class MenuController extends BladeController {
 	 * 新增或修改
 	 */
 	@PostMapping("/submit")
-	@CacheEvict(cacheNames = {MENU_CACHE}, allEntries = true)
 	@PreAuth(RoleConstant.HAS_ROLE_ADMINISTRATOR)
 	@ApiOperationSupport(order = 6)
 	@ApiOperation(value = "新增或修改", notes = "传入menu")
 	public R submit(@Valid @RequestBody Menu menu) {
+		CacheUtil.clear(MENU_CACHE);
 		return R.status(menuService.submit(menu));
 	}
 
@@ -153,11 +155,11 @@ public class MenuController extends BladeController {
 	 * 删除
 	 */
 	@PostMapping("/remove")
-	@CacheEvict(cacheNames = {MENU_CACHE}, allEntries = true)
 	@PreAuth(RoleConstant.HAS_ROLE_ADMINISTRATOR)
 	@ApiOperationSupport(order = 7)
 	@ApiOperation(value = "删除", notes = "传入ids")
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
+		CacheUtil.clear(MENU_CACHE);
 		return R.status(menuService.removeMenu(ids));
 	}
 

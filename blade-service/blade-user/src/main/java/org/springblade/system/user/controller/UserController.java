@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
+import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.excel.util.ExcelUtil;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
@@ -42,7 +43,6 @@ import org.springblade.system.user.excel.UserImporter;
 import org.springblade.system.user.service.IUserService;
 import org.springblade.system.user.vo.UserVO;
 import org.springblade.system.user.wrapper.UserWrapper;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
@@ -130,8 +130,8 @@ public class UserController {
 	@ApiOperationSupport(order = 4)
 	@ApiOperation(value = "新增或修改", notes = "传入User")
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
-	@CacheEvict(cacheNames = {USER_CACHE}, allEntries = true)
 	public R submit(@Valid @RequestBody User user) {
+		CacheUtil.clear(USER_CACHE);
 		return R.status(userService.submit(user));
 	}
 
@@ -141,8 +141,8 @@ public class UserController {
 	@PostMapping("/update")
 	@ApiOperationSupport(order = 5)
 	@ApiOperation(value = "修改", notes = "传入User")
-	@CacheEvict(cacheNames = {USER_CACHE}, allEntries = true)
 	public R update(@Valid @RequestBody User user) {
+		CacheUtil.clear(USER_CACHE);
 		return R.status(userService.updateUser(user));
 	}
 
@@ -153,8 +153,8 @@ public class UserController {
 	@ApiOperationSupport(order = 6)
 	@ApiOperation(value = "删除", notes = "传入id集合")
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
-	@CacheEvict(cacheNames = {USER_CACHE}, allEntries = true)
 	public R remove(@RequestParam String ids) {
+		CacheUtil.clear(USER_CACHE);
 		return R.status(userService.removeUser(ids));
 	}
 
@@ -199,8 +199,8 @@ public class UserController {
 	@PostMapping("/update-info")
 	@ApiOperationSupport(order = 10)
 	@ApiOperation(value = "修改基本信息", notes = "传入User")
-	@CacheEvict(cacheNames = {USER_CACHE}, allEntries = true)
 	public R updateInfo(@Valid @RequestBody User user) {
+		CacheUtil.clear(USER_CACHE);
 		return R.status(userService.updateUserInfo(user));
 	}
 

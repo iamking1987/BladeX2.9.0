@@ -21,6 +21,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springblade.core.boot.ctrl.BladeController;
+import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
 import org.springblade.core.tool.api.R;
@@ -141,8 +142,8 @@ public class DictController extends BladeController {
 	@PostMapping("/submit")
 	@ApiOperationSupport(order = 6)
 	@ApiOperation(value = "新增或修改", notes = "传入dict")
-	@CacheEvict(cacheNames = {DICT_CACHE}, allEntries = true)
 	public R submit(@Valid @RequestBody Dict dict) {
+		CacheUtil.clear(DICT_CACHE);
 		return R.status(dictService.submit(dict));
 	}
 
@@ -152,9 +153,9 @@ public class DictController extends BladeController {
 	 */
 	@PostMapping("/remove")
 	@ApiOperationSupport(order = 7)
-	@CacheEvict(cacheNames = {DICT_CACHE}, allEntries = true)
 	@ApiOperation(value = "删除", notes = "传入ids")
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
+		CacheUtil.clear(DICT_CACHE);
 		return R.status(dictService.removeDict(ids));
 	}
 

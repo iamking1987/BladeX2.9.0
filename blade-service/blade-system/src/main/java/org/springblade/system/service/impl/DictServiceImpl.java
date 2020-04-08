@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springblade.common.constant.CommonConstant;
+import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.log.exception.ServiceException;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
@@ -40,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.springblade.core.cache.constant.CacheConstant.DICT_CACHE;
+import static org.springblade.core.cache.constant.CacheConstant.SYS_CACHE;
 
 
 /**
@@ -76,7 +78,6 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements ID
 	}
 
 	@Override
-	@CacheEvict(cacheNames = {DICT_CACHE}, allEntries = true)
 	public boolean submit(Dict dict) {
 		LambdaQueryWrapper<Dict> lqw = Wrappers.<Dict>query().lambda().eq(Dict::getCode, dict.getCode()).eq(Dict::getDictKey, dict.getDictKey());
 		Integer cnt = baseMapper.selectCount((Func.isEmpty(dict.getId())) ? lqw : lqw.notIn(Dict::getId, dict.getId()));
@@ -87,6 +88,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements ID
 			dict.setParentId(BladeConstant.TOP_PARENT_ID);
 		}
 		dict.setIsDeleted(BladeConstant.DB_NOT_DELETED);
+		CacheUtil.clear(DICT_CACHE);
 		return saveOrUpdate(dict);
 	}
 
