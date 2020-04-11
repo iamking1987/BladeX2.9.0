@@ -36,7 +36,6 @@ import org.springblade.system.vo.CheckedTreeVO;
 import org.springblade.system.vo.GrantTreeVO;
 import org.springblade.system.vo.MenuVO;
 import org.springblade.system.wrapper.MenuWrapper;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -45,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.springblade.core.cache.constant.CacheConstant.MENU_CACHE;
-import static org.springblade.core.cache.constant.CacheConstant.RESOURCE_CACHE;
 
 
 /**
@@ -146,8 +144,13 @@ public class MenuController extends BladeController {
 	@ApiOperationSupport(order = 6)
 	@ApiOperation(value = "新增或修改", notes = "传入menu")
 	public R submit(@Valid @RequestBody Menu menu) {
-		CacheUtil.clear(MENU_CACHE);
-		return R.status(menuService.submit(menu));
+		if (menuService.submit(menu)) {
+			CacheUtil.clear(MENU_CACHE);
+			// 返回懒加载树更新节点所需字段
+			Kv kv = Kv.create().set("id", String.valueOf(menu.getId()));
+			return R.data(kv);
+		}
+		return R.fail("操作失败");
 	}
 
 

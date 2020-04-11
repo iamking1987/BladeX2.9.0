@@ -29,12 +29,13 @@ import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.node.INode;
+import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.Func;
+import org.springblade.system.cache.DictCache;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.service.IDeptService;
 import org.springblade.system.vo.DeptVO;
 import org.springblade.system.wrapper.DeptWrapper;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -131,8 +132,14 @@ public class DeptController extends BladeController {
 	@ApiOperationSupport(order = 6)
 	@ApiOperation(value = "新增或修改", notes = "传入dept")
 	public R submit(@Valid @RequestBody Dept dept) {
-		CacheUtil.clear(SYS_CACHE);
-		return R.status(deptService.submit(dept));
+		if (deptService.submit(dept)) {
+			CacheUtil.clear(SYS_CACHE);
+			// 返回懒加载树更新节点所需字段
+			Kv kv = Kv.create().set("id", String.valueOf(dept.getId())).set("tenantId", dept.getTenantId())
+				.set("deptCategoryName", DictCache.getValue("org_category", dept.getDeptCategory()));
+			return R.data(kv);
+		}
+		return R.fail("操作失败");
 	}
 
 	/**
