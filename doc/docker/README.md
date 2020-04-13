@@ -1,5 +1,5 @@
 #使用docker构建工程步骤
-###1. 使用docker-harbor作为私有库,需要配置maven,找到setting.xml( `linux可以使用find / -name settings.xml`)加入以下配置
+### 1. 使用harbor作为私有库,需要配置maven,找到setting.xml( `linux可以使用find / -name settings.xml`)加入以下配置
 
 ```
 <servers>
@@ -18,7 +18,7 @@
 </pluginGroups>
 ```
 
-###2. docker开启远程访问
+### 2. docker开启远程访问
 
 如果没有远程访问,会报 `Connect to 192.168.0.157:2375 [/192.168.0.157] failed: Connection refused: connect`
 
@@ -33,38 +33,51 @@ ExecStart=
 ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix://var/run/docker.sock
 ```
 
+### 3. 配置http访问
+因为docker1.3.2版本开始默认docker registry使用的是https，我们设置Harbor默认http方式，所以当执行用docker login、pull、push等命令操作非https的docker regsitry的时就会报错。  
+解决办法：配置`/etc/docker/daemon.json`
 
+```
+[root@localhost harbor]# vi /etc/docker/daemon.json 
+{
+  "registry-mirrors": ["https://3dse7md.mirror.aliyuncs.com"]
+}
+```
 
-###3. 在每个需要构建子项目的pom.xml下加入配置,内容可参考如下
+将其修改为：
+
+```
+{
+  "registry-mirrors": ["https://3dse7md.mirror.aliyuncs.com"],
+  "insecure-registries":["192.168.0.157"]
+}
+```
+
+### 4. 在每个需要构建子项目的pom.xml下加入配置,内容可参考如下
 
 ```
 <build>
   <plugins>
     <plugin>
-      <groupId>com.spotify</groupId>
-      <artifactId>docker-maven-plugin</artifactId>
-      <version>${docker.plugin.version}</version>
-      <configuration>
-        <imageName>${docker.registry.url}/blade/${project.artifactId}:${project.version}</imageName>
-        <dockerDirectory>${project.basedir}</dockerDirectory>
-        <dockerHost>${docker.registry.host}</dockerHost>
-        <resources>
-          <resource>
-            <targetPath>/</targetPath>
-            <directory>${project.build.directory}</directory>
-            <include>${project.build.finalName}.jar</include>
-          </resource>
-        </resources>
-        <registryUrl>${docker.registry.url}</registryUrl>
-        <serverId>${docker.registry.url}</serverId>
-        <pushImage>true</pushImage>
-      </configuration>
+        <groupId>com.spotify</groupId>
+        <artifactId>dockerfile-maven-plugin</artifactId>
+        <configuration>
+            <username>${docker.username}</username>
+            <password>${docker.password}</password>
+            <repository>${docker.registry.url}/${docker.namespace}/${project.artifactId}</repository>
+            <tag>${project.version}</tag>
+            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+            <buildArgs>
+                <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+            </buildArgs>
+            <skip>false</skip>
+        </configuration>
     </plugin>
   </plugins>
 </build>
 ```
 
-###4. 在每个需要构建子项目的根目录下加入Dockerfile,内容可参考如下
+### 5. 在每个需要构建子项目的根目录下加入Dockerfile,内容可参考如下
 
 ```
 FROM anapsix/alpine-java:8_server-jre_unlimited
@@ -83,7 +96,7 @@ CMD java -Djava.security.egd=file:/dev/./urandom -jar app.jar --spring.profiles.
 
 ```
 
-###5. 在工程根目录的docker-compose.yml下加入配置，内容可参考如下
+### 6. 在工程根目录的docker-compose.yml下加入配置，内容可参考如下
 ```
 blade-gateway:
   image: "${REGISTER}/blade/blade-gateway:${TAG}"
