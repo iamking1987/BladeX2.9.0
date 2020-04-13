@@ -24,6 +24,7 @@ import org.springblade.system.entity.Dict;
 import org.springblade.system.feign.IDictClient;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springblade.core.cache.constant.CacheConstant.DICT_CACHE;
 
@@ -35,6 +36,7 @@ import static org.springblade.core.cache.constant.CacheConstant.DICT_CACHE;
 public class DictCache {
 
 	private static final String DICT_ID = "dict:id:";
+	private static final String DICT_KEY = "dict:key:";
 	private static final String DICT_VALUE = "dict:value:";
 	private static final String DICT_LIST = "dict:list:";
 
@@ -51,7 +53,7 @@ public class DictCache {
 	 * 获取字典实体
 	 *
 	 * @param id 主键
-	 * @return
+	 * @return Dict
 	 */
 	public static Dict getById(Long id) {
 		return CacheUtil.get(DICT_CACHE, DICT_ID, id, () -> {
@@ -61,11 +63,28 @@ public class DictCache {
 	}
 
 	/**
+	 * 获取字典键
+	 *
+	 * @param code      字典编号
+	 * @param dictValue 字典值
+	 * @return String
+	 */
+	public static String getKey(String code, String dictValue) {
+		return CacheUtil.get(DICT_CACHE, DICT_KEY + code + StringPool.COLON, dictValue, () -> {
+			List<Dict> list = getList(code);
+			Optional<String> key = list.stream().filter(
+				dict -> dict.getDictValue().equalsIgnoreCase(dictValue)
+			).map(Dict::getDictKey).findFirst();
+			return key.orElse(StringPool.EMPTY);
+		});
+	}
+
+	/**
 	 * 获取字典值
 	 *
 	 * @param code    字典编号
 	 * @param dictKey Integer型字典键
-	 * @return
+	 * @return String
 	 */
 	public static String getValue(String code, Integer dictKey) {
 		return CacheUtil.get(DICT_CACHE, DICT_VALUE + code + StringPool.COLON, String.valueOf(dictKey), () -> {
@@ -79,7 +98,7 @@ public class DictCache {
 	 *
 	 * @param code    字典编号
 	 * @param dictKey String型字典键
-	 * @return
+	 * @return String
 	 */
 	public static String getValue(String code, String dictKey) {
 		return CacheUtil.get(DICT_CACHE, DICT_VALUE + code + StringPool.COLON, dictKey, () -> {
@@ -92,7 +111,7 @@ public class DictCache {
 	 * 获取字典集合
 	 *
 	 * @param code 字典编号
-	 * @return
+	 * @return List<Dict>
 	 */
 	public static List<Dict> getList(String code) {
 		return CacheUtil.get(DICT_CACHE, DICT_LIST, code, () -> {
