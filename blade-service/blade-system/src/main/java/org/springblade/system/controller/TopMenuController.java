@@ -32,7 +32,6 @@ import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.system.entity.TopMenu;
 import org.springblade.system.service.ITopMenuService;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

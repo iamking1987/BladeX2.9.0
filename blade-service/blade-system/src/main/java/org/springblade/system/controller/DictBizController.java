@@ -30,7 +30,6 @@ import org.springblade.system.entity.DictBiz;
 import org.springblade.system.service.IDictBizService;
 import org.springblade.system.vo.DictBizVO;
 import org.springblade.system.wrapper.DictBizWrapper;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 

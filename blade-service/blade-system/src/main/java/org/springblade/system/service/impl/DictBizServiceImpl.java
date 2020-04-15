@@ -34,7 +34,6 @@ import org.springblade.system.mapper.DictBizMapper;
 import org.springblade.system.service.IDictBizService;
 import org.springblade.system.vo.DictBizVO;
 import org.springblade.system.wrapper.DictBizWrapper;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

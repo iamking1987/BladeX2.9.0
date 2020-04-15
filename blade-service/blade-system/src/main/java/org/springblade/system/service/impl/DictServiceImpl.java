@@ -34,14 +34,12 @@ import org.springblade.system.mapper.DictMapper;
 import org.springblade.system.service.IDictService;
 import org.springblade.system.vo.DictVO;
 import org.springblade.system.wrapper.DictWrapper;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
 import static org.springblade.core.cache.constant.CacheConstant.DICT_CACHE;
-import static org.springblade.core.cache.constant.CacheConstant.SYS_CACHE;
 
 
 /**
