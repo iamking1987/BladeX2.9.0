@@ -65,7 +65,7 @@ public interface ISysClient {
 	 * @return Menu
 	 */
 	@GetMapping(MENU)
-	R<Menu> getMenu(Long id);
+	R<Menu> getMenu(@RequestParam("id") Long id);
 
 	/**
 	 * 获取部门
