@@ -34,7 +34,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @AllArgsConstructor
 public class StaticResourceConfig implements WebMvcConfigurer {
 
-	private UserHandlerInterceptor baseInterceptor;
+	private final UserHandlerInterceptor baseInterceptor;
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {

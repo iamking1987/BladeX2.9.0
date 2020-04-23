@@ -37,7 +37,7 @@ public class BladeResourceServerConfiguration extends ResourceServerConfigurerAd
 	/**
 	 * 自定义登录成功处理器
 	 */
-	private AuthenticationSuccessHandler appLoginInSuccessHandler;
+	private final AuthenticationSuccessHandler appLoginInSuccessHandler;
 
 	@Override
 	@SneakyThrows

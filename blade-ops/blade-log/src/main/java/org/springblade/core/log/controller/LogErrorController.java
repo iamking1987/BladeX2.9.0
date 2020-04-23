@@ -42,7 +42,7 @@ import java.util.Map;
 @RequestMapping("/error")
 public class LogErrorController {
 
-	private ILogErrorService errorLogService;
+	private final ILogErrorService errorLogService;
 
 	/**
 	 * 查询单条

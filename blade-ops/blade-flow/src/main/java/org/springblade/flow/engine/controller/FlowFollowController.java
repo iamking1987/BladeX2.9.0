@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.*;
 @PreAuth(RoleConstant.HAS_ROLE_ADMINISTRATOR)
 public class FlowFollowController {
 
-	private FlowEngineService flowEngineService;
+	private final FlowEngineService flowEngineService;
 
 	/**
 	 * 流程状态列表

@@ -38,7 +38,7 @@ import java.util.List;
 public class SwaggerProvider implements SwaggerResourcesProvider {
 	private static final String API_URI = "/v2/api-docs-ext";
 
-	private RouteProperties routeProperties;
+	private final RouteProperties routeProperties;
 
 	@Override
 	public List<SwaggerResource> get() {

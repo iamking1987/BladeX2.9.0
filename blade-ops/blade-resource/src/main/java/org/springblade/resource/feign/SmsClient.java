@@ -40,7 +40,7 @@ import static org.springblade.resource.utils.SmsUtil.*;
 @AllArgsConstructor
 public class SmsClient implements ISmsClient {
 
-	private SmsBuilder smsBuilder;
+	private final SmsBuilder smsBuilder;
 
 	@Override
 	@PostMapping(SEND_MESSAGE)

@@ -37,7 +37,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @AllArgsConstructor
 public class NoticeClient implements INoticeClient {
 
-	private INoticeService service;
+	private final INoticeService service;
 
 	@Override
 	@GetMapping(TOP)

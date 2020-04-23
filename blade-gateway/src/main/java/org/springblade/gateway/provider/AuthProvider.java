@@ -28,39 +28,39 @@ import java.util.List;
  */
 public class AuthProvider {
 
-	public static String TARGET = "/**";
-	public static String REPLACEMENT = "";
-	public static String AUTH_KEY = TokenConstant.HEADER;
-	private static List<String> defaultSkipUrl = new ArrayList<>();
+	public static final String TARGET = "/**";
+	public static final String REPLACEMENT = "";
+	public static final String AUTH_KEY = TokenConstant.HEADER;
+	private static final List<String> DEFAULT_SKIP_URL = new ArrayList<>();
 
 	static {
-		defaultSkipUrl.add("/example");
-		defaultSkipUrl.add("/oauth/token/**");
-		defaultSkipUrl.add("/oauth/captcha/**");
-		defaultSkipUrl.add("/oauth/clear-cache/**");
-		defaultSkipUrl.add("/oauth/user-info");
-		defaultSkipUrl.add("/token/**");
-		defaultSkipUrl.add("/actuator/health/**");
-		defaultSkipUrl.add("/v2/api-docs/**");
-		defaultSkipUrl.add("/v2/api-docs-ext/**");
-		defaultSkipUrl.add("/auth/**");
-		defaultSkipUrl.add("/log/**");
-		defaultSkipUrl.add("/menu/routes");
-		defaultSkipUrl.add("/menu/auth-routes");
-		defaultSkipUrl.add("/menu/top-menu");
-		defaultSkipUrl.add("/tenant/info");
-		defaultSkipUrl.add("/process/resource-view");
-		defaultSkipUrl.add("/process/diagram-view");
-		defaultSkipUrl.add("/manager/check-upload");
-		defaultSkipUrl.add("/error/**");
-		defaultSkipUrl.add("/assets/**");
+		DEFAULT_SKIP_URL.add("/example");
+		DEFAULT_SKIP_URL.add("/oauth/token/**");
+		DEFAULT_SKIP_URL.add("/oauth/captcha/**");
+		DEFAULT_SKIP_URL.add("/oauth/clear-cache/**");
+		DEFAULT_SKIP_URL.add("/oauth/user-info");
+		DEFAULT_SKIP_URL.add("/token/**");
+		DEFAULT_SKIP_URL.add("/actuator/health/**");
+		DEFAULT_SKIP_URL.add("/v2/api-docs/**");
+		DEFAULT_SKIP_URL.add("/v2/api-docs-ext/**");
+		DEFAULT_SKIP_URL.add("/auth/**");
+		DEFAULT_SKIP_URL.add("/log/**");
+		DEFAULT_SKIP_URL.add("/menu/routes");
+		DEFAULT_SKIP_URL.add("/menu/auth-routes");
+		DEFAULT_SKIP_URL.add("/menu/top-menu");
+		DEFAULT_SKIP_URL.add("/tenant/info");
+		DEFAULT_SKIP_URL.add("/process/resource-view");
+		DEFAULT_SKIP_URL.add("/process/diagram-view");
+		DEFAULT_SKIP_URL.add("/manager/check-upload");
+		DEFAULT_SKIP_URL.add("/error/**");
+		DEFAULT_SKIP_URL.add("/assets/**");
 	}
 
 	/**
 	 * 默认无需鉴权的API
 	 */
 	public static List<String> getDefaultSkipUrl() {
-		return defaultSkipUrl;
+		return DEFAULT_SKIP_URL;
 	}
 
 }

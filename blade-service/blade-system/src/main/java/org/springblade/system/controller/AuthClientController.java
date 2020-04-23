@@ -49,7 +49,7 @@ import javax.validation.Valid;
 @PreAuth(RoleConstant.HAS_ROLE_ADMINISTRATOR)
 public class AuthClientController extends BladeController {
 
-	private IAuthClientService clientService;
+	private final IAuthClientService clientService;
 
 	/**
 	* 详情

@@ -42,7 +42,7 @@ import java.util.Map;
 @RequestMapping("/usual")
 public class LogUsualController {
 
-	private ILogUsualService logService;
+	private final ILogUsualService logService;
 
 	/**
 	 * 查询单条

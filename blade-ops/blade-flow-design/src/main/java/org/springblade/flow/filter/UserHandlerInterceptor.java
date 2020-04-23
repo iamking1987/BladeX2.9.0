@@ -39,10 +39,10 @@ public class UserHandlerInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		String servletPath = request.getServletPath();
-		if (servletPath.endsWith(css) || servletPath.endsWith(js) || servletPath.endsWith(jpg) || servletPath.endsWith(png)) {
+		if (servletPath.endsWith(CSS) || servletPath.endsWith(JS) || servletPath.endsWith(JPG) || servletPath.endsWith(PNG)) {
 			return true;
 		}
-		if (servletPath.startsWith(app)) {
+		if (servletPath.startsWith(APP)) {
 			User user = new UserEntityImpl();
 			user.setId("admin");
 			SecurityUtils.assumeUser(user);

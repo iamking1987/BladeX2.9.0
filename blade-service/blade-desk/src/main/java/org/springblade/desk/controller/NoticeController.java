@@ -47,9 +47,9 @@ import java.util.Map;
 @Api(value = "用户博客", tags = "博客接口")
 public class NoticeController extends BladeController {
 
-	private INoticeService noticeService;
+	private final INoticeService noticeService;
 
-	private INoticeClient noticeClient;
+	private final INoticeClient noticeClient;
 
 	/**
 	 * 详情

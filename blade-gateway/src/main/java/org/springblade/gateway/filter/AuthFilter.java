@@ -49,8 +49,8 @@ import java.nio.charset.StandardCharsets;
 @Component
 @AllArgsConstructor
 public class AuthFilter implements GlobalFilter, Ordered {
-	private AuthProperties authProperties;
-	private ObjectMapper objectMapper;
+	private final AuthProperties authProperties;
+	private final ObjectMapper objectMapper;
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

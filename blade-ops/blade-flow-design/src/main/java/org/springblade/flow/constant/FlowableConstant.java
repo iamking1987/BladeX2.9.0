@@ -24,9 +24,9 @@ package org.springblade.flow.constant;
 public interface FlowableConstant {
 	String FLOWABLE_BASE_PACKAGES = "org.flowable.ui";
 
-	String css = ".css";
-	String js = ".js";
-	String jpg = ".jpg";
-	String png = ".png";
-	String app = "/app";
+	String CSS = ".css";
+	String JS = ".js";
+	String JPG = ".jpg";
+	String PNG = ".png";
+	String APP = "/app";
 }

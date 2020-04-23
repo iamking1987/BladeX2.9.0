@@ -46,11 +46,11 @@ import java.util.HashMap;
 @Component("appLoginInSuccessHandler")
 public class AppLoginInSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-	private PasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder;
 
-	private ClientDetailsService clientDetailsService;
+	private final ClientDetailsService clientDetailsService;
 
-	private AuthorizationServerTokenServices authorizationServerTokenServices;
+	private final AuthorizationServerTokenServices authorizationServerTokenServices;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {

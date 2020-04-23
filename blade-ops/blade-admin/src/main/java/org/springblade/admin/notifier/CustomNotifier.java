@@ -46,7 +46,7 @@ public class CustomNotifier extends AbstractEventNotifier {
 	/**
 	 * massage template
 	 */
-	private static final String template = "服务名:%s(%s) n状态:%s(%s) n服务ip:%s";
+	private static final String TEMPLATE = "服务名:%s(%s) n状态:%s(%s) n服务ip:%s";
 
 	@Value("${spring.boot.admin.notify.dingtalk.webhook-token}")
 	private String dingTalkToken;
@@ -70,25 +70,25 @@ public class CustomNotifier extends AbstractEventNotifier {
 					// 健康检查没通过
 					case "DOWN":
 						log.info("发送 健康检查没通过 的通知！");
-						messageText = String.format(template, instance.getRegistration().getName(), event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(), "健康检查没通过", instance.getRegistration().getServiceUrl());
+						messageText = String.format(TEMPLATE, instance.getRegistration().getName(), event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(), "健康检查没通过", instance.getRegistration().getServiceUrl());
 						this.sendMessage(messageText);
 						break;
 					// 服务离线
 					case "OFFLINE":
 						log.info("发送 服务离线 的通知！");
-						messageText = String.format(template, instance.getRegistration().getName(), event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(), "服务离线", instance.getRegistration().getServiceUrl());
+						messageText = String.format(TEMPLATE, instance.getRegistration().getName(), event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(), "服务离线", instance.getRegistration().getServiceUrl());
 						this.sendMessage(messageText);
 						break;
 					//服务上线
 					case "UP":
 						log.info("发送 服务上线 的通知！");
-						messageText = String.format(template, instance.getRegistration().getName(), event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(), "服务上线", instance.getRegistration().getServiceUrl());
+						messageText = String.format(TEMPLATE, instance.getRegistration().getName(), event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(), "服务上线", instance.getRegistration().getServiceUrl());
 						this.sendMessage(messageText);
 						break;
 					// 服务未知异常
 					case "UNKNOWN":
 						log.info("发送 服务未知异常 的通知！");
-						messageText = String.format(template, instance.getRegistration().getName(), event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(), "服务未知异常", instance.getRegistration().getServiceUrl());
+						messageText = String.format(TEMPLATE, instance.getRegistration().getName(), event.getInstance(), ((InstanceStatusChangedEvent) event).getStatusInfo().getStatus(), "服务未知异常", instance.getRegistration().getServiceUrl());
 						this.sendMessage(messageText);
 						break;
 					default:

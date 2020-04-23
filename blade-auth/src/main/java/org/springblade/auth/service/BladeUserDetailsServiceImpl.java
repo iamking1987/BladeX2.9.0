@@ -48,8 +48,8 @@ import javax.servlet.http.HttpServletRequest;
 @AllArgsConstructor
 public class BladeUserDetailsServiceImpl implements UserDetailsService {
 
-	private IUserClient userClient;
-	private ISysClient sysClient;
+	private final IUserClient userClient;
+	private final ISysClient sysClient;
 
 	@Override
 	@SneakyThrows

@@ -37,7 +37,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @AllArgsConstructor
 public class LeaveController extends BladeController implements CacheNames {
 
-	private ILeaveService leaveService;
+	private final ILeaveService leaveService;
 
 	/**
 	 * 详情

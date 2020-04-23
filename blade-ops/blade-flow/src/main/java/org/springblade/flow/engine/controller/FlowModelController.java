@@ -47,7 +47,7 @@ import java.util.Map;
 @PreAuth(RoleConstant.HAS_ROLE_ADMINISTRATOR)
 public class FlowModelController {
 
-	private FlowEngineService flowEngineService;
+	private final FlowEngineService flowEngineService;
 
 	/**
 	 * 分页

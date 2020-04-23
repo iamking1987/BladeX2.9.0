@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class UserClient implements IUserClient {
 
-	private IUserService service;
+	private final IUserService service;
 
 	@Override
 	@GetMapping(USER_INFO_BY_ID)

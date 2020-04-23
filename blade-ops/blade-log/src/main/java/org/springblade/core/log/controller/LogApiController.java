@@ -42,7 +42,7 @@ import java.util.Map;
 @RequestMapping("/api")
 public class LogApiController {
 
-	private ILogApiService logService;
+	private final ILogApiService logService;
 
 	/**
 	 * 查询单条

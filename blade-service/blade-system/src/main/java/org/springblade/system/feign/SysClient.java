@@ -36,17 +36,17 @@ import java.util.List;
 @AllArgsConstructor
 public class SysClient implements ISysClient {
 
-	private IDeptService deptService;
+	private final IDeptService deptService;
 
-	private IPostService postService;
+	private final IPostService postService;
 
-	private IRoleService roleService;
+	private final IRoleService roleService;
 
-	private IMenuService menuService;
+	private final IMenuService menuService;
 
-	private ITenantService tenantService;
+	private final ITenantService tenantService;
 
-	private IParamService paramService;
+	private final IParamService paramService;
 
 	@Override
 	@GetMapping(MENU)

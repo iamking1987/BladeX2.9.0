@@ -37,11 +37,11 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class LogClient implements ILogClient {
 
-	ILogUsualService usualLogService;
+	private final ILogUsualService usualLogService;
 
-	ILogApiService apiLogService;
+	private final ILogApiService apiLogService;
 
-	ILogErrorService errorLogService;
+	private final ILogErrorService errorLogService;
 
 	@Override
 	@PostMapping(API_PREFIX + "/saveUsualLog")

@@ -44,9 +44,9 @@ import java.util.Map;
 @AllArgsConstructor
 public class FlowClient implements IFlowClient {
 
-	private RuntimeService runtimeService;
-	private IdentityService identityService;
-	private TaskService taskService;
+	private final RuntimeService runtimeService;
+	private final IdentityService identityService;
+	private final TaskService taskService;
 
 	@Override
 	@PostMapping(START_PROCESS_INSTANCE_BY_ID)

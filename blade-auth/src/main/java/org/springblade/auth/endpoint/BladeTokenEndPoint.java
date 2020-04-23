@@ -44,7 +44,7 @@ import java.time.Duration;
 @AllArgsConstructor
 public class BladeTokenEndPoint {
 
-	private BladeRedis bladeRedis;
+	private final BladeRedis bladeRedis;
 
 	@GetMapping("/oauth/user-info")
 	public R<Authentication> currentUser(Authentication authentication) {

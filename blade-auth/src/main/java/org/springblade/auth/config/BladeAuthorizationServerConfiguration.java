@@ -57,17 +57,17 @@ public class BladeAuthorizationServerConfiguration extends AuthorizationServerCo
 
 	private final DataSource dataSource;
 
-	private AuthenticationManager authenticationManager;
+	private final AuthenticationManager authenticationManager;
 
-	private UserDetailsService userDetailsService;
+	private final UserDetailsService userDetailsService;
 
-	private TokenStore tokenStore;
+	private final TokenStore tokenStore;
 
-	private TokenEnhancer jwtTokenEnhancer;
+	private final TokenEnhancer jwtTokenEnhancer;
 
-	private JwtAccessTokenConverter jwtAccessTokenConverter;
+	private final JwtAccessTokenConverter jwtAccessTokenConverter;
 
-	private BladeRedis bladeRedis;
+	private final BladeRedis bladeRedis;
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {

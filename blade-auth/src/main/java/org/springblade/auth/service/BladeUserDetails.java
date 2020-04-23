@@ -33,43 +33,43 @@ public class BladeUserDetails extends User {
 	/**
 	 * 用户id
 	 */
-	private Long userId;
+	private final Long userId;
 	/**
 	 * 租户ID
 	 */
-	private String tenantId;
+	private final String tenantId;
 	/**
 	 * 昵称
 	 */
-	private String name;
+	private final String name;
 	/**
 	 * 真名
 	 */
-	private String realName;
+	private final String realName;
 	/**
 	 * 账号
 	 */
-	private String account;
+	private final String account;
 	/**
 	 * 部门id
 	 */
-	private String deptId;
+	private final String deptId;
 	/**
 	 * 岗位id
 	 */
-	private String postId;
+	private final String postId;
 	/**
 	 * 角色id
 	 */
-	private String roleId;
+	private final String roleId;
 	/**
 	 * 角色名
 	 */
-	private String roleName;
+	private final String roleName;
 	/**
 	 * 头像
 	 */
-	private String avatar;
+	private final String avatar;
 
 	public BladeUserDetails(Long userId, String tenantId, String name, String realName, String deptId, String postId, String roleId, String roleName, String avatar, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
