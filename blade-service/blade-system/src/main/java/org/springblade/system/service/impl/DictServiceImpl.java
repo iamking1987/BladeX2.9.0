@@ -29,6 +29,7 @@ import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.node.ForestNodeMerger;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringPool;
+import org.springblade.system.cache.DictCache;
 import org.springblade.system.entity.Dict;
 import org.springblade.system.mapper.DictMapper;
 import org.springblade.system.service.IDictService;
@@ -36,6 +37,7 @@ import org.springblade.system.vo.DictVO;
 import org.springblade.system.wrapper.DictWrapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -106,9 +108,13 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements ID
 	}
 
 	@Override
-	public IPage<DictVO> childList(Map<String, Object> dict, Long parentId, Query query) {
+	public List<DictVO> childList(Map<String, Object> dict, Long parentId) {
+		if (parentId < 0) {
+			return new ArrayList<>();
+		}
 		dict.remove("parentId");
-		IPage<Dict> page = this.page(Condition.getPage(query), Condition.getQueryWrapper(dict, Dict.class).lambda().eq(Dict::getParentId, parentId).orderByAsc(Dict::getSort));
-		return DictWrapper.build().pageVO(page);
+		Dict parentDict = DictCache.getById(parentId);
+		List<Dict> list = this.list(Condition.getQueryWrapper(dict, Dict.class).lambda().ne(Dict::getId, parentId).eq(Dict::getCode, parentDict.getCode()).orderByAsc(Dict::getSort));
+		return DictWrapper.build().listNodeVO(list);
 	}
 }

@@ -74,6 +74,7 @@ public interface IDictService extends IService<Dict> {
 
 	/**
 	 * 新增或修改
+	 *
 	 * @param dict
 	 * @return
 	 */
@@ -89,6 +90,7 @@ public interface IDictService extends IService<Dict> {
 
 	/**
 	 * 顶级列表
+	 *
 	 * @param dict
 	 * @param query
 	 * @return
@@ -97,11 +99,11 @@ public interface IDictService extends IService<Dict> {
 
 	/**
 	 * 子列表
+	 *
 	 * @param dict
 	 * @param parentId
-	 * @param query
 	 * @return
 	 */
-	IPage<DictVO> childList(Map<String, Object> dict, Long parentId, Query query);
+	List<DictVO> childList(Map<String, Object> dict, Long parentId);
 
 }
