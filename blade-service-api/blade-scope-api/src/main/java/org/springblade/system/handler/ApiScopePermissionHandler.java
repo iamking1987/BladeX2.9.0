@@ -18,7 +18,7 @@ package org.springblade.system.handler;
 
 import org.springblade.core.secure.BladeUser;
 import org.springblade.core.secure.handler.IPermissionHandler;
-import org.springblade.core.secure.utils.SecureUtil;
+import org.springblade.core.secure.utils.AuthUtil;
 import org.springblade.core.tool.utils.WebUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +37,7 @@ public class ApiScopePermissionHandler implements IPermissionHandler {
 	@Override
 	public boolean permissionAll() {
 		HttpServletRequest request = WebUtil.getRequest();
-		BladeUser user = SecureUtil.getUser();
+		BladeUser user = AuthUtil.getUser();
 		if (request == null || user == null) {
 			return false;
 		}
@@ -52,7 +52,7 @@ public class ApiScopePermissionHandler implements IPermissionHandler {
 	@Override
 	public boolean hasPermission(String permission) {
 		HttpServletRequest request = WebUtil.getRequest();
-		BladeUser user = SecureUtil.getUser();
+		BladeUser user = AuthUtil.getUser();
 		if (request == null || user == null) {
 			return false;
 		}
