@@ -16,7 +16,7 @@ services:
         ipv4_address: 172.30.0.48
 
   sentinel:
-    image: bladex/sentinel-dashboard:1.7.1
+    image: bladex/sentinel-dashboard:1.7.2
     hostname: "sentinel"
     environment:
       - TZ=Asia/Shanghai
@@ -28,7 +28,7 @@ services:
         ipv4_address: 172.30.0.58
 
   seata-server:
-    image: seataio/seata-server:1.1.0
+    image: seataio/seata-server:1.2.0
     hostname: "seata-server"
     ports:
       - 8091:8091
