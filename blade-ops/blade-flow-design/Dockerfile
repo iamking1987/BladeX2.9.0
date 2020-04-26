@@ -1,4 +1,4 @@
-FROM bladex/alpine-java:8_server-jre_cn_unlimited
+FROM adoptopenjdk/openjdk8-openj9:alpine-slim
 
 MAINTAINER smallchill@163.com
 
