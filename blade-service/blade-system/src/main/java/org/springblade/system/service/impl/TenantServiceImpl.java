@@ -58,6 +58,7 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 	private final IDeptService deptService;
 	private final IPostService postService;
 	private final IRoleMenuService roleMenuService;
+	private final IDictBizService dictBizService;
 	private final IUserClient userClient;
 
 	@Override
@@ -72,7 +73,7 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public boolean saveTenant(Tenant tenant) {
+	public boolean submitTenant(Tenant tenant) {
 		if (Func.isEmpty(tenant.getId())) {
 			List<Tenant> tenants = baseMapper.selectList(Wrappers.<Tenant>query().lambda().eq(Tenant::getIsDeleted, BladeConstant.DB_NOT_DELETED));
 			List<String> codes = tenants.stream().map(Tenant::getTenantId).collect(Collectors.toList());
@@ -88,7 +89,7 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			role.setRoleName("管理员");
 			role.setRoleAlias("admin");
 			role.setSort(2);
-			role.setIsDeleted(0);
+			role.setIsDeleted(BladeConstant.DB_NOT_DELETED);
 			roleService.save(role);
 			// 新建租户对应的角色菜单权限
 			LinkedList<Menu> userMenus = new LinkedList<>();
@@ -112,7 +113,7 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			dept.setFullName(tenant.getTenantName());
 			dept.setDeptCategory(1);
 			dept.setSort(2);
-			dept.setIsDeleted(0);
+			dept.setIsDeleted(BladeConstant.DB_NOT_DELETED);
 			deptService.save(dept);
 			// 新建租户对应的默认岗位
 			Post post = new Post();
@@ -122,6 +123,13 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			post.setPostName("首席执行官");
 			post.setSort(1);
 			postService.save(post);
+			// 新建租户对应的默认业务字典
+			List<DictBiz> dictBizList = dictBizService.list();
+			dictBizList.forEach(dictBiz -> {
+				dictBiz.setId(null);
+				dictBiz.setTenantId(tenantId);
+			});
+			dictBizService.saveBatch(dictBizList);
 			// 新建租户对应的默认管理用户
 			User user = new User();
 			user.setTenantId(tenantId);
@@ -136,7 +144,7 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			user.setPostId(String.valueOf(post.getId()));
 			user.setBirthday(new Date());
 			user.setSex(1);
-			user.setIsDeleted(0);
+			user.setIsDeleted(BladeConstant.DB_NOT_DELETED);
 			boolean temp = super.saveOrUpdate(tenant);
 			R<Boolean> result = userClient.saveUser(user);
 			if (!result.isSuccess()) {
