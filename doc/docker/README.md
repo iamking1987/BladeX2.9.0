@@ -92,8 +92,9 @@ EXPOSE 80
 
 ADD ./target/blade-gateway.jar ./app.jar
 
-CMD java -Djava.security.egd=file:/dev/./urandom -jar app.jar --spring.profiles.active=test
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]
 
+CMD ["--spring.profiles.active=test"]
 ```
 
 ### 6. 在工程根目录的docker-compose.yml下加入配置，内容可参考如下
