@@ -19,6 +19,7 @@ package org.springblade.flow.filter;
 import org.flowable.idm.api.User;
 import org.flowable.idm.engine.impl.persistence.entity.UserEntityImpl;
 import org.flowable.ui.common.security.SecurityUtils;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,7 +38,7 @@ import static org.springblade.flow.constant.FlowableConstant.*;
 public class UserHandlerInterceptor implements HandlerInterceptor {
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+	public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
 		String servletPath = request.getServletPath();
 		if (servletPath.endsWith(CSS) || servletPath.endsWith(JS) || servletPath.endsWith(JPG) || servletPath.endsWith(PNG)) {
 			return true;
@@ -51,14 +52,12 @@ public class UserHandlerInterceptor implements HandlerInterceptor {
 	}
 
 	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-						   ModelAndView modelAndView) throws Exception {
+	public void postHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler, ModelAndView modelAndView) throws Exception {
 		HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
 	}
 
 	@Override
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
-		throws Exception {
+	public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler, Exception ex) throws Exception {
 		HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
 	}
 

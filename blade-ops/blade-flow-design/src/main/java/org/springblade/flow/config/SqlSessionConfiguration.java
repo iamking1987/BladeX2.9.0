@@ -38,7 +38,7 @@ public class SqlSessionConfiguration {
 
 	@Primary
 	@Bean(name = "sqlSessionFactory")
-	public SqlSessionFactory SqlSessionFactory(DataSource dataSource) throws Exception {
+	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
 		SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
 		sessionFactoryBean.setDataSource(dataSource);
 		Resource resource = new PathMatchingResourcePatternResolver().getResource("classpath:mybatis/mybatis-config.xml");

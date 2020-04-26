@@ -3,7 +3,10 @@
 <configuration>
 <properties>
 		<property name="prefix" value="" />
+		<!-- MySQL使用如下类型 -->
 		<property name="blobType" value="BLOB" />
+		<!-- PostgreSQL使用如下类型 -->
+		<!--<property name="blobType" value="VARCHAR" />-->
 	</properties>
 
 	<mappers>
