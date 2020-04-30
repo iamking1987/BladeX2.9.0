@@ -39,6 +39,10 @@ public class BladeUserDetails extends User {
 	 */
 	private final String tenantId;
 	/**
+	 * 第三方认证ID
+	 */
+	private String oauthId;
+	/**
 	 * 昵称
 	 */
 	private final String name;
@@ -71,10 +75,11 @@ public class BladeUserDetails extends User {
 	 */
 	private final String avatar;
 
-	public BladeUserDetails(Long userId, String tenantId, String name, String realName, String deptId, String postId, String roleId, String roleName, String avatar, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+	public BladeUserDetails(Long userId, String tenantId, String oauthId, String name, String realName, String deptId, String postId, String roleId, String roleName, String avatar, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.userId = userId;
 		this.tenantId = tenantId;
+		this.oauthId = oauthId;
 		this.name = name;
 		this.realName = realName;
 		this.account = username;

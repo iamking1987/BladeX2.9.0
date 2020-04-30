@@ -22,6 +22,7 @@ import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserInfo;
+import org.springblade.system.user.entity.UserOauth;
 import org.springblade.system.user.service.IUserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,12 @@ public class UserClient implements IUserClient {
 	@GetMapping(USER_INFO)
 	public R<UserInfo> userInfo(String tenantId, String account) {
 		return R.data(service.userInfo(tenantId, account));
+	}
+
+	@Override
+	@PostMapping(USER_AUTH_INFO)
+	public R<UserInfo> userAuthInfo(@RequestBody UserOauth userOauth) {
+		return R.data(service.userInfo(userOauth));
 	}
 
 	@Override

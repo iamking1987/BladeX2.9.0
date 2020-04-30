@@ -49,10 +49,14 @@ public class BladeResourceServerConfiguration extends ResourceServerConfigurerAd
 			.authorizeRequests()
 			.antMatchers(
 				"/actuator/**",
-				"/token/**",
 				"/oauth/captcha",
 				"/oauth/logout",
 				"/oauth/clear-cache",
+				"/oauth/render/**",
+				"/oauth/callback/**",
+				"/oauth/revoke/**",
+				"/oauth/refresh/**",
+				"/token/**",
 				"/mobile/**",
 				"/v2/api-docs",
 				"/v2/api-docs-ext").permitAll()

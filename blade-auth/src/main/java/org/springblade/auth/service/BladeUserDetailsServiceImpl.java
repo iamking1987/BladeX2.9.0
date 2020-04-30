@@ -24,6 +24,7 @@ import org.springblade.auth.enums.BladeUserEnum;
 import org.springblade.auth.utils.TokenUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.Func;
+import org.springblade.core.tool.utils.StringPool;
 import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.core.tool.utils.WebUtil;
 import org.springblade.system.entity.Tenant;
@@ -98,7 +99,7 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 				throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_ROLE);
 			}
 			return new BladeUserDetails(user.getId(),
-				user.getTenantId(), user.getName(), user.getRealName(), user.getDeptId(), user.getPostId(),user.getRoleId(), Func.join(result.getData().getRoles()), Func.toStr(user.getAvatar(), TokenUtil.DEFAULT_AVATAR),
+				user.getTenantId(), StringPool.EMPTY, user.getName(), user.getRealName(), user.getDeptId(), user.getPostId(), user.getRoleId(), Func.join(result.getData().getRoles()), Func.toStr(user.getAvatar(), TokenUtil.DEFAULT_AVATAR),
 				username, AuthConstant.ENCRYPT + user.getPassword(), true, true, true, true,
 				AuthorityUtils.commaSeparatedStringToAuthorityList(Func.join(result.getData().getRoles())));
 		} else {

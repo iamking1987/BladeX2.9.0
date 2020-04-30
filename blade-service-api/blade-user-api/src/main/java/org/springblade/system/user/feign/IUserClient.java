@@ -21,6 +21,7 @@ import org.springblade.core.launch.constant.AppConstant;
 import org.springblade.core.tool.api.R;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserInfo;
+import org.springblade.system.user.entity.UserOauth;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,7 @@ public interface IUserClient {
 	String USER_INFO = API_PREFIX + "/user-info";
 	String USER_INFO_BY_ID = API_PREFIX + "/user-info-by-id";
 	String USER_INFO_BY_ACCOUNT = API_PREFIX + "/user-info-by-account";
+	String USER_AUTH_INFO = API_PREFIX + "/user-auth-info";
 	String SAVE_USER = API_PREFIX + "/save-user";
 	String REMOVE_USER = API_PREFIX + "/remove-user";
 
@@ -73,6 +75,15 @@ public interface IUserClient {
 	 */
 	@GetMapping(USER_INFO)
 	R<UserInfo> userInfo(@RequestParam("tenantId") String tenantId, @RequestParam("account") String account);
+
+	/**
+	 * 获取第三方平台信息
+	 *
+	 * @param userOauth 第三方授权用户信息
+	 * @return UserInfo
+	 */
+	@PostMapping(USER_AUTH_INFO)
+	R<UserInfo> userAuthInfo(@RequestBody UserOauth userOauth);
 
 	/**
 	 * 新建用户

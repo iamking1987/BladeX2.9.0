@@ -39,6 +39,10 @@ public class AuthProvider {
 		DEFAULT_SKIP_URL.add("/oauth/captcha/**");
 		DEFAULT_SKIP_URL.add("/oauth/clear-cache/**");
 		DEFAULT_SKIP_URL.add("/oauth/user-info");
+		DEFAULT_SKIP_URL.add("/oauth/render");
+		DEFAULT_SKIP_URL.add("/oauth/callback");
+		DEFAULT_SKIP_URL.add("/oauth/revoke");
+		DEFAULT_SKIP_URL.add("/oauth/refresh");
 		DEFAULT_SKIP_URL.add("/token/**");
 		DEFAULT_SKIP_URL.add("/actuator/health/**");
 		DEFAULT_SKIP_URL.add("/v2/api-docs/**");

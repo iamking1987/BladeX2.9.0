@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springblade.core.mp.base.BaseService;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserInfo;
+import org.springblade.system.user.entity.UserOauth;
 import org.springblade.system.user.excel.UserExcel;
 
 import java.util.List;
@@ -76,6 +77,14 @@ public interface IUserService extends BaseService<User> {
 	 * @return
 	 */
 	UserInfo userInfo(String tenantId, String account);
+
+	/**
+	 * 用户信息
+	 *
+	 * @param userOauth
+	 * @return
+	 */
+	UserInfo userInfo(UserOauth userOauth);
 
 	/**
 	 * 根据账号获取用户
@@ -137,4 +146,13 @@ public interface IUserService extends BaseService<User> {
 	 * @return
 	 */
 	List<UserExcel> exportUser(Wrapper<User> queryWrapper);
+
+	/**
+	 * 注册用户
+	 *
+	 * @param user
+	 * @param oauthId
+	 * @return
+	 */
+	boolean registerGuest(User user, Long oauthId);
 }

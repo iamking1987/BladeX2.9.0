@@ -20,6 +20,7 @@ package org.springblade.system.user.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.exceptions.ApiException;
 import lombok.AllArgsConstructor;
 import org.springblade.common.constant.CommonConstant;
 import org.springblade.core.log.exception.ServiceException;
@@ -36,14 +37,17 @@ import org.springblade.system.user.cache.UserCache;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserDept;
 import org.springblade.system.user.entity.UserInfo;
+import org.springblade.system.user.entity.UserOauth;
 import org.springblade.system.user.excel.UserExcel;
 import org.springblade.system.user.mapper.UserMapper;
 import org.springblade.system.user.service.IUserDeptService;
+import org.springblade.system.user.service.IUserOauthService;
 import org.springblade.system.user.service.IUserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,8 +61,10 @@ import static org.springblade.common.constant.CommonConstant.DEFAULT_PARAM_PASSW
 @Service
 @AllArgsConstructor
 public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implements IUserService {
+	private static final String GUEST_NAME = "guest";
 
 	private final IUserDeptService userDeptService;
+	private final IUserOauthService userOauthService;
 	private final ISysClient sysClient;
 
 	@Override
@@ -148,6 +154,31 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public UserInfo userInfo(UserOauth userOauth) {
+		UserOauth uo = userOauthService.getOne(Wrappers.<UserOauth>query().lambda().eq(UserOauth::getSource, userOauth.getSource()).eq(UserOauth::getUsername, userOauth.getUsername()));
+		UserInfo userInfo;
+		if (Func.isNotEmpty(uo) && Func.isNotEmpty(uo.getUserId())) {
+			User user = this.getById(uo.getUserId());
+			userInfo = this.userInfo(user.getTenantId(), user.getAccount());
+			userInfo.setOauthId(Func.toStr(uo.getId()));
+		} else {
+			userInfo = new UserInfo();
+			if (Func.isEmpty(uo)) {
+				userOauthService.save(userOauth);
+				userInfo.setOauthId(Func.toStr(userOauth.getId()));
+			} else {
+				userInfo.setOauthId(Func.toStr(uo.getId()));
+			}
+			User user = new User();
+			user.setAccount(userOauth.getUsername());
+			userInfo.setUser(user);
+			userInfo.setRoles(Collections.singletonList(GUEST_NAME));
+		}
+		return userInfo;
+	}
+
+	@Override
 	public boolean grant(String userIds, String roleIds) {
 		User user = new User();
 		user.setRoleId(roleIds);
@@ -223,6 +254,27 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 			user.setPostName(StringUtil.join(SysCache.getPostNames(user.getPostId())));
 		});
 		return userList;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public boolean registerGuest(User user, Long oauthId) {
+		R<Tenant> tenant = sysClient.getTenant(user.getTenantId());
+		if (!tenant.isSuccess() || tenant.getData().getId() == null) {
+			throw new ApiException("租户信息错误!");
+		}
+		int userCnt = this.count(Wrappers.<User>query().lambda().eq(User::getTenantId, Func.toStr(user.getTenantId(), BladeConstant.ADMIN_TENANT_ID)).eq(User::getAccount, user.getAccount()));
+		if (userCnt > 0) {
+			throw new ApiException("当前系统用户名已存在!");
+		}
+		user.setTenantId(AuthUtil.getTenantId());
+		user.setRealName(user.getName());
+		boolean userTemp = this.save(user);
+		UserOauth uo = new UserOauth();
+		uo.setId(oauthId);
+		uo.setUserId(user.getId());
+		boolean oauthTemp = userOauthService.updateById(uo);
+		return (userTemp && oauthTemp);
 	}
 
 }

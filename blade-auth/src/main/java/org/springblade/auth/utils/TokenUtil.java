@@ -47,6 +47,7 @@ public class TokenUtil {
 	public final static String ROLE_ID = TokenConstant.ROLE_ID;
 	public final static String ROLE_NAME = TokenConstant.ROLE_NAME;
 	public final static String TENANT_ID = TokenConstant.TENANT_ID;
+	public final static String OAUTH_ID = TokenConstant.OAUTH_ID;
 	public final static String CLIENT_ID = TokenConstant.CLIENT_ID;
 	public final static String LICENSE = TokenConstant.LICENSE;
 	public final static String LICENSE_NAME = TokenConstant.LICENSE_NAME;

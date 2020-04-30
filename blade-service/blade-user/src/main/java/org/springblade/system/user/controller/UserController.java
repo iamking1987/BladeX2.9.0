@@ -82,7 +82,7 @@ public class UserController {
 	/**
 	 * 查询单条
 	 */
-	@ApiOperationSupport(order =2)
+	@ApiOperationSupport(order = 2)
 	@ApiOperation(value = "查看详情", notes = "传入id")
 	@GetMapping("/info")
 	public R<UserVO> info(BladeUser user) {
@@ -236,7 +236,7 @@ public class UserController {
 	@ApiOperation(value = "导出用户", notes = "传入user")
 	public void exportUser(@ApiIgnore @RequestParam Map<String, Object> user, BladeUser bladeUser, HttpServletResponse response) {
 		QueryWrapper<User> queryWrapper = Condition.getQueryWrapper(user, User.class);
-		if (!AuthUtil.isAdministrator()){
+		if (!AuthUtil.isAdministrator()) {
 			queryWrapper.lambda().eq(User::getTenantId, bladeUser.getTenantId());
 		}
 		queryWrapper.lambda().eq(User::getIsDeleted, BladeConstant.DB_NOT_DELETED);
@@ -253,6 +253,17 @@ public class UserController {
 	public void exportUser(HttpServletResponse response) {
 		List<UserExcel> list = new ArrayList<>();
 		ExcelUtil.export(response, "用户数据模板", "用户数据表", list, UserExcel.class);
+	}
+
+
+	/**
+	 * 第三方注册用户
+	 */
+	@PostMapping("/register-guest")
+	@ApiOperationSupport(order = 15)
+	@ApiOperation(value = "第三方注册用户", notes = "传入user")
+	public R registerGuest(User user, Long oauthId) {
+		return R.status(userService.registerGuest(user, oauthId));
 	}
 
 }

@@ -20,10 +20,10 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springblade.auth.constant.AuthConstant;
 import org.springblade.auth.granter.BladeTokenGranter;
-import org.springblade.auth.props.AuthProperties;
 import org.springblade.auth.service.BladeClientDetailsServiceImpl;
 import org.springblade.core.redis.cache.BladeRedis;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springblade.core.social.props.SocialProperties;
+import org.springblade.system.user.feign.IUserClient;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -52,7 +52,6 @@ import java.util.List;
 @Configuration
 @AllArgsConstructor
 @EnableAuthorizationServer
-@EnableConfigurationProperties(AuthProperties.class)
 public class BladeAuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
 	private final DataSource dataSource;
@@ -69,10 +68,14 @@ public class BladeAuthorizationServerConfiguration extends AuthorizationServerCo
 
 	private final BladeRedis bladeRedis;
 
+	private final IUserClient userClient;
+
+	private final SocialProperties socialProperties;
+
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
 		//获取自定义tokenGranter
-		TokenGranter tokenGranter = BladeTokenGranter.getTokenGranter(authenticationManager, endpoints, bladeRedis);
+		TokenGranter tokenGranter = BladeTokenGranter.getTokenGranter(authenticationManager, endpoints, bladeRedis, userClient, socialProperties);
 
 		//配置端点
 		endpoints.tokenStore(tokenStore)

@@ -14,20 +14,17 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.auth.props;
+package org.springblade.system.user.service;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import org.springblade.system.user.entity.UserOauth;
 
 /**
- * AuthProperties
+ * 服务类
  *
  * @author Chill
  */
-@Data
-@RefreshScope
-@ConfigurationProperties(prefix = "blade.oauth")
-public class AuthProperties {
+public interface IUserOauthService extends IService<UserOauth> {
 
 }
