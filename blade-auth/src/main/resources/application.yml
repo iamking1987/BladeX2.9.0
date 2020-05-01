@@ -26,26 +26,25 @@ swagger:
     - org.springframework.security.oauth2.provider.endpoint
 
 #第三方登陆
-blade:
-  social:
-    oauth:
-      GITHUB:
-        client-id: 233************
-        client-secret: 233************************************
-        redirect-uri: ${blade.social.domain}/oauth/redirect/github
-      GITEE:
-        client-id: 233************
-        client-secret: 233************************************
-        redirect-uri: ${blade.social.domain}/oauth/redirect/gitee
-      WECHAT_OPEN:
-        client-id: 233************
-        client-secret: 233************************************
-        redirect-uri: ${blade.social.domain}/oauth/redirect/wechat
-      QQ:
-        client-id: 233************
-        client-secret: 233************************************
-        redirect-uri: ${blade.social.domain}/oauth/redirect/qq
-      DINGTALK:
-        client-id: 233************
-        client-secret: 233************************************
-        redirect-uri: ${blade.social.domain}/oauth/redirect/dingtalk
+social:
+  oauth:
+    GITHUB:
+      client-id: 233************
+      client-secret: 233************************************
+      redirect-uri: ${blade.social.domain}/oauth/redirect/github
+    GITEE:
+      client-id: 233************
+      client-secret: 233************************************
+      redirect-uri: ${blade.social.domain}/oauth/redirect/gitee
+    WECHAT_OPEN:
+      client-id: 233************
+      client-secret: 233************************************
+      redirect-uri: ${blade.social.domain}/oauth/redirect/wechat
+    QQ:
+      client-id: 233************
+      client-secret: 233************************************
+      redirect-uri: ${blade.social.domain}/oauth/redirect/qq
+    DINGTALK:
+      client-id: 233************
+      client-secret: 233************************************
+      redirect-uri: ${blade.social.domain}/oauth/redirect/dingtalk
