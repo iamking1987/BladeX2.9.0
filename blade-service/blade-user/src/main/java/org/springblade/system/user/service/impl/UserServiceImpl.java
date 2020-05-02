@@ -267,13 +267,20 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 		if (userCnt > 0) {
 			throw new ApiException("当前系统用户名已存在!");
 		}
-		user.setTenantId(AuthUtil.getTenantId());
+		UserOauth userOauth = userOauthService.getById(oauthId);
+		if (userOauth == null || userOauth.getId() == null) {
+			throw new ApiException("第三方登陆信息错误!");
+		}
 		user.setRealName(user.getName());
+		user.setAvatar(userOauth.getAvatar());
+		user.setPassword(DigestUtil.encrypt(user.getPassword()));
+		user.setRoleId(StringPool.MINUS_ONE);
+		user.setDeptId(StringPool.MINUS_ONE);
+		user.setPostId(StringPool.MINUS_ONE);
 		boolean userTemp = this.save(user);
-		UserOauth uo = new UserOauth();
-		uo.setId(oauthId);
-		uo.setUserId(user.getId());
-		boolean oauthTemp = userOauthService.updateById(uo);
+		userOauth.setUserId(user.getId());
+		userOauth.setTenantId(user.getTenantId());
+		boolean oauthTemp = userOauthService.updateById(userOauth);
 		return (userTemp && oauthTemp);
 	}
 

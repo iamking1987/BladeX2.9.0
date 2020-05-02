@@ -37,13 +37,12 @@ public class UserOauth implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-
 	/**
 	 * 主键
 	 */
 	@JsonSerialize(using = ToStringSerializer.class)
 	@ApiModelProperty(value = "主键")
-	@TableId(value = "id", type = IdType.ID_WORKER)
+	@TableId(value = "id", type = IdType.ASSIGN_ID)
 	private Long id;
 
 	/**
@@ -55,8 +54,7 @@ public class UserOauth implements Serializable {
 	 * 用户名
 	 */
 	@JsonSerialize(using = ToStringSerializer.class)
-	@ApiModelProperty(value = "主键")
-	@TableId(value = "id", type = IdType.ID_WORKER)
+	@ApiModelProperty(value = "用户主键")
 	private Long userId;
 
 	/**
