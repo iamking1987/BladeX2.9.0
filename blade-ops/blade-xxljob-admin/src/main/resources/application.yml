@@ -4,6 +4,12 @@ server:
     context-path: /xxl-job-admin
 
 spring:
+  cloud:
+    nacos:
+      discovery:
+        metadata:
+          management:
+            context-path: ${server.servlet.context-path}/actuator
   freemarker:
     charset: UTF-8
     request-context-attribute: request
