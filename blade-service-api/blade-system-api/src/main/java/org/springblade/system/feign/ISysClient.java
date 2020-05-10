@@ -57,6 +57,7 @@ public interface ISysClient {
 	String TENANT_ID = API_PREFIX + "/tenant-id";
 	String PARAM = API_PREFIX + "/param";
 	String PARAM_VALUE = API_PREFIX + "/param-value";
+	String REGION = API_PREFIX + "/region";
 
 	/**
 	 * 获取菜单
@@ -240,5 +241,14 @@ public interface ISysClient {
 	 */
 	@GetMapping(PARAM_VALUE)
 	R<String> getParamValue(@RequestParam("paramKey") String paramKey);
+
+	/**
+	 * 获取行政区划
+	 *
+	 * @param code 主键
+	 * @return Region
+	 */
+	@GetMapping(REGION)
+	R<Region> getRegion(@RequestParam("code") String code);
 
 }

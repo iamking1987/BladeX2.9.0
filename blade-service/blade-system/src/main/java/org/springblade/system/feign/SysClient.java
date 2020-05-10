@@ -48,6 +48,8 @@ public class SysClient implements ISysClient {
 
 	private final IParamService paramService;
 
+	private final IRegionService regionService;
+
 	@Override
 	@GetMapping(MENU)
 	public R<Menu> getMenu(Long id) {
@@ -161,5 +163,12 @@ public class SysClient implements ISysClient {
 	public R<String> getParamValue(String paramKey) {
 		return R.data(paramService.getValue(paramKey));
 	}
+
+	@Override
+	@GetMapping(REGION)
+	public R<Region> getRegion(String code) {
+		return R.data(regionService.getById(code));
+	}
+
 
 }

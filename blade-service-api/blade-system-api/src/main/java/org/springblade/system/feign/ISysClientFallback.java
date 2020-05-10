@@ -129,4 +129,11 @@ public class ISysClientFallback implements ISysClient {
 	public R<String> getParamValue(String paramKey) {
 		return R.fail("获取数据失败");
 	}
+
+	@Override
+	public R<Region> getRegion(String code) {
+		return R.fail("获取数据失败");
+	}
+
+
 }
