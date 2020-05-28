@@ -17,7 +17,7 @@
 package org.springblade.auth.config;
 
 import org.springblade.auth.support.BladeJwtTokenEnhancer;
-import org.springblade.core.launch.constant.TokenConstant;
+import org.springblade.core.jwt.props.JwtProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -40,17 +40,17 @@ public class JwtTokenStoreConfiguration {
 	 * 使用jwtTokenStore存储token
 	 */
 	@Bean
-	public TokenStore jwtTokenStore() {
-		return new JwtTokenStore(jwtAccessTokenConverter());
+	public TokenStore jwtTokenStore(JwtProperties jwtProperties) {
+		return new JwtTokenStore(jwtAccessTokenConverter(jwtProperties));
 	}
 
 	/**
 	 * 用于生成jwt
 	 */
 	@Bean
-	public JwtAccessTokenConverter jwtAccessTokenConverter() {
+	public JwtAccessTokenConverter jwtAccessTokenConverter(JwtProperties jwtProperties) {
 		JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
-		accessTokenConverter.setSigningKey(TokenConstant.SIGN_KEY);
+		accessTokenConverter.setSigningKey(jwtProperties.getSignKey());
 		return accessTokenConverter;
 	}
 
@@ -59,8 +59,8 @@ public class JwtTokenStoreConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean(name = "jwtTokenEnhancer")
-	public TokenEnhancer jwtTokenEnhancer() {
-		return new BladeJwtTokenEnhancer();
+	public TokenEnhancer jwtTokenEnhancer(JwtAccessTokenConverter jwtAccessTokenConverter, JwtProperties jwtProperties) {
+		return new BladeJwtTokenEnhancer(jwtAccessTokenConverter, jwtProperties);
 	}
 
 }

@@ -23,6 +23,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springblade.core.jwt.JwtUtil;
+import org.springblade.core.jwt.props.JwtProperties;
+import org.springblade.core.launch.constant.TokenConstant;
 import org.springblade.gateway.props.AuthProperties;
 import org.springblade.gateway.provider.AuthProvider;
 import org.springblade.gateway.provider.RequestProvider;
@@ -51,14 +53,17 @@ import java.nio.charset.StandardCharsets;
 public class AuthFilter implements GlobalFilter, Ordered {
 	private final AuthProperties authProperties;
 	private final ObjectMapper objectMapper;
+	private final JwtProperties jwtProperties;
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+		//校验 Token 放行
 		String originalRequestUrl = RequestProvider.getOriginalRequestUrl(exchange);
 		String path = exchange.getRequest().getURI().getPath();
 		if (isSkip(path) || isSkip(originalRequestUrl)) {
 			return chain.filter(exchange);
 		}
+		//校验 Token 合法性
 		ServerHttpResponse resp = exchange.getResponse();
 		String headerToken = exchange.getRequest().getHeaders().getFirst(AuthProvider.AUTH_KEY);
 		String paramToken = exchange.getRequest().getQueryParams().getFirst(AuthProvider.AUTH_KEY);
@@ -68,8 +73,17 @@ public class AuthFilter implements GlobalFilter, Ordered {
 		String auth = StringUtils.isBlank(headerToken) ? paramToken : headerToken;
 		String token = JwtUtil.getToken(auth);
 		Claims claims = JwtUtil.parseJWT(token);
-		if (claims == null) {
+		if (token == null || claims == null) {
 			return unAuth(resp, "请求未授权");
+		}
+		//判断 Token 状态
+		if (jwtProperties.getState()) {
+			String tenantId = String.valueOf(claims.get(TokenConstant.TENANT_ID));
+			String userId = String.valueOf(claims.get(TokenConstant.USER_ID));
+			String accessToken = JwtUtil.getAccessToken(tenantId, userId, token);
+			if (!token.equalsIgnoreCase(accessToken)) {
+				return unAuth(resp, "令牌已失效");
+			}
 		}
 		return chain.filter(exchange);
 	}

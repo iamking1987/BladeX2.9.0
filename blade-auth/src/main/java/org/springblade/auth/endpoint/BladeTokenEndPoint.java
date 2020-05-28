@@ -22,12 +22,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springblade.common.cache.CacheNames;
 import org.springblade.core.cache.constant.CacheConstant;
 import org.springblade.core.cache.utils.CacheUtil;
+import org.springblade.core.jwt.JwtUtil;
+import org.springblade.core.jwt.props.JwtProperties;
+import org.springblade.core.launch.constant.TokenConstant;
 import org.springblade.core.redis.cache.BladeRedis;
 import org.springblade.core.secure.BladeUser;
 import org.springblade.core.secure.utils.AuthUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.StringUtil;
+import org.springblade.core.tool.utils.WebUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +49,7 @@ import java.time.Duration;
 public class BladeTokenEndPoint {
 
 	private final BladeRedis bladeRedis;
+	private final JwtProperties jwtProperties;
 
 	@GetMapping("/oauth/user-info")
 	public R<Authentication> currentUser(Authentication authentication) {
@@ -65,7 +70,11 @@ public class BladeTokenEndPoint {
 	@GetMapping("/oauth/logout")
 	public Kv logout() {
 		BladeUser user = AuthUtil.getUser();
-		return Kv.create().set("success", "true").set("account", user.getAccount()).set("msg", "success");
+		if (user != null && jwtProperties.getState()) {
+			String token = JwtUtil.getToken(WebUtil.getRequest().getHeader(TokenConstant.HEADER));
+			JwtUtil.removeAccessToken(user.getTenantId(), String.valueOf(user.getUserId()), token);
+		}
+		return Kv.create().set("success", "true").set("msg", "success");
 	}
 
 	@GetMapping("/oauth/clear-cache")

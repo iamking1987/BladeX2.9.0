@@ -41,7 +41,7 @@ public class BladeUserDetails extends User {
 	/**
 	 * 第三方认证ID
 	 */
-	private String oauthId;
+	private final String oauthId;
 	/**
 	 * 昵称
 	 */

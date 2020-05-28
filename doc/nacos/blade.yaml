@@ -69,11 +69,16 @@ management:
 
 #blade配置
 blade:
+  #token配置
+  token:
+    state: false
+  #xss配置
   xss:
     enabled: true
     skip-url:
       - /weixin
       - /notice/submit
+  #安全框架配置
   secure:
     skip-url:
       - /test/**
@@ -84,6 +89,7 @@ blade:
       - client-id: saber
         path-patterns:
           - /saber/**
+  #多租户配置
   tenant:
     enhance: true
     license: false

@@ -16,13 +16,17 @@
  */
 package org.springblade.auth.support;
 
+import lombok.AllArgsConstructor;
 import org.springblade.auth.service.BladeUserDetails;
 import org.springblade.auth.utils.TokenUtil;
+import org.springblade.core.jwt.JwtUtil;
+import org.springblade.core.jwt.props.JwtProperties;
 import org.springblade.core.tool.utils.Func;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,10 +36,17 @@ import java.util.Map;
  *
  * @author Chill
  */
+@AllArgsConstructor
 public class BladeJwtTokenEnhancer implements TokenEnhancer {
+
+	private final JwtAccessTokenConverter jwtAccessTokenConverter;
+	private final JwtProperties jwtProperties;
+
 	@Override
 	public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
 		BladeUserDetails principal = (BladeUserDetails) authentication.getUserAuthentication().getPrincipal();
+
+		//token参数增强
 		Map<String, Object> info = new HashMap<>(16);
 		info.put(TokenUtil.CLIENT_ID, TokenUtil.getClientIdFromHeader());
 		info.put(TokenUtil.USER_ID, Func.toStr(principal.getUserId()));
@@ -52,6 +63,16 @@ public class BladeJwtTokenEnhancer implements TokenEnhancer {
 		info.put(TokenUtil.AVATAR, principal.getAvatar());
 		info.put(TokenUtil.LICENSE, TokenUtil.LICENSE_NAME);
 		((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(info);
+
+		//token状态设置
+		if (jwtProperties.getState()) {
+			OAuth2AccessToken oAuth2AccessToken = jwtAccessTokenConverter.enhance(accessToken, authentication);
+			String tokenValue = oAuth2AccessToken.getValue();
+			String tenantId = principal.getTenantId();
+			String userId = Func.toStr(principal.getUserId());
+			JwtUtil.addAccessToken(tenantId, userId, tokenValue, accessToken.getExpiresIn());
+		}
+
 		return accessToken;
 	}
 }
