@@ -17,8 +17,11 @@
 package org.springblade.auth.utils;
 
 import lombok.SneakyThrows;
+import org.springblade.common.constant.TenantConstant;
 import org.springblade.core.launch.constant.TokenConstant;
+import org.springblade.core.tenant.BladeTenantProperties;
 import org.springblade.core.tool.constant.BladeConstant;
+import org.springblade.core.tool.jackson.JsonUtil;
 import org.springblade.core.tool.utils.*;
 import org.springblade.system.entity.Tenant;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -68,6 +71,20 @@ public class TokenUtil {
 	public final static String HEADER_KEY = "Authorization";
 	public final static String HEADER_PREFIX = "Basic ";
 	public final static String DEFAULT_AVATAR = "";
+
+	private static BladeTenantProperties tenantProperties;
+
+	/**
+	 * 获取租户配置
+	 *
+	 * @return tenantProperties
+	 */
+	private static BladeTenantProperties getTenantProperties() {
+		if (tenantProperties == null) {
+			tenantProperties = SpringUtil.getBean(BladeTenantProperties.class);
+		}
+		return tenantProperties;
+	}
 
 	/**
 	 * 解码
@@ -143,6 +160,11 @@ public class TokenUtil {
 			return false;
 		}
 		Date expireTime = tenant.getExpireTime();
+		if (getTenantProperties().getLicense()) {
+			String licenseKey = tenant.getLicenseKey();
+			String decrypt = DesUtil.decryptFormHex(licenseKey, TenantConstant.DES_KEY);
+			expireTime = JsonUtil.parse(decrypt, Tenant.class).getExpireTime();
+		}
 		if (expireTime != null && expireTime.before(DateUtil.now())) {
 			throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_TENANT_PERMISSION);
 		}

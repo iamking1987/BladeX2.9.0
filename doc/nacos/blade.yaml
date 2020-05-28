@@ -86,6 +86,7 @@ blade:
           - /saber/**
   tenant:
     enhance: true
+    license: false
     column: tenant_id
     exclude-tables:
       - blade_user

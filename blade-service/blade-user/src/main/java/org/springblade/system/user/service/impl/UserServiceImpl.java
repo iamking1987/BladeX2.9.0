@@ -23,11 +23,14 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.exceptions.ApiException;
 import lombok.AllArgsConstructor;
 import org.springblade.common.constant.CommonConstant;
+import org.springblade.common.constant.TenantConstant;
 import org.springblade.core.log.exception.ServiceException;
 import org.springblade.core.mp.base.BaseServiceImpl;
 import org.springblade.core.secure.utils.AuthUtil;
+import org.springblade.core.tenant.BladeTenantProperties;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
+import org.springblade.core.tool.jackson.JsonUtil;
 import org.springblade.core.tool.utils.*;
 import org.springblade.system.cache.ParamCache;
 import org.springblade.system.cache.SysCache;
@@ -66,6 +69,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 	private final IUserDeptService userDeptService;
 	private final IUserOauthService userOauthService;
 	private final ISysClient sysClient;
+	private final BladeTenantProperties tenantProperties;
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -77,6 +81,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 		Tenant tenant = SysCache.getTenant(tenantId);
 		if (Func.isNotEmpty(tenant)) {
 			Integer accountNumber = tenant.getAccountNumber();
+			if (tenantProperties.getLicense()) {
+				String licenseKey = tenant.getLicenseKey();
+				String decrypt = DesUtil.decryptFormHex(licenseKey, TenantConstant.DES_KEY);
+				accountNumber = JsonUtil.parse(decrypt, Tenant.class).getAccountNumber();
+			}
 			Integer tenantCount = baseMapper.selectCount(Wrappers.<User>query().lambda().eq(User::getTenantId, tenantId));
 			if (accountNumber != null && accountNumber > 0 && accountNumber <= tenantCount) {
 				throw new ServiceException("当前租户已到最大账号额度!");

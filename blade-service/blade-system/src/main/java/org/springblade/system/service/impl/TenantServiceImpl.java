@@ -16,14 +16,20 @@
  */
 package org.springblade.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
+import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.log.exception.ServiceException;
 import org.springblade.core.mp.base.BaseServiceImpl;
+import org.springblade.core.tenant.BladeTenantProperties;
 import org.springblade.core.tenant.TenantId;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
+import org.springblade.core.tool.jackson.JsonUtil;
+import org.springblade.core.tool.support.Kv;
+import org.springblade.core.tool.utils.DesUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.system.cache.ParamCache;
@@ -42,6 +48,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springblade.common.constant.TenantConstant.*;
+import static org.springblade.core.cache.constant.CacheConstant.SYS_CACHE;
 
 /**
  * 服务实现类
@@ -60,6 +67,7 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 	private final IRoleMenuService roleMenuService;
 	private final IDictBizService dictBizService;
 	private final IUserClient userClient;
+	private final BladeTenantProperties tenantProperties;
 
 	@Override
 	public IPage<Tenant> selectTenantPage(IPage<Tenant> page, Tenant tenant) {
@@ -170,6 +178,24 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			throw new ServiceException(result.getMsg());
 		}
 		return tenantTemp;
+	}
+
+	@Override
+	public boolean setting(Integer accountNumber, Date expireTime, String ids) {
+		CacheUtil.clear(SYS_CACHE);
+		Func.toLongList(ids).forEach(id -> {
+			LambdaUpdateWrapper<Tenant> luw = Wrappers.<Tenant>update().lambda()
+				.set(Tenant::getAccountNumber, accountNumber)
+				.set(Tenant::getExpireTime, expireTime)
+				.eq(Tenant::getId, id);
+			if (tenantProperties.getLicense()) {
+				Kv kv = Kv.create().set("accountNumber", accountNumber).set("expireTime", expireTime).set("id", id);
+				String licenseKey = DesUtil.encryptToHex(JsonUtil.toJson(kv), DES_KEY);
+				luw.set(Tenant::getLicenseKey, licenseKey);
+			}
+			update(luw);
+		});
+		return true;
 	}
 
 	private String getTenantId(List<String> codes) {
