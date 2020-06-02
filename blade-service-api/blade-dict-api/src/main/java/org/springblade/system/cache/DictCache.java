@@ -40,6 +40,8 @@ public class DictCache {
 	private static final String DICT_VALUE = "dict:value:";
 	private static final String DICT_LIST = "dict:list:";
 
+	private static final Boolean TENANT_MODE = Boolean.FALSE;
+
 	private static IDictClient dictClient;
 
 	private static IDictClient getDictClient() {
@@ -59,7 +61,7 @@ public class DictCache {
 		return CacheUtil.get(DICT_CACHE, DICT_ID, id, () -> {
 			R<Dict> result = getDictClient().getById(id);
 			return result.getData();
-		});
+		}, TENANT_MODE);
 	}
 
 	/**
@@ -76,7 +78,7 @@ public class DictCache {
 				dict -> dict.getDictValue().equalsIgnoreCase(dictValue)
 			).map(Dict::getDictKey).findFirst();
 			return key.orElse(StringPool.EMPTY);
-		});
+		}, TENANT_MODE);
 	}
 
 	/**
@@ -90,7 +92,7 @@ public class DictCache {
 		return CacheUtil.get(DICT_CACHE, DICT_VALUE + code + StringPool.COLON, String.valueOf(dictKey), () -> {
 			R<String> result = getDictClient().getValue(code, String.valueOf(dictKey));
 			return result.getData();
-		});
+		}, TENANT_MODE);
 	}
 
 	/**
@@ -104,7 +106,7 @@ public class DictCache {
 		return CacheUtil.get(DICT_CACHE, DICT_VALUE + code + StringPool.COLON, dictKey, () -> {
 			R<String> result = getDictClient().getValue(code, dictKey);
 			return result.getData();
-		});
+		}, TENANT_MODE);
 	}
 
 	/**
@@ -117,7 +119,7 @@ public class DictCache {
 		return CacheUtil.get(DICT_CACHE, DICT_LIST, code, () -> {
 			R<List<Dict>> result = getDictClient().getList(code);
 			return result.getData();
-		});
+		}, TENANT_MODE);
 	}
 
 }
