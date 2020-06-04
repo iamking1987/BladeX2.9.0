@@ -1,6 +1,10 @@
-FROM anapsix/alpine-java:8_server-jre_unlimited
+FROM adoptopenjdk/openjdk8-openj9:alpine-slim
 
 MAINTAINER smallchill@163.com
+
+#验证码字体包
+RUN set -xe \
+&& apk --no-cache add ttf-dejavu fontconfig
 
 RUN mkdir -p /blade/auth
 
