@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk8-openj9:alpine-slim
+FROM anapsix/alpine-java:8_server-jre_unlimited
 
 MAINTAINER smallchill@163.com
 
