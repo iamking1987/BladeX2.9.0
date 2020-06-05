@@ -110,8 +110,6 @@ public class DictController extends BladeController {
 
 	/**
 	 * 获取字典树形结构
-	 *
-	 * @return
 	 */
 	@GetMapping("/tree")
 	@ApiOperationSupport(order = 5)
@@ -123,8 +121,6 @@ public class DictController extends BladeController {
 
 	/**
 	 * 获取字典树形结构
-	 *
-	 * @return
 	 */
 	@GetMapping("/parent-tree")
 	@ApiOperationSupport(order = 5)
@@ -159,8 +155,6 @@ public class DictController extends BladeController {
 
 	/**
 	 * 获取字典
-	 *
-	 * @return
 	 */
 	@GetMapping("/dictionary")
 	@ApiOperationSupport(order = 8)
@@ -168,6 +162,17 @@ public class DictController extends BladeController {
 	public R<List<Dict>> dictionary(String code) {
 		List<Dict> tree = dictService.getList(code);
 		return R.data(tree);
+	}
+
+	/**
+	 * 获取字典树
+	 */
+	@GetMapping("/dictionary-tree")
+	@ApiOperationSupport(order = 9)
+	@ApiOperation(value = "获取字典树", notes = "获取字典树")
+	public R<List<DictVO>> dictionaryTree(String code) {
+		List<Dict> tree = dictService.getList(code);
+		return R.data(DictWrapper.build().listNodeVO(tree));
 	}
 
 

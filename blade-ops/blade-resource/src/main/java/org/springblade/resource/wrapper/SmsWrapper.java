@@ -21,6 +21,7 @@ import org.springblade.core.tool.utils.BeanUtil;
 import org.springblade.resource.entity.Sms;
 import org.springblade.resource.vo.SmsVO;
 import org.springblade.system.cache.DictCache;
+import org.springblade.system.enums.DictEnum;
 
 import java.util.Objects;
 
@@ -38,8 +39,8 @@ public class SmsWrapper extends BaseEntityWrapper<Sms, SmsVO> {
 	@Override
 	public SmsVO entityVO(Sms sms) {
 		SmsVO smsVO = Objects.requireNonNull(BeanUtil.copy(sms, SmsVO.class));
-		String categoryName = DictCache.getValue("sms", sms.getCategory());
-		String statusName = DictCache.getValue("yes_no", sms.getStatus());
+		String categoryName = DictCache.getValue(DictEnum.SMS, sms.getCategory());
+		String statusName = DictCache.getValue(DictEnum.YES_NO, sms.getStatus());
 		smsVO.setCategoryName(categoryName);
 		smsVO.setStatusName(statusName);
 		return smsVO;

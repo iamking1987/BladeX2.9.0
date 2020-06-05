@@ -21,6 +21,7 @@ import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.SpringUtil;
 import org.springblade.core.tool.utils.StringPool;
 import org.springblade.system.entity.Dict;
+import org.springblade.system.enums.DictEnum;
 import org.springblade.system.feign.IDictClient;
 
 import java.util.List;
@@ -84,6 +85,18 @@ public class DictCache {
 	/**
 	 * 获取字典值
 	 *
+	 * @param code    字典编号枚举
+	 * @param dictKey Integer型字典键
+	 * @return String
+	 */
+	public static String getValue(DictEnum code, Integer dictKey) {
+		return getValue(code.getName(), dictKey);
+	}
+
+
+	/**
+	 * 获取字典值
+	 *
 	 * @param code    字典编号
 	 * @param dictKey Integer型字典键
 	 * @return String
@@ -93,6 +106,17 @@ public class DictCache {
 			R<String> result = getDictClient().getValue(code, String.valueOf(dictKey));
 			return result.getData();
 		}, TENANT_MODE);
+	}
+
+	/**
+	 * 获取字典值
+	 *
+	 * @param code    字典编号枚举
+	 * @param dictKey String型字典键
+	 * @return String
+	 */
+	public static String getValue(DictEnum code, String dictKey) {
+		return getValue(code.getName(), dictKey);
 	}
 
 	/**

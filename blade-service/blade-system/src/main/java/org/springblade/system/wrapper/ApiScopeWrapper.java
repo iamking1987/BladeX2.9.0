@@ -20,6 +20,7 @@ import org.springblade.core.mp.support.BaseEntityWrapper;
 import org.springblade.core.tool.utils.BeanUtil;
 import org.springblade.system.cache.DictCache;
 import org.springblade.system.entity.ApiScope;
+import org.springblade.system.enums.DictEnum;
 import org.springblade.system.vo.ApiScopeVO;
 
 import java.util.Objects;
@@ -39,7 +40,7 @@ public class ApiScopeWrapper extends BaseEntityWrapper<ApiScope, ApiScopeVO> {
 	@Override
 	public ApiScopeVO entityVO(ApiScope dataScope) {
 		ApiScopeVO apiScopeVO = Objects.requireNonNull(BeanUtil.copy(dataScope, ApiScopeVO.class));
-		String scopeTypeName = DictCache.getValue("api_scope_type", dataScope.getScopeType());
+		String scopeTypeName = DictCache.getValue(DictEnum.API_SCOPE_TYPE, dataScope.getScopeType());
 		apiScopeVO.setScopeTypeName(scopeTypeName);
 		return apiScopeVO;
 	}

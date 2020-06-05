@@ -22,6 +22,7 @@ import org.springblade.core.tool.utils.Func;
 import org.springblade.system.cache.DictCache;
 import org.springblade.system.cache.SysCache;
 import org.springblade.system.entity.Tenant;
+import org.springblade.system.enums.DictEnum;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.vo.UserVO;
 
@@ -50,7 +51,7 @@ public class UserWrapper extends BaseEntityWrapper<User, UserVO> {
 		userVO.setRoleName(Func.join(roleName));
 		userVO.setDeptName(Func.join(deptName));
 		userVO.setPostName(Func.join(postName));
-		String sex = DictCache.getValue("sex", Func.toInt(user.getSex()));
+		String sex = DictCache.getValue(DictEnum.SEX, Func.toInt(user.getSex()));
 		userVO.setSexName(sex);
 		return userVO;
 	}

@@ -32,6 +32,7 @@ import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.system.cache.DictCache;
 import org.springblade.system.entity.Dept;
+import org.springblade.system.enums.DictEnum;
 import org.springblade.system.service.IDeptService;
 import org.springblade.system.vo.DeptVO;
 import org.springblade.system.wrapper.DeptWrapper;
@@ -135,7 +136,7 @@ public class DeptController extends BladeController {
 			CacheUtil.clear(SYS_CACHE);
 			// 返回懒加载树更新节点所需字段
 			Kv kv = Kv.create().set("id", String.valueOf(dept.getId())).set("tenantId", dept.getTenantId())
-				.set("deptCategoryName", DictCache.getValue("org_category", dept.getDeptCategory()));
+				.set("deptCategoryName", DictCache.getValue(DictEnum.ORG_CATEGORY, dept.getDeptCategory()));
 			return R.data(kv);
 		}
 		return R.fail("操作失败");

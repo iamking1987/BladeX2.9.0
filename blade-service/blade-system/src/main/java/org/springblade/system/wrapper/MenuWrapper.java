@@ -24,6 +24,7 @@ import org.springblade.core.tool.utils.Func;
 import org.springblade.system.cache.DictCache;
 import org.springblade.system.cache.SysCache;
 import org.springblade.system.entity.Menu;
+import org.springblade.system.enums.DictEnum;
 import org.springblade.system.vo.MenuVO;
 
 import java.util.List;
@@ -50,9 +51,9 @@ public class MenuWrapper extends BaseEntityWrapper<Menu, MenuVO> {
 			Menu parent = SysCache.getMenu(menu.getParentId());
 			menuVO.setParentName(parent.getName());
 		}
-		String category = DictCache.getValue("menu_category", Func.toInt(menuVO.getCategory()));
-		String action = DictCache.getValue("button_func", Func.toInt(menuVO.getAction()));
-		String open = DictCache.getValue("yes_no", Func.toInt(menuVO.getIsOpen()));
+		String category = DictCache.getValue(DictEnum.MENU_CATEGORY, Func.toInt(menuVO.getCategory()));
+		String action = DictCache.getValue(DictEnum.BUTTON_FUNC, Func.toInt(menuVO.getAction()));
+		String open = DictCache.getValue(DictEnum.YES_NO, Func.toInt(menuVO.getIsOpen()));
 		menuVO.setCategoryName(category);
 		menuVO.setActionName(action);
 		menuVO.setIsOpenName(open);

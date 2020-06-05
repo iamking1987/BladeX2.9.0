@@ -21,6 +21,7 @@ import org.springblade.core.tool.utils.BeanUtil;
 import org.springblade.desk.entity.Notice;
 import org.springblade.desk.vo.NoticeVO;
 import org.springblade.system.cache.DictCache;
+import org.springblade.system.enums.DictEnum;
 
 import java.util.Objects;
 
@@ -38,7 +39,7 @@ public class NoticeWrapper extends BaseEntityWrapper<Notice, NoticeVO> {
 	@Override
 	public NoticeVO entityVO(Notice notice) {
 		NoticeVO noticeVO = Objects.requireNonNull(BeanUtil.copy(notice, NoticeVO.class));
-		String dictValue = DictCache.getValue("notice", noticeVO.getCategory());
+		String dictValue = DictCache.getValue(DictEnum.NOTICE, noticeVO.getCategory());
 		noticeVO.setCategoryName(dictValue);
 		return noticeVO;
 	}
