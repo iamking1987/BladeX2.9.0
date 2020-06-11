@@ -141,16 +141,25 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 		List<Long> deptIdList = SysCache.getDeptChildIds(deptId);
 		return page.setRecords(baseMapper.selectUserPage(page, user, deptIdList, tenantId));
 	}
-
 	@Override
 	public User userByAccount(String tenantId, String account) {
 		return baseMapper.selectOne(Wrappers.<User>query().lambda().eq(User::getTenantId, tenantId).eq(User::getAccount, account).eq(User::getIsDeleted, BladeConstant.DB_NOT_DELETED));
 	}
 
 	@Override
+	public UserInfo userInfo(Long userId) {
+		User user = baseMapper.selectById(userId);
+		return buildUserInfo(user);
+	}
+
+	@Override
 	public UserInfo userInfo(String tenantId, String account) {
-		UserInfo userInfo = new UserInfo();
 		User user = baseMapper.getUser(tenantId, account);
+		return buildUserInfo(user);
+	}
+
+	private UserInfo buildUserInfo(User user) {
+		UserInfo userInfo = new UserInfo();
 		userInfo.setUser(user);
 		if (Func.isNotEmpty(user)) {
 			R<List<String>> result = sysClient.getRoleAliases(user.getRoleId());
@@ -168,8 +177,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 		UserOauth uo = userOauthService.getOne(Wrappers.<UserOauth>query().lambda().eq(UserOauth::getSource, userOauth.getSource()).eq(UserOauth::getUsername, userOauth.getUsername()));
 		UserInfo userInfo;
 		if (Func.isNotEmpty(uo) && Func.isNotEmpty(uo.getUserId())) {
-			User user = UserCache.getUser(uo.getUserId());
-			userInfo = this.userInfo(user.getTenantId(), user.getAccount());
+			userInfo = this.userInfo(uo.getUserId());
 			userInfo.setOauthId(Func.toStr(uo.getId()));
 		} else {
 			userInfo = new UserInfo();
