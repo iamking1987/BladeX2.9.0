@@ -168,7 +168,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 		UserOauth uo = userOauthService.getOne(Wrappers.<UserOauth>query().lambda().eq(UserOauth::getSource, userOauth.getSource()).eq(UserOauth::getUsername, userOauth.getUsername()));
 		UserInfo userInfo;
 		if (Func.isNotEmpty(uo) && Func.isNotEmpty(uo.getUserId())) {
-			User user = this.getById(uo.getUserId());
+			User user = UserCache.getUser(uo.getUserId());
 			userInfo = this.userInfo(user.getTenantId(), user.getAccount());
 			userInfo.setOauthId(Func.toStr(uo.getId()));
 		} else {
