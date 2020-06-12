@@ -96,6 +96,7 @@ public class SocialTokenGranter extends AbstractTokenGranter {
 		UserOauth userOauth = Objects.requireNonNull(BeanUtil.copy(authUser, UserOauth.class));
 		userOauth.setSource(authUser.getSource());
 		userOauth.setTenantId(tenantId);
+		userOauth.setUuid(authUser.getUuid());
 
 		// 远程调用，获取认证信息
 		R<UserInfo> result = userClient.userAuthInfo(userOauth);
