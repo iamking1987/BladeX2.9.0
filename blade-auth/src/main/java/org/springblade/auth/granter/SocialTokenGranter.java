@@ -73,7 +73,9 @@ public class SocialTokenGranter extends AbstractTokenGranter {
 
 		Map<String, String> parameters = new LinkedHashMap<>(tokenRequest.getRequestParameters());
 		// 开放平台来源
-		String source = parameters.get("source");
+		String sourceParameter = parameters.get("source");
+		// 匹配是否有别名定义
+		String source = socialProperties.getAlias().getOrDefault(sourceParameter, sourceParameter);
 		// 开放平台授权码
 		String code = parameters.get("code");
 		// 开放平台状态吗
