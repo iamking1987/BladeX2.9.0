@@ -25,6 +25,7 @@ import lombok.AllArgsConstructor;
 import org.springblade.core.boot.ctrl.BladeController;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.resource.entity.Attach;
@@ -39,6 +40,7 @@ import javax.validation.Valid;
  *
  * @author Chill
  */
+@NonDS
 @RestController
 @AllArgsConstructor
 @RequestMapping("/attach")

@@ -26,6 +26,7 @@ import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.image.ProcessDiagramGenerator;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.flow.core.entity.BladeFlow;
@@ -47,6 +48,7 @@ import java.util.List;
  *
  * @author Chill
  */
+@NonDS
 @Slf4j
 @RestController
 @AllArgsConstructor

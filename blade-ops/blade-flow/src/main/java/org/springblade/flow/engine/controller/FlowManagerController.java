@@ -25,6 +25,7 @@ import lombok.AllArgsConstructor;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
 import org.springblade.core.secure.annotation.PreAuth;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.support.Kv;
@@ -43,6 +44,7 @@ import java.util.Objects;
  *
  * @author Chill
  */
+@NonDS
 @RestController
 @RequestMapping("manager")
 @AllArgsConstructor

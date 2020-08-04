@@ -17,6 +17,7 @@
 package org.springblade.system.feign;
 
 import lombok.RequiredArgsConstructor;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.utils.Func;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,7 @@ import static org.springblade.core.secure.constant.PermissionConstant.permission
  *
  * @author Chill
  */
+@NonDS
 @ApiIgnore
 @RestController
 @RequiredArgsConstructor

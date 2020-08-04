@@ -21,6 +21,7 @@ import org.flowable.engine.IdentityService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.Func;
@@ -40,6 +41,7 @@ import java.util.Map;
  *
  * @author Chill
  */
+@NonDS
 @RestController
 @AllArgsConstructor
 public class FlowClient implements IFlowClient {

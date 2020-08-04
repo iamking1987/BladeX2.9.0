@@ -28,6 +28,7 @@ import org.springblade.core.launch.constant.TokenConstant;
 import org.springblade.core.redis.cache.BladeRedis;
 import org.springblade.core.secure.BladeUser;
 import org.springblade.core.secure.utils.AuthUtil;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.StringUtil;
@@ -43,6 +44,7 @@ import java.time.Duration;
  *
  * @author Chill
  */
+@NonDS
 @Slf4j
 @RestController
 @AllArgsConstructor

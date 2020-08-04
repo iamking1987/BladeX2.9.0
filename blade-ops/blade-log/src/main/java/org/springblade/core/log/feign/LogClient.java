@@ -18,11 +18,12 @@ package org.springblade.core.log.feign;
 
 import lombok.AllArgsConstructor;
 import org.springblade.core.log.model.LogApi;
-import org.springblade.core.log.model.LogUsual;
 import org.springblade.core.log.model.LogError;
+import org.springblade.core.log.model.LogUsual;
 import org.springblade.core.log.service.ILogApiService;
-import org.springblade.core.log.service.ILogUsualService;
 import org.springblade.core.log.service.ILogErrorService;
+import org.springblade.core.log.service.ILogUsualService;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author Chill
  */
+@NonDS
 @RestController
 @AllArgsConstructor
 public class LogClient implements ILogClient {

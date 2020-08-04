@@ -22,6 +22,7 @@ import lombok.SneakyThrows;
 import org.springblade.core.oss.model.BladeFile;
 import org.springblade.core.oss.model.OssFile;
 import org.springblade.core.secure.annotation.PreAuth;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.utils.FileUtil;
@@ -37,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author Chill
  */
+@NonDS
 @RestController
 @AllArgsConstructor
 @RequestMapping("/oss/endpoint")

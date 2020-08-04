@@ -24,6 +24,7 @@ import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.springblade.core.social.props.SocialProperties;
 import org.springblade.core.social.utils.SocialUtil;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +38,7 @@ import java.io.IOException;
  *
  * @author Chill
  */
+@NonDS
 @Slf4j
 @RestController
 @AllArgsConstructor

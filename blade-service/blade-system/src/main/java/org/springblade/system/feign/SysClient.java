@@ -17,6 +17,7 @@
 package org.springblade.system.feign;
 
 import lombok.AllArgsConstructor;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
 import org.springblade.system.entity.*;
 import org.springblade.system.service.*;
@@ -31,6 +32,7 @@ import java.util.List;
  *
  * @author Chill
  */
+@NonDS
 @ApiIgnore
 @RestController
 @AllArgsConstructor

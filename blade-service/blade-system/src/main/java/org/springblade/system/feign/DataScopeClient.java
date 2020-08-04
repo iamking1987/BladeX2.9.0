@@ -19,6 +19,7 @@ package org.springblade.system.feign;
 import lombok.RequiredArgsConstructor;
 import org.springblade.core.datascope.constant.DataScopeConstant;
 import org.springblade.core.datascope.model.DataScopeModel;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.utils.CollectionUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -36,6 +37,7 @@ import java.util.List;
  *
  * @author Chill
  */
+@NonDS
 @ApiIgnore
 @RestController
 @RequiredArgsConstructor

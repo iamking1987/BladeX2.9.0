@@ -17,14 +17,15 @@
 package org.springblade.flow.business.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.flowable.engine.TaskService;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
 import org.springblade.flow.business.service.FlowBusinessService;
 import org.springblade.flow.core.entity.BladeFlow;
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.*;
  *
  * @author Chill
  */
+@NonDS
 @RestController
 @AllArgsConstructor
 @RequestMapping("work")

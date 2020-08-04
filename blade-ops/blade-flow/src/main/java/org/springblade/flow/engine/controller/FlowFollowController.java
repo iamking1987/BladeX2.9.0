@@ -17,13 +17,14 @@
 package org.springblade.flow.engine.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import io.swagger.annotations.ApiOperation;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
 import org.springblade.core.secure.annotation.PreAuth;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.flow.engine.entity.FlowExecution;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.*;
  *
  * @author Chill
  */
+@NonDS
 @RestController
 @RequestMapping("follow")
 @AllArgsConstructor

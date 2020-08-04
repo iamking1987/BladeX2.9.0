@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import org.springblade.core.mp.support.BladePage;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.desk.entity.Notice;
 import org.springblade.desk.service.INoticeService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ import springfox.documentation.annotations.ApiIgnore;
  *
  * @author Chill
  */
+@NonDS
 @ApiIgnore()
 @RestController
 @AllArgsConstructor

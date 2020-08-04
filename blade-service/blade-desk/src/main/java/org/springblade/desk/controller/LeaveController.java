@@ -19,6 +19,7 @@ package org.springblade.desk.controller;
 import lombok.AllArgsConstructor;
 import org.springblade.common.cache.CacheNames;
 import org.springblade.core.boot.ctrl.BladeController;
+import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
 import org.springblade.desk.entity.ProcessLeave;
 import org.springblade.desk.service.ILeaveService;
@@ -31,6 +32,7 @@ import springfox.documentation.annotations.ApiIgnore;
  *
  * @author Chill
  */
+@NonDS
 @ApiIgnore
 @RestController
 @RequestMapping("/process/leave")
