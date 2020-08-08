@@ -49,7 +49,7 @@ monitor(){
 
 #启动程序模块
 modules(){
-	docker-compose up -d blade-gateway1 blade-gateway2 blade-auth1 blade-auth2 blade-user blade-desk blade-system blade-log blade-flow blade-flow-design blade-resource
+	docker-compose up -d blade-gateway1 blade-gateway2 blade-auth1 blade-auth2 blade-report blade-user blade-desk blade-system blade-log blade-flow blade-flow-design blade-resource
 }
 
 #关闭所有模块
