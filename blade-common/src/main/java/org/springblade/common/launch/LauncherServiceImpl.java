@@ -40,6 +40,7 @@ public class LauncherServiceImpl implements LauncherService {
 		PropsUtil.setProperty(props, "spring.cloud.nacos.config.server-addr", LauncherConstant.nacosAddr(profile));
 		PropsUtil.setProperty(props, "spring.cloud.sentinel.transport.dashboard", LauncherConstant.sentinelAddr(profile));
 		PropsUtil.setProperty(props, "spring.zipkin.base-url", LauncherConstant.zipkinAddr(profile));
+		PropsUtil.setProperty(props, "spring.datasource.dynamic.enabled", "false");
 
 		// 开启elk日志
 		// PropsUtil.setProperty(props, "blade.log.elk.destination", LauncherConstant.elkAddr(profile));
