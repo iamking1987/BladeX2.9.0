@@ -16,7 +16,7 @@ services:
         ipv4_address: 172.30.0.48
 
   sentinel:
-    image: bladex/sentinel-dashboard:1.7.2
+    image: bladex/sentinel-dashboard:1.8.0
     hostname: "sentinel"
     environment:
       - TZ=Asia/Shanghai
