@@ -20,7 +20,6 @@ import com.wf.captcha.SpecCaptcha;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.common.cache.CacheNames;
-import org.springblade.core.cache.constant.CacheConstant;
 import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.jwt.JwtUtil;
 import org.springblade.core.jwt.props.JwtProperties;
@@ -38,6 +37,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Duration;
+
+import static org.springblade.core.cache.constant.CacheConstant.*;
 
 /**
  * BladeEndPoint
@@ -81,15 +82,16 @@ public class BladeTokenEndPoint {
 
 	@GetMapping("/oauth/clear-cache")
 	public Kv clearCache() {
-		CacheUtil.clear(CacheConstant.BIZ_CACHE);
-		CacheUtil.clear(CacheConstant.USER_CACHE);
-		CacheUtil.clear(CacheConstant.DICT_CACHE);
-		CacheUtil.clear(CacheConstant.FLOW_CACHE);
-		CacheUtil.clear(CacheConstant.SYS_CACHE);
-		CacheUtil.clear(CacheConstant.PARAM_CACHE);
-		CacheUtil.clear(CacheConstant.RESOURCE_CACHE);
-		CacheUtil.clear(CacheConstant.MENU_CACHE);
-		CacheUtil.clear(CacheConstant.MENU_CACHE, Boolean.FALSE);
+		CacheUtil.clear(BIZ_CACHE);
+		CacheUtil.clear(USER_CACHE);
+		CacheUtil.clear(DICT_CACHE);
+		CacheUtil.clear(FLOW_CACHE);
+		CacheUtil.clear(SYS_CACHE);
+		CacheUtil.clear(PARAM_CACHE);
+		CacheUtil.clear(RESOURCE_CACHE);
+		CacheUtil.clear(MENU_CACHE);
+		CacheUtil.clear(MENU_CACHE, Boolean.FALSE);
+		CacheUtil.clear(PARAM_CACHE, Boolean.FALSE);
 		return Kv.create().set("success", "true").set("msg", "success");
 	}
 
