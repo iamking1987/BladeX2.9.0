@@ -16,7 +16,6 @@
  */
 package org.springblade.auth.service;
 
-import lombok.SneakyThrows;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.stereotype.Component;
@@ -41,8 +40,12 @@ public class BladeClientDetailsServiceImpl extends JdbcClientDetailsService {
 	 * @param clientId 客户端id
 	 */
 	@Override
-	@SneakyThrows
 	public ClientDetails loadClientByClientId(String clientId) {
-		return super.loadClientByClientId(clientId);
+		try {
+			return super.loadClientByClientId(clientId);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
 	}
 }
