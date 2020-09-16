@@ -23,6 +23,7 @@ import org.springblade.core.mp.base.BaseService;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserInfo;
 import org.springblade.system.user.entity.UserOauth;
+import org.springblade.system.user.enums.UserEnum;
 import org.springblade.system.user.excel.UserExcel;
 
 import java.util.List;
@@ -85,6 +86,16 @@ public interface IUserService extends BaseService<User> {
 	 * @return
 	 */
 	UserInfo userInfo(String tenantId, String account);
+
+	/**
+	 * 用户信息
+	 *
+	 * @param tenantId
+	 * @param account
+	 * @param userEnum
+	 * @return
+	 */
+	UserInfo userInfo(String tenantId, String account, UserEnum userEnum);
 
 	/**
 	 * 用户信息

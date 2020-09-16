@@ -20,7 +20,6 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springblade.auth.constant.AuthConstant;
-import org.springblade.auth.enums.BladeUserEnum;
 import org.springblade.auth.utils.TokenUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.Func;
@@ -31,6 +30,7 @@ import org.springblade.system.entity.Tenant;
 import org.springblade.system.feign.ISysClient;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserInfo;
+import org.springblade.system.user.enums.UserEnum;
 import org.springblade.system.user.feign.IUserClient;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -80,12 +80,12 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 		// 远程调用返回数据
 		R<UserInfo> result;
 		// 根据不同用户类型调用对应的接口返回数据，用户可自行拓展
-		if (userType.equals(BladeUserEnum.WEB.getName())) {
-			result = userClient.userInfo(tenantId, username);
-		} else if (userType.equals(BladeUserEnum.APP.getName())) {
-			result = userClient.userInfo(tenantId, username);
+		if (userType.equals(UserEnum.WEB.getName())) {
+			result = userClient.userInfo(tenantId, username, UserEnum.WEB.getName());
+		} else if (userType.equals(UserEnum.APP.getName())) {
+			result = userClient.userInfo(tenantId, username, UserEnum.APP.getName());
 		} else {
-			result = userClient.userInfo(tenantId, username);
+			result = userClient.userInfo(tenantId, username, UserEnum.OTHER.getName());
 		}
 
 		// 判断返回信息
@@ -100,7 +100,7 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 			}
 			return new BladeUserDetails(user.getId(),
 				user.getTenantId(), StringPool.EMPTY, user.getName(), user.getRealName(), user.getDeptId(), user.getPostId(), user.getRoleId(), Func.join(result.getData().getRoles()), Func.toStr(user.getAvatar(), TokenUtil.DEFAULT_AVATAR),
-				username, AuthConstant.ENCRYPT + user.getPassword(), true, true, true, true,
+				username, AuthConstant.ENCRYPT + user.getPassword(), userInfo.getDetail(), true, true, true, true,
 				AuthorityUtils.commaSeparatedStringToAuthorityList(Func.join(result.getData().getRoles())));
 		} else {
 			throw new UsernameNotFoundException(result.getMsg());

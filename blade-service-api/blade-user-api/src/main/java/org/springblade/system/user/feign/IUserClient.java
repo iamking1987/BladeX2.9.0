@@ -40,6 +40,7 @@ public interface IUserClient {
 
 	String API_PREFIX = "/client";
 	String USER_INFO = API_PREFIX + "/user-info";
+	String USER_INFO_BY_TYPE = API_PREFIX + "/user-info-by-type";
 	String USER_INFO_BY_ID = API_PREFIX + "/user-info-by-id";
 	String USER_INFO_BY_ACCOUNT = API_PREFIX + "/user-info-by-account";
 	String USER_AUTH_INFO = API_PREFIX + "/user-auth-info";
@@ -75,6 +76,17 @@ public interface IUserClient {
 	 */
 	@GetMapping(USER_INFO)
 	R<UserInfo> userInfo(@RequestParam("tenantId") String tenantId, @RequestParam("account") String account);
+
+	/**
+	 * 获取用户信息
+	 *
+	 * @param tenantId 租户ID
+	 * @param account  账号
+	 * @param userType 用户平台
+	 * @return
+	 */
+	@GetMapping(USER_INFO_BY_TYPE)
+	R<UserInfo> userInfo(@RequestParam("tenantId") String tenantId, @RequestParam("account") String account, @RequestParam("userType") String userType);
 
 	/**
 	 * 获取第三方平台信息

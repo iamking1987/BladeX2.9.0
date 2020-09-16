@@ -14,7 +14,7 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package org.springblade.auth.enums;
+package org.springblade.system.user.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +26,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum BladeUserEnum {
+public enum UserEnum {
 
 	/**
 	 * web
@@ -37,9 +37,33 @@ public enum BladeUserEnum {
 	 * app
 	 */
 	APP("app", 2),
+
+	/**
+	 * other
+	 */
+	OTHER("other", 3),
 	;
 
 	final String name;
 	final int category;
+
+	/**
+	 * 匹配枚举值
+	 *
+	 * @param name 名称
+	 * @return BladeUserEnum
+	 */
+	public static UserEnum of(String name) {
+		if (name == null) {
+			return null;
+		}
+		UserEnum[] values = UserEnum.values();
+		for (UserEnum smsEnum : values) {
+			if (smsEnum.name.equals(name)) {
+				return smsEnum;
+			}
+		}
+		return null;
+	}
 
 }

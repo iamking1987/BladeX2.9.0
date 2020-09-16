@@ -24,6 +24,7 @@ import org.springblade.core.tool.utils.Func;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserInfo;
 import org.springblade.system.user.entity.UserOauth;
+import org.springblade.system.user.enums.UserEnum;
 import org.springblade.system.user.service.IUserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,6 +59,12 @@ public class UserClient implements IUserClient {
 	@GetMapping(USER_INFO)
 	public R<UserInfo> userInfo(String tenantId, String account) {
 		return R.data(service.userInfo(tenantId, account));
+	}
+
+	@Override
+	@GetMapping(USER_INFO_BY_TYPE)
+	public R<UserInfo> userInfo(String tenantId, String account, String userType) {
+		return R.data(service.userInfo(tenantId, account, UserEnum.of(userType)));
 	}
 
 	@Override

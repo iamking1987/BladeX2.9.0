@@ -31,6 +31,7 @@ import org.springblade.core.tenant.BladeTenantProperties;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.jackson.JsonUtil;
+import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.*;
 import org.springblade.system.cache.ParamCache;
 import org.springblade.system.cache.SysCache;
@@ -41,6 +42,7 @@ import org.springblade.system.user.entity.User;
 import org.springblade.system.user.entity.UserDept;
 import org.springblade.system.user.entity.UserInfo;
 import org.springblade.system.user.entity.UserOauth;
+import org.springblade.system.user.enums.UserEnum;
 import org.springblade.system.user.excel.UserExcel;
 import org.springblade.system.user.mapper.UserMapper;
 import org.springblade.system.user.service.IUserDeptService;
@@ -141,6 +143,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 		List<Long> deptIdList = SysCache.getDeptChildIds(deptId);
 		return page.setRecords(baseMapper.selectUserPage(page, user, deptIdList, tenantId));
 	}
+
 	@Override
 	public User userByAccount(String tenantId, String account) {
 		return baseMapper.selectOne(Wrappers.<User>query().lambda().eq(User::getTenantId, tenantId).eq(User::getAccount, account).eq(User::getIsDeleted, BladeConstant.DB_NOT_DELETED));
@@ -158,7 +161,17 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 		return buildUserInfo(user);
 	}
 
+	@Override
+	public UserInfo userInfo(String tenantId, String account, UserEnum userEnum) {
+		User user = baseMapper.getUser(tenantId, account);
+		return buildUserInfo(user, userEnum);
+	}
+
 	private UserInfo buildUserInfo(User user) {
+		return buildUserInfo(user, UserEnum.WEB);
+	}
+
+	private UserInfo buildUserInfo(User user, UserEnum userEnum) {
 		UserInfo userInfo = new UserInfo();
 		userInfo.setUser(user);
 		if (Func.isNotEmpty(user)) {
@@ -167,6 +180,14 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 				List<String> roleAlias = result.getData();
 				userInfo.setRoles(roleAlias);
 			}
+		}
+		// 根据每个用户平台，建立对应的detail表，通过查询将结果集写入到detail字段
+		if (userEnum == UserEnum.WEB) {
+			userInfo.setDetail(Kv.create().set("type", userEnum.getName()));
+		} else if (userEnum == UserEnum.APP) {
+			userInfo.setDetail(Kv.create().set("type", userEnum.getName()));
+		} else {
+			userInfo.setDetail(Kv.create().set("type", userEnum.getName()));
 		}
 		return userInfo;
 	}

@@ -17,6 +17,7 @@
 package org.springblade.auth.service;
 
 import lombok.Getter;
+import org.springblade.core.tool.support.Kv;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -74,8 +75,12 @@ public class BladeUserDetails extends User {
 	 * 头像
 	 */
 	private final String avatar;
+	/**
+	 * 用户详情
+	 */
+	private final Kv detail;
 
-	public BladeUserDetails(Long userId, String tenantId, String oauthId, String name, String realName, String deptId, String postId, String roleId, String roleName, String avatar, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+	public BladeUserDetails(Long userId, String tenantId, String oauthId, String name, String realName, String deptId, String postId, String roleId, String roleName, String avatar, String username, String password, Kv detail, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.userId = userId;
 		this.tenantId = tenantId;
@@ -88,6 +93,7 @@ public class BladeUserDetails extends User {
 		this.roleId = roleId;
 		this.roleName = roleName;
 		this.avatar = avatar;
+		this.detail = detail;
 	}
 
 }

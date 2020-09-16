@@ -26,6 +26,7 @@ import org.springblade.auth.utils.TokenUtil;
 import org.springblade.core.social.props.SocialProperties;
 import org.springblade.core.social.utils.SocialUtil;
 import org.springblade.core.tool.api.R;
+import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.BeanUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.WebUtil;
@@ -105,12 +106,13 @@ public class SocialTokenGranter extends AbstractTokenGranter {
 		BladeUserDetails bladeUserDetails;
 		if (result.isSuccess()) {
 			User user = result.getData().getUser();
+			Kv detail = result.getData().getDetail();
 			if (user == null) {
 				throw new InvalidGrantException("social grant failure, user is null");
 			}
 			bladeUserDetails = new BladeUserDetails(user.getId(),
 				tenantId, result.getData().getOauthId(), user.getName(), user.getRealName(), user.getDeptId(), user.getPostId(), user.getRoleId(), Func.join(result.getData().getRoles()), Func.toStr(userOauth.getAvatar(), TokenUtil.DEFAULT_AVATAR),
-				userOauth.getUsername(), AuthConstant.ENCRYPT + user.getPassword(), true, true, true, true,
+				userOauth.getUsername(), AuthConstant.ENCRYPT + user.getPassword(), detail, true, true, true, true,
 				AuthorityUtils.commaSeparatedStringToAuthorityList(Func.join(result.getData().getRoles())));
 		} else {
 			throw new InvalidGrantException("social grant failure, feign client return error");
