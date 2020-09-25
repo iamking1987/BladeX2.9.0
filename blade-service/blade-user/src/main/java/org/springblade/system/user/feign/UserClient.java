@@ -82,7 +82,7 @@ public class UserClient implements IUserClient {
 	@Override
 	@PostMapping(REMOVE_USER)
 	public R<Boolean> removeUser(String tenantIds) {
-		return R.data(service.remove(Wrappers.<User>query().lambda().in(User::getTenantId, Func.toLongList(tenantIds))));
+		return R.data(service.remove(Wrappers.<User>query().lambda().in(User::getTenantId, Func.toStrList(tenantIds))));
 	}
 
 }
