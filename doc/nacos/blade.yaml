@@ -113,6 +113,12 @@ blade:
       - method: POST
         pattern: /dashboard/submit
         expression: "hasAnyRole('administrator', 'admin', 'user')"
+    #基础认证配置
+    basic:
+      - method: ALL
+        pattern: /dashboard/activities
+        username: "blade"
+        password: "blade"
     #多终端认证配置
     client:
       - client-id: sword
