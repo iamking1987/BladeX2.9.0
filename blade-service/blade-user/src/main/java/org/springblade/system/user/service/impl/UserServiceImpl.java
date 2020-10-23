@@ -26,6 +26,7 @@ import org.springblade.common.constant.CommonConstant;
 import org.springblade.common.constant.TenantConstant;
 import org.springblade.core.log.exception.ServiceException;
 import org.springblade.core.mp.base.BaseServiceImpl;
+import org.springblade.core.mp.support.Condition;
 import org.springblade.core.secure.utils.AuthUtil;
 import org.springblade.core.tenant.BladeTenantProperties;
 import org.springblade.core.tool.api.R;
@@ -38,16 +39,15 @@ import org.springblade.system.cache.SysCache;
 import org.springblade.system.entity.Tenant;
 import org.springblade.system.feign.ISysClient;
 import org.springblade.system.user.cache.UserCache;
-import org.springblade.system.user.entity.User;
-import org.springblade.system.user.entity.UserDept;
-import org.springblade.system.user.entity.UserInfo;
-import org.springblade.system.user.entity.UserOauth;
+import org.springblade.system.user.entity.*;
 import org.springblade.system.user.enums.UserEnum;
 import org.springblade.system.user.excel.UserExcel;
 import org.springblade.system.user.mapper.UserMapper;
 import org.springblade.system.user.service.IUserDeptService;
 import org.springblade.system.user.service.IUserOauthService;
 import org.springblade.system.user.service.IUserService;
+import org.springblade.system.user.vo.UserVO;
+import org.springblade.system.user.wrapper.UserWrapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -182,13 +182,27 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 			}
 		}
 		// 根据每个用户平台，建立对应的detail表，通过查询将结果集写入到detail字段
+		Kv detail = Kv.create().set("type", userEnum.getName());
 		if (userEnum == UserEnum.WEB) {
-			userInfo.setDetail(Kv.create().set("type", userEnum.getName()));
+			UserWeb userWeb = new UserWeb();
+			UserWeb query = userWeb.selectOne(Wrappers.<UserWeb>lambdaQuery().eq(UserWeb::getUserId, user.getId()));
+			if (ObjectUtil.isNotEmpty(query)) {
+				detail.set("ext", query.getUserExt());
+			}
 		} else if (userEnum == UserEnum.APP) {
-			userInfo.setDetail(Kv.create().set("type", userEnum.getName()));
+			UserApp userApp = new UserApp();
+			UserApp query = userApp.selectOne(Wrappers.<UserApp>lambdaQuery().eq(UserApp::getUserId, user.getId()));
+			if (ObjectUtil.isNotEmpty(query)) {
+				detail.set("ext", query.getUserExt());
+			}
 		} else {
-			userInfo.setDetail(Kv.create().set("type", userEnum.getName()));
+			UserOther userOther = new UserOther();
+			UserOther query = userOther.selectOne(Wrappers.<UserOther>lambdaQuery().eq(UserOther::getUserId, user.getId()));
+			if (ObjectUtil.isNotEmpty(query)) {
+				detail.set("ext", query.getUserExt());
+			}
 		}
+		userInfo.setDetail(detail);
 		return userInfo;
 	}
 
@@ -316,6 +330,63 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 		userOauth.setTenantId(user.getTenantId());
 		boolean oauthTemp = userOauthService.updateById(userOauth);
 		return (userTemp && oauthTemp);
+	}
+	@Override
+	public boolean updatePlatform(Long userId, Integer userType, String userExt) {
+		if (userType.equals(UserEnum.WEB.getCategory())) {
+			UserWeb userWeb = new UserWeb();
+			UserWeb query = userWeb.selectOne(Wrappers.<UserWeb>lambdaQuery().eq(UserWeb::getUserId, userId));
+			if (ObjectUtil.isNotEmpty(query)) {
+				userWeb.setId(query.getId());
+			}
+			userWeb.setUserId(userId);
+			userWeb.setUserExt(userExt);
+			return userWeb.insertOrUpdate();
+		} else if (userType.equals(UserEnum.APP.getCategory())) {
+			UserApp userApp = new UserApp();
+			UserApp query = userApp.selectOne(Wrappers.<UserApp>lambdaQuery().eq(UserApp::getUserId, userId));
+			if (ObjectUtil.isNotEmpty(query)) {
+				userApp.setId(query.getId());
+			}
+			userApp.setUserId(userId);
+			userApp.setUserExt(userExt);
+			return userApp.insertOrUpdate();
+		} else {
+			UserOther userOther = new UserOther();
+			UserOther query = userOther.selectOne(Wrappers.<UserOther>lambdaQuery().eq(UserOther::getUserId, userId));
+			if (ObjectUtil.isNotEmpty(query)) {
+				userOther.setId(query.getId());
+			}
+			userOther.setUserId(userId);
+			userOther.setUserExt(userExt);
+			return userOther.insertOrUpdate();
+		}
+	}
+
+	@Override
+	public UserVO platformDetail(User user) {
+		User detail = baseMapper.selectOne(Condition.getQueryWrapper(user));
+		UserVO userVO = UserWrapper.build().entityVO(detail);
+		if (userVO.getUserType().equals(UserEnum.WEB.getCategory())) {
+			UserWeb userWeb = new UserWeb();
+			UserWeb query = userWeb.selectOne(Wrappers.<UserWeb>lambdaQuery().eq(UserWeb::getUserId, user.getId()));
+			if (ObjectUtil.isNotEmpty(query)) {
+				userVO.setUserExt(query.getUserExt());
+			}
+		} else if (userVO.getUserType().equals(UserEnum.APP.getCategory())) {
+			UserApp userApp = new UserApp();
+			UserApp query = userApp.selectOne(Wrappers.<UserApp>lambdaQuery().eq(UserApp::getUserId, user.getId()));
+			if (ObjectUtil.isNotEmpty(query)) {
+				userVO.setUserExt(query.getUserExt());
+			}
+		} else {
+			UserOther userOther = new UserOther();
+			UserOther query = userOther.selectOne(Wrappers.<UserOther>lambdaQuery().eq(UserOther::getUserId, user.getId()));
+			if (ObjectUtil.isNotEmpty(query)) {
+				userVO.setUserExt(query.getUserExt());
+			}
+		}
+		return userVO;
 	}
 
 }

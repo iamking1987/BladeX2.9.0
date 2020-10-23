@@ -268,4 +268,27 @@ public class UserController {
 		return R.status(userService.registerGuest(user, oauthId));
 	}
 
+
+
+	/**
+	 * 配置用户平台信息
+	 */
+	@PostMapping("/update-platform")
+	@ApiOperationSupport(order = 16)
+	@ApiOperation(value = "配置用户平台信息", notes = "传入user")
+	public R updatePlatform(Long userId, Integer userType, String userExt) {
+		return R.status(userService.updatePlatform(userId, userType, userExt));
+	}
+
+	/**
+	 * 查看平台详情
+	 */
+	@ApiOperationSupport(order = 17)
+	@ApiOperation(value = "查看平台详情", notes = "传入id")
+	@GetMapping("/platform-detail")
+	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
+	public R<UserVO> platformDetail(User user) {
+		return R.data(userService.platformDetail(user));
+	}
+
 }
