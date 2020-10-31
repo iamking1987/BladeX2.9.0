@@ -46,7 +46,6 @@ public class AuthProvider {
 		DEFAULT_SKIP_URL.add("/token/**");
 		DEFAULT_SKIP_URL.add("/actuator/health/**");
 		DEFAULT_SKIP_URL.add("/v2/api-docs/**");
-		DEFAULT_SKIP_URL.add("/v2/api-docs-ext/**");
 		DEFAULT_SKIP_URL.add("/auth/**");
 		DEFAULT_SKIP_URL.add("/log/**");
 		DEFAULT_SKIP_URL.add("/menu/routes");

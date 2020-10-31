@@ -58,8 +58,7 @@ public class BladeResourceServerConfiguration extends ResourceServerConfigurerAd
 				"/oauth/refresh/**",
 				"/token/**",
 				"/mobile/**",
-				"/v2/api-docs",
-				"/v2/api-docs-ext").permitAll()
+				"/v2/api-docs").permitAll()
 			.anyRequest().authenticated().and()
 			.csrf().disable();
 	}

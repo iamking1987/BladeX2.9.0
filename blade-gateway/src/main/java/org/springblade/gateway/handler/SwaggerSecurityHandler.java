@@ -46,7 +46,7 @@ public class SwaggerSecurityHandler implements HandlerFunction<ServerResponse> {
 	@Override
 	public Mono<ServerResponse> handle(ServerRequest request) {
 		return ServerResponse.status(HttpStatus.OK)
-			.contentType(MediaType.APPLICATION_JSON_UTF8)
-			.body(BodyInserters.fromObject(SecurityConfigurationBuilder.builder().build()));
+			.contentType(MediaType.APPLICATION_JSON)
+			.body(BodyInserters.fromValue(SecurityConfigurationBuilder.builder().build()));
 	}
 }

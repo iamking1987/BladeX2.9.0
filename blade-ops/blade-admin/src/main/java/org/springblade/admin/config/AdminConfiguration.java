@@ -16,8 +16,6 @@
  */
 package org.springblade.admin.config;
 
-import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
-import com.alibaba.cloud.nacos.discovery.NacosWatch;
 import de.codecentric.boot.admin.server.domain.entities.InstanceRepository;
 import org.springblade.admin.notifier.CustomNotifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -32,13 +30,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class AdminConfiguration {
-
-	@Bean
-	@ConditionalOnMissingBean
-	@ConditionalOnProperty(value = "spring.cloud.nacos.discovery.watch.enabled", matchIfMissing = true)
-	public NacosWatch nacosWatch(NacosDiscoveryProperties nacosDiscoveryProperties) {
-		return new NacosWatch(nacosDiscoveryProperties);
-	}
 
 	@Bean
 	@ConditionalOnMissingBean
