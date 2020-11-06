@@ -44,7 +44,7 @@ base(){
 
 #启动监控模块
 monitor(){
-	docker-compose up -d blade-admin blade-turbine blade-zipkin
+	docker-compose up -d blade-admin blade-turbine
 }
 
 #启动程序模块
