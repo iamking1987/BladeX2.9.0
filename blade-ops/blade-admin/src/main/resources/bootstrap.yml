@@ -17,7 +17,25 @@ spring:
         ignored-services:
           - consul
           - serverAddr
-      notify:
-        dingtalk:
-          enabled: false
-          webhook-token: Your DingDing Robot Token
+      ui:
+        title: BladeX Monitor
+        external-views:
+          - label: 架构官网
+            url: https://bladex.vip/
+            order: 1
+            iframe: true
+  security:
+    user:
+      name: blade
+      password: blade
+
+# 监控的相关配置
+monitor:
+  ding-talk:
+    enabled: false
+    # 用于自定义域名，默认会自动填充为 http://ip:port
+    link: http://localhost:${server.port}
+    # 钉钉配置的令牌
+    access-token: xxx
+    # 如果采用密钥形式，需要添加，否则需要去掉该参数
+    secret:

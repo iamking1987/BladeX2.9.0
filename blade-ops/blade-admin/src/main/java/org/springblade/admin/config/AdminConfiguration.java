@@ -16,26 +16,17 @@
  */
 package org.springblade.admin.config;
 
-import de.codecentric.boot.admin.server.domain.entities.InstanceRepository;
-import org.springblade.admin.notifier.CustomNotifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
+import org.springblade.admin.dingtalk.MonitorProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * AdminConfiguration
+ * 启动器
  *
  * @author Chill
  */
 @Configuration
+@EnableConfigurationProperties(MonitorProperties.class)
 public class AdminConfiguration {
-
-	@Bean
-	@ConditionalOnMissingBean
-	@ConditionalOnProperty(value = "spring.boot.admin.notify.dingtalk.enabled", havingValue = "true")
-	public CustomNotifier customNotifier(InstanceRepository repository) {
-		return new CustomNotifier(repository);
-	}
 
 }
