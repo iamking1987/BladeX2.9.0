@@ -139,7 +139,7 @@ public class DictController extends BladeController {
 	@ApiOperationSupport(order = 6)
 	@ApiOperation(value = "新增或修改", notes = "传入dict")
 	public R submit(@Valid @RequestBody Dict dict) {
-		CacheUtil.clear(DICT_CACHE);
+		CacheUtil.clear(DICT_CACHE, Boolean.FALSE);
 		return R.status(dictService.submit(dict));
 	}
 
@@ -151,7 +151,7 @@ public class DictController extends BladeController {
 	@ApiOperationSupport(order = 7)
 	@ApiOperation(value = "删除", notes = "传入ids")
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
-		CacheUtil.clear(DICT_CACHE);
+		CacheUtil.clear(DICT_CACHE, Boolean.FALSE);
 		return R.status(dictService.removeDict(ids));
 	}
 
