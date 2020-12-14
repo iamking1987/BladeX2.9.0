@@ -20,7 +20,6 @@ package org.springblade.system.user.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.exceptions.ApiException;
 import lombok.AllArgsConstructor;
 import org.springblade.common.constant.CommonConstant;
 import org.springblade.common.constant.TenantConstant;
@@ -34,9 +33,11 @@ import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.jackson.JsonUtil;
 import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.*;
+import org.springblade.system.cache.DictCache;
 import org.springblade.system.cache.ParamCache;
 import org.springblade.system.cache.SysCache;
 import org.springblade.system.entity.Tenant;
+import org.springblade.system.enums.DictEnum;
 import org.springblade.system.feign.ISysClient;
 import org.springblade.system.user.cache.UserCache;
 import org.springblade.system.user.entity.*;
@@ -271,6 +272,8 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 	public void importUser(List<UserExcel> data, Boolean isCovered) {
 		data.forEach(userExcel -> {
 			User user = Objects.requireNonNull(BeanUtil.copy(userExcel, User.class));
+			// 设置用户平台
+			user.setUserType(Func.toInt(DictCache.getKey(DictEnum.USER_TYPE, userExcel.getUserTypeName()), 1));
 			// 设置部门ID
 			user.setDeptId(SysCache.getDeptIds(userExcel.getTenantId(), userExcel.getDeptName()));
 			// 设置岗位ID
@@ -302,6 +305,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 	public List<UserExcel> exportUser(Wrapper<User> queryWrapper) {
 		List<UserExcel> userList = baseMapper.exportUser(queryWrapper);
 		userList.forEach(user -> {
+			user.setUserTypeName(DictCache.getValue(DictEnum.USER_TYPE, user.getUserType()));
 			user.setRoleName(StringUtil.join(SysCache.getRoleNames(user.getRoleId())));
 			user.setDeptName(StringUtil.join(SysCache.getDeptNames(user.getDeptId())));
 			user.setPostName(StringUtil.join(SysCache.getPostNames(user.getPostId())));
@@ -314,11 +318,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 	public boolean registerGuest(User user, Long oauthId) {
 		Tenant tenant = SysCache.getTenant(user.getTenantId());
 		if (tenant == null || tenant.getId() == null) {
-			throw new ApiException("租户信息错误!");
+			throw new ServiceException("租户信息错误!");
 		}
 		UserOauth userOauth = userOauthService.getById(oauthId);
 		if (userOauth == null || userOauth.getId() == null) {
-			throw new ApiException("第三方登陆信息错误!");
+			throw new ServiceException("第三方登陆信息错误!");
 		}
 		user.setRealName(user.getName());
 		user.setAvatar(userOauth.getAvatar());
