@@ -142,6 +142,11 @@ blade:
         pattern: /dashboard/info
         username: "blade"
         password: "blade"
+    #动态签名认证配置
+    sign:
+      - method: ALL
+        pattern: /dashboard/sign
+        crypto: "sha1"
     #多终端认证配置
     client:
       - client-id: sword
