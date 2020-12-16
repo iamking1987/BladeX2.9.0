@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springblade.core.mp.base.BaseEntity;
+import org.springblade.core.tenant.mp.TenantEntity;
 
 /**
  * 附件表实体类
@@ -32,7 +32,7 @@ import org.springblade.core.mp.base.BaseEntity;
 @TableName("blade_attach")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "Attach对象", description = "附件表")
-public class Attach extends BaseEntity {
+public class Attach extends TenantEntity {
 
 	private static final long serialVersionUID = 1L;
 
