@@ -21,6 +21,10 @@
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-ribbon</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
             <artifactId>blade-core-auto</artifactId>
             <scope>provided</scope>
         </dependency>

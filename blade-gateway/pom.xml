@@ -42,10 +42,6 @@
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
-            <artifactId>blade-starter-ribbon</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springblade</groupId>
             <artifactId>blade-starter-jwt</artifactId>
         </dependency>
         <dependency>
