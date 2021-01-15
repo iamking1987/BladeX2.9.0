@@ -56,11 +56,3 @@ blade:
       #url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=bladex
       #username: bladex
       #password: bladex
-  document:
-    resources:
-      - name: 授权模块
-        location: /blade-auth
-      - name: 工作台模块
-        location: /blade-desk
-      - name: 系统模块
-        location: /blade-system

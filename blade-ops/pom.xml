@@ -22,6 +22,7 @@
         <module>blade-log</module>
         <module>blade-report</module>
         <module>blade-resource</module>
+        <module>blade-swagger</module>
         <module>blade-turbine</module>
         <module>blade-xxljob</module>
         <module>blade-xxljob-admin</module>

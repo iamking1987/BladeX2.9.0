@@ -95,6 +95,17 @@ services:
     networks:
     - blade_net
 
+  blade-swagger:
+    image: "${REGISTER}/blade/blade-swagger:${TAG}"
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - 18000:18000
+    privileged: true
+    restart: always
+    networks:
+      - blade_net
+
   blade-turbine:
     image: "${REGISTER}/blade/blade-turbine:${TAG}"
     environment:
