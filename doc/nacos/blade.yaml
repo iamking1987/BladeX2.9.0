@@ -90,6 +90,19 @@ knife4j:
     enableFooterCustom: true
     footerCustomContent: Copyright © 2020 BladeX All Rights Reserved
 
+#swagger公共信息
+swagger:
+  title: BladeX 接口文档系统
+  description: BladeX 接口文档系统
+  version: 2.7.1.RELEASE
+  license: Powered By BladeX
+  license-url: https://bladex.vip
+  terms-of-service-url: https://bladex.vip
+  contact:
+    name: smallchill
+    email: smallchill@163.com
+    url: https://gitee.com/smallc
+
 #blade配置
 blade:
   #token配置
