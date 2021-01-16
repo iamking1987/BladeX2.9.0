@@ -19,7 +19,7 @@ package org.springblade.gateway.filter;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springblade.core.jwt.JwtUtil;
 import org.springblade.gateway.provider.AuthProvider;
 import org.springblade.gateway.provider.RequestProvider;
@@ -93,9 +93,9 @@ public class GlobalRequestLogFilter implements GlobalFilter, Ordered {
 				beforeReqArgs.add((claims == null) ? "" : claims.toString());
 				beforeReqLog.append("===Headers===  {}: {}\n");
 				beforeReqArgs.add(headerName.concat("-original"));
-				beforeReqArgs.add(StringUtils.join(headerValue));
+				beforeReqArgs.add(StringUtils.join(headerValue.toArray()));
 			} else {
-				beforeReqArgs.add(StringUtils.join(headerValue));
+				beforeReqArgs.add(StringUtils.join(headerValue.toArray()));
 			}
 		});
 

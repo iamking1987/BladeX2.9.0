@@ -18,7 +18,7 @@ package org.springblade.gateway.filter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -82,7 +82,7 @@ public class GlobalResponseLogFilter implements GlobalFilter, Ordered {
 				headers.forEach((headerName, headerValue) -> {
 					responseLog.append("===Headers===  {}: {}\n");
 					responseArgs.add(headerName);
-					responseArgs.add(StringUtils.join(headerValue));
+					responseArgs.add(StringUtils.join(headerValue.toArray()));
 				});
 
 				responseLog.append("================  Gateway Response End  =================\n");

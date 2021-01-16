@@ -18,7 +18,7 @@ package org.springblade.auth.service;
 
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springblade.auth.constant.AuthConstant;
 import org.springblade.auth.utils.TokenUtil;
 import org.springblade.core.tool.api.R;

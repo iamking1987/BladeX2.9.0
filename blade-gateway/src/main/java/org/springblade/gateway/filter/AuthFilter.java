@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springblade.core.jwt.JwtUtil;
 import org.springblade.core.jwt.props.JwtProperties;
 import org.springblade.core.launch.constant.TokenConstant;
@@ -67,7 +67,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
 		ServerHttpResponse resp = exchange.getResponse();
 		String headerToken = exchange.getRequest().getHeaders().getFirst(AuthProvider.AUTH_KEY);
 		String paramToken = exchange.getRequest().getQueryParams().getFirst(AuthProvider.AUTH_KEY);
-		if (StringUtils.isAllBlank(headerToken, paramToken)) {
+		if (StringUtils.isBlank(headerToken) && StringUtils.isBlank(paramToken)) {
 			return unAuth(resp, "缺失令牌,鉴权失败");
 		}
 		String auth = StringUtils.isBlank(headerToken) ? paramToken : headerToken;
