@@ -51,7 +51,7 @@ import static org.springblade.core.cache.constant.CacheConstant.SYS_CACHE;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/post")
-@Api(value = "岗位表", tags = "岗位表接口")
+@Api(value = "岗位", tags = "岗位")
 public class PostController extends BladeController {
 
 	private final IPostService postService;

@@ -44,7 +44,7 @@ import javax.validation.Valid;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/attach")
-@Api(value = "附件表", tags = "附件表接口")
+@Api(value = "附件", tags = "附件")
 public class AttachController extends BladeController {
 
 	private final IAttachService attachService;
