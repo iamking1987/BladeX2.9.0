@@ -3,6 +3,7 @@ FROM adoptopenjdk/openjdk8-openj9:alpine-slim
 MAINTAINER smallchill@163.com
 
 #验证码字体包
+#字体构建慢解决方案：https://sns.bladex.vip/q-3090.html
 RUN set -xe \
 && apk --no-cache add ttf-dejavu fontconfig
 
