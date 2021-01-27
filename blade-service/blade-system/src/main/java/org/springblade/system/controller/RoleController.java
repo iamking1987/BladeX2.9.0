@@ -30,6 +30,7 @@ import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.utils.Func;
+import org.springblade.system.cache.SysCache;
 import org.springblade.system.entity.Role;
 import org.springblade.system.service.IRoleService;
 import org.springblade.system.vo.GrantVO;
@@ -98,10 +99,22 @@ public class RoleController extends BladeController {
 	}
 
 	/**
+	 * 获取指定角色树形结构
+	 */
+	@GetMapping("/tree-by-id")
+	@ApiOperationSupport(order = 4)
+	@ApiOperation(value = "树形结构", notes = "树形结构")
+	public R<List<RoleVO>> treeById(Long roleId, BladeUser bladeUser) {
+		Role role = SysCache.getRole(roleId);
+		List<RoleVO> tree = roleService.tree(Func.notNull(role) ? role.getTenantId() : bladeUser.getTenantId());
+		return R.data(tree);
+	}
+
+	/**
 	 * 新增或修改
 	 */
 	@PostMapping("/submit")
-	@ApiOperationSupport(order = 4)
+	@ApiOperationSupport(order = 5)
 	@ApiOperation(value = "新增或修改", notes = "传入role")
 	public R submit(@Valid @RequestBody Role role) {
 		CacheUtil.clear(SYS_CACHE);
@@ -113,7 +126,7 @@ public class RoleController extends BladeController {
 	 * 删除
 	 */
 	@PostMapping("/remove")
-	@ApiOperationSupport(order = 5)
+	@ApiOperationSupport(order = 6)
 	@ApiOperation(value = "删除", notes = "传入ids")
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
 		CacheUtil.clear(SYS_CACHE);
@@ -124,7 +137,7 @@ public class RoleController extends BladeController {
 	 * 设置角色权限
 	 */
 	@PostMapping("/grant")
-	@ApiOperationSupport(order = 6)
+	@ApiOperationSupport(order = 7)
 	@ApiOperation(value = "权限设置", notes = "传入roleId集合以及menuId集合")
 	public R grant(@RequestBody GrantVO grantVO) {
 		CacheUtil.clear(SYS_CACHE);
