@@ -21,6 +21,7 @@ import org.springblade.core.datascope.model.DataScopeModel;
 import org.springblade.core.tool.utils.CollectionUtil;
 import org.springblade.core.tool.utils.SpringUtil;
 import org.springblade.core.tool.utils.StringPool;
+import org.springblade.core.tool.utils.StringUtil;
 import org.springblade.system.feign.IDataScopeClient;
 
 import java.util.List;
@@ -56,11 +57,11 @@ public class DataScopeCache {
 	 */
 	public static DataScopeModel getDataScopeByMapper(String mapperId, String roleId) {
 		DataScopeModel dataScope = CacheUtil.get(SYS_CACHE, SCOPE_CACHE_CLASS, mapperId + StringPool.COLON + roleId, DataScopeModel.class);
-		if (dataScope == null) {
+		if (dataScope == null || !dataScope.getSearched()) {
 			dataScope = getDataScopeClient().getDataScopeByMapper(mapperId, roleId);
 			CacheUtil.put(SYS_CACHE, SCOPE_CACHE_CLASS, mapperId + StringPool.COLON + roleId, dataScope);
 		}
-		return dataScope;
+		return StringUtil.isNotBlank(dataScope.getResourceCode()) ? dataScope : null;
 	}
 
 	/**
@@ -71,11 +72,11 @@ public class DataScopeCache {
 	 */
 	public static DataScopeModel getDataScopeByCode(String code) {
 		DataScopeModel dataScope = CacheUtil.get(SYS_CACHE, SCOPE_CACHE_CODE, code, DataScopeModel.class);
-		if (dataScope == null) {
+		if (dataScope == null || !dataScope.getSearched()) {
 			dataScope = getDataScopeClient().getDataScopeByCode(code);
 			CacheUtil.put(SYS_CACHE, SCOPE_CACHE_CODE, code, dataScope);
 		}
-		return dataScope;
+		return StringUtil.isNotBlank(dataScope.getResourceCode()) ? dataScope : null;
 	}
 
 	/**

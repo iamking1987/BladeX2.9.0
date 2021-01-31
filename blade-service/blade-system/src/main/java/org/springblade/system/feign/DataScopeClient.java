@@ -43,6 +43,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DataScopeClient implements IDataScopeClient {
 
+	private static final DataScopeModel SEARCHED_DATA_SCOPE_MODEL = new DataScopeModel(Boolean.TRUE);
+
 	private final JdbcTemplate jdbcTemplate;
 
 	/**
@@ -58,10 +60,15 @@ public class DataScopeClient implements IDataScopeClient {
 		List<Object> args = new ArrayList<>(Collections.singletonList(mapperId));
 		List<Long> roleIds = Func.toLongList(roleId);
 		args.addAll(roleIds);
-		DataScopeModel dataScope = null;
+		// 增加searched字段防止未配置的参数重复读库导致缓存击穿
+		// 后续若有新增配置则会清空缓存重新加载
+		DataScopeModel dataScope;
 		List<DataScopeModel> list = jdbcTemplate.query(DataScopeConstant.dataByMapper(roleIds.size()), args.toArray(), new BeanPropertyRowMapper<>(DataScopeModel.class));
 		if (CollectionUtil.isNotEmpty(list)) {
 			dataScope = list.iterator().next();
+			dataScope.setSearched(Boolean.TRUE);
+		} else {
+			dataScope = SEARCHED_DATA_SCOPE_MODEL;
 		}
 		return dataScope;
 	}
@@ -75,10 +82,15 @@ public class DataScopeClient implements IDataScopeClient {
 	@Override
 	@GetMapping(GET_DATA_SCOPE_BY_CODE)
 	public DataScopeModel getDataScopeByCode(String code) {
-		DataScopeModel dataScope = null;
+		// 增加searched字段防止未配置的参数重复读库导致缓存击穿
+		// 后续若有新增配置则会清空缓存重新加载
+		DataScopeModel dataScope;
 		List<DataScopeModel> list = jdbcTemplate.query(DataScopeConstant.DATA_BY_CODE, new Object[]{code}, new BeanPropertyRowMapper<>(DataScopeModel.class));
 		if (CollectionUtil.isNotEmpty(list)) {
 			dataScope = list.iterator().next();
+			dataScope.setSearched(Boolean.TRUE);
+		} else {
+			dataScope = SEARCHED_DATA_SCOPE_MODEL;
 		}
 		return dataScope;
 	}
