@@ -28,4 +28,11 @@
         <module>blade-xxljob-admin</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-metrics</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

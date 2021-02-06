@@ -51,6 +51,9 @@ public class SecurityConfiguration {
 				contextPath + "/assets/**"
 				, contextPath + "/login"
 				, contextPath + "/actuator/**"
+				, contextPath + "/v1/agent/**"
+				, contextPath + "/v1/catalog/**"
+				, contextPath + "/v1/health/**"
 			).permitAll()
 			.anyExchange().authenticated().and()
 			.formLogin().loginPage(contextPath + "/login")

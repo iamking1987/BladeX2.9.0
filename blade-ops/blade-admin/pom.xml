@@ -40,6 +40,10 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-prometheus</artifactId>
+        </dependency>
         <!-- Hystrix -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

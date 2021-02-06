@@ -1,5 +1,10 @@
 version: '3'
 services:
+
+  ####################################################################################################
+  ###===================================  以下为中间件模块  =========================================###
+  ####################################################################################################
+
   nacos:
     image: nacos/nacos-server:1.3.2
     hostname: "nacos-standalone"
@@ -84,6 +89,10 @@ services:
     networks:
     - blade_net
 
+  ####################################################################################################
+  ###=================================  以下为BladeX服务模块  =======================================###
+  ####################################################################################################
+
   blade-admin:
     image: "${REGISTER}/blade/blade-admin:${TAG}"
     environment:
@@ -93,7 +102,8 @@ services:
     privileged: true
     restart: always
     networks:
-    - blade_net
+      blade_net:
+        ipv4_address: 172.30.0.72
 
   blade-swagger:
     image: "${REGISTER}/blade/blade-swagger:${TAG}"
@@ -231,6 +241,97 @@ services:
     restart: always
     networks:
       - blade_net
+
+  ####################################################################################################
+  ###===============================  以下为Prometheus监控模块  =====================================###
+  ####################################################################################################
+
+  prometheus:
+    image: prom/prometheus:v2.24.1
+    hostname: "prometheus"
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - 9090:9090
+    volumes:
+      - /docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command: "--config.file=/etc/prometheus/prometheus.yml  --web.enable-lifecycle"
+    privileged: true
+    restart: always
+    networks:
+      blade_net:
+        ipv4_address: 172.30.0.90
+
+  node-exporter:
+    image: prom/node-exporter:v1.0.1
+    hostname: "node-exporter"
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - 9190:9100
+    privileged: true
+    restart: always
+    networks:
+      blade_net:
+        ipv4_address: 172.30.0.91
+
+  mysqld-exporter:
+    image: prom/mysqld-exporter:v0.12.1
+    hostname: "mysqld-exporter"
+    environment:
+      - TZ=Asia/Shanghai
+      # 需要先在mysql服务执行如下语句
+      # =====================================================================================
+      # === CREATE USER 'exporter'@'mysql服务ip' IDENTIFIED BY '密码';                     ===
+      # === GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'mysql服务ip';  ===
+      # === flush privileges;                                                             ===
+      # =====================================================================================
+      - DATA_SOURCE_NAME=exporter:密码@(mysql服务ip:mysql服务端口)/
+    ports:
+      - 9104:9104
+    privileged: true
+    restart: always
+    networks:
+      blade_net:
+        ipv4_address: 172.30.0.94
+
+  cadvisor:
+    image: google/cadvisor:v0.33.0
+    hostname: "cadvisor"
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - 18080:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    command: "--detach=true"
+    privileged: true
+    restart: always
+    networks:
+      blade_net:
+        ipv4_address: 172.30.0.180
+
+  grafana:
+    image: grafana/grafana:7.3.7
+    hostname: "grafana"
+    environment:
+      - TZ=Asia/Shanghai
+      - GF_SERVER_ROOT_URL=https://grafana.bladex.vip
+      - GF_SECURITY_ADMIN_PASSWORD=1qaz@WSX
+    ports:
+      - 3000:3000
+    volumes:
+      - /docker/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - /docker/grafana:/var/lib/grafana
+    privileged: true
+    restart: always
+    networks:
+      blade_net:
+        ipv4_address: 172.30.0.30
 
 networks:
   blade_net:

@@ -7,17 +7,33 @@ usage() {
 
 #开启所需端口
 port(){
+	#gateway
 	firewall-cmd --add-port=88/tcp --permanent
+	#web
 	firewall-cmd --add-port=8000/tcp --permanent
+	#nacos
 	firewall-cmd --add-port=8848/tcp --permanent
+	#sentinel
 	firewall-cmd --add-port=8858/tcp --permanent
+	#grafana
+	firewall-cmd --add-port=3000/tcp --permanent
+	#mysql
 	firewall-cmd --add-port=3306/tcp --permanent
+	#redis
 	firewall-cmd --add-port=3379/tcp --permanent
+	#admin
 	firewall-cmd --add-port=7002/tcp --permanent
+	#ureport
 	firewall-cmd --add-port=7003/tcp --permanent
+	#zipkin
 	firewall-cmd --add-port=9411/tcp --permanent
+	#prometheus
+	firewall-cmd --add-port=9090/tcp --permanent
+	#flowdesign
 	firewall-cmd --add-port=9999/tcp --permanent
+	#swagger
 	firewall-cmd --add-port=18000/tcp --permanent
+	#firewalld
 	service firewalld restart
 }
 
@@ -36,6 +52,14 @@ mount(){
 		mkdir -p /docker/nacos/init.d
 		cp nacos/init.d/custom.properties /docker/nacos/init.d/custom.properties
 	fi
+	if test ! -f "/docker/prometheus/prometheus.yml" ;then
+		mkdir -p /docker/prometheus
+		cp prometheus/config/prometheus.yml /docker/prometheus/prometheus.yml
+	fi
+	if test ! -f "/docker/grafana/grafana.ini" ;then
+		mkdir -p /docker/grafana
+		cp prometheus/config/grafana.ini /docker/grafana/grafana.ini
+	fi
 }
 
 #启动基础模块
@@ -51,6 +75,11 @@ monitor(){
 #启动程序模块
 modules(){
 	docker-compose up -d blade-gateway1 blade-gateway2 blade-auth1 blade-auth2 blade-swagger blade-report blade-user blade-desk blade-system blade-log blade-flow blade-flow-design blade-resource
+}
+
+#启动普罗米修斯模块
+prometheus(){
+	docker-compose up -d prometheus node-exporter mysqld-exporter cadvisor grafana
 }
 
 #关闭所有模块

@@ -44,7 +44,7 @@ public class AuthProvider {
 		DEFAULT_SKIP_URL.add("/oauth/revoke");
 		DEFAULT_SKIP_URL.add("/oauth/refresh");
 		DEFAULT_SKIP_URL.add("/token/**");
-		DEFAULT_SKIP_URL.add("/actuator/health/**");
+		DEFAULT_SKIP_URL.add("/actuator/**");
 		DEFAULT_SKIP_URL.add("/v2/api-docs/**");
 		DEFAULT_SKIP_URL.add("/auth/**");
 		DEFAULT_SKIP_URL.add("/log/**");
