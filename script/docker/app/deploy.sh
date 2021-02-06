@@ -1,7 +1,7 @@
 
 #使用说明，用来提示输入参数
 usage() {
-	echo "Usage: sh 执行脚本.sh [port|mount|base|modules|monitor|stop|rm|rmiNoneTag]"
+	echo "Usage: sh 执行脚本.sh [port|mount|base|monitor|modules|prometheus|stop|rm|rmiNoneTag]"
 	exit 1
 }
 
@@ -39,6 +39,7 @@ port(){
 
 ##放置挂载文件
 mount(){
+	#挂载配置文件
 	if test ! -f "/docker/nginx/api/nginx.conf" ;then
 		mkdir -p /docker/nginx/api
 		cp nginx/api/nginx.conf /docker/nginx/api/nginx.conf
@@ -60,6 +61,9 @@ mount(){
 		mkdir -p /docker/grafana
 		cp prometheus/config/grafana.ini /docker/grafana/grafana.ini
 	fi
+	#增加目录权限
+	chmod -R 777 /docker/prometheus
+	chmod -R 777 /docker/grafana
 }
 
 #启动基础模块
@@ -108,11 +112,14 @@ case "$1" in
 "base")
 	base
 ;;
+"monitor")
+	monitor
+;;
 "modules")
 	modules
 ;;
-"monitor")
-	monitor
+"prometheus")
+	prometheus
 ;;
 "stop")
 	stop

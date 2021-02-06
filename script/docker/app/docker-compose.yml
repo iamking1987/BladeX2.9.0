@@ -273,7 +273,7 @@ services:
     restart: always
     networks:
       blade_net:
-        ipv4_address: 172.30.0.91
+        ipv4_address: 172.30.0.93
 
   mysqld-exporter:
     image: prom/mysqld-exporter:v0.12.1
@@ -308,7 +308,7 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
-    command: "--detach=true"
+    command: "detach=true"
     privileged: true
     restart: always
     networks:

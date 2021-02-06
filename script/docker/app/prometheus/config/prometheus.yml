@@ -26,7 +26,7 @@ scrape_configs:
   # 监控 linux
   - job_name: linux
     static_configs:
-      - targets: ['172.30.0.91:9100'] #填写node-exporter的docker服务ip:端口或者宿主机ip:映射的端口
+      - targets: ['172.30.0.93:9100'] #填写node-exporter的docker服务ip:端口或者宿主机ip:映射的端口
         labels:
           instance: localhost #实例名称或ip
   # 监控 mysql
@@ -38,7 +38,7 @@ scrape_configs:
   # 监控 cadvisor
   - job_name: "docker"
     static_configs:
-      - targets: ['172.30.0.180:18080'] #填写cadvisor服务ip:端口
+      - targets: ['172.30.0.180:8080'] #填写cadvisor服务ip:端口
   # 监控 nacos
   - job_name: "nacos"
     metrics_path: '/nacos/actuator/prometheus'
