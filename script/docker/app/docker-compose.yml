@@ -94,7 +94,7 @@ services:
   ####################################################################################################
 
   blade-admin:
-    image: "${REGISTER}/blade/blade-admin:${TAG}"
+    image: "${REGISTER}/blade-admin:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     ports:
@@ -106,7 +106,7 @@ services:
         ipv4_address: 172.30.0.72
 
   blade-swagger:
-    image: "${REGISTER}/blade/blade-swagger:${TAG}"
+    image: "${REGISTER}/blade-swagger:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     ports:
@@ -117,7 +117,7 @@ services:
       - blade_net
 
   blade-turbine:
-    image: "${REGISTER}/blade/blade-turbine:${TAG}"
+    image: "${REGISTER}/blade-turbine:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     ports:
@@ -128,7 +128,7 @@ services:
       - blade_net
 
   blade-gateway1:
-    image: "${REGISTER}/blade/blade-gateway:${TAG}"
+    image: "${REGISTER}/blade-gateway:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     privileged: true
@@ -138,7 +138,7 @@ services:
         ipv4_address: 172.30.0.81
 
   blade-gateway2:
-    image: "${REGISTER}/blade/blade-gateway:${TAG}"
+    image: "${REGISTER}/blade-gateway:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     privileged: true
@@ -148,7 +148,7 @@ services:
         ipv4_address: 172.30.0.82
 
   blade-auth1:
-    image: "${REGISTER}/blade/blade-auth:${TAG}"
+    image: "${REGISTER}/blade-auth:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     privileged: true
@@ -158,7 +158,7 @@ services:
         ipv4_address: 172.30.0.91
 
   blade-auth2:
-    image: "${REGISTER}/blade/blade-auth:${TAG}"
+    image: "${REGISTER}/blade-auth:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     privileged: true
@@ -168,7 +168,7 @@ services:
         ipv4_address: 172.30.0.92
 
   blade-report:
-    image: "${REGISTER}/blade/blade-report:${TAG}"
+    image: "${REGISTER}/blade-report:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     privileged: true
@@ -178,7 +178,7 @@ services:
         ipv4_address: 172.30.0.98
 
   blade-log:
-    image: "${REGISTER}/blade/blade-log:${TAG}"
+    image: "${REGISTER}/blade-log:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     privileged: true
@@ -187,7 +187,7 @@ services:
     - blade_net
 
   blade-desk:
-    image: "${REGISTER}/blade/blade-desk:${TAG}"
+    image: "${REGISTER}/blade-desk:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     privileged: true
@@ -196,7 +196,7 @@ services:
     - blade_net
 
   blade-user:
-    image: "${REGISTER}/blade/blade-user:${TAG}"
+    image: "${REGISTER}/blade-user:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     privileged: true
@@ -205,7 +205,7 @@ services:
     - blade_net
 
   blade-system:
-    image: "${REGISTER}/blade/blade-system:${TAG}"
+    image: "${REGISTER}/blade-system:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     privileged: true
@@ -214,7 +214,7 @@ services:
     - blade_net
 
   blade-flow:
-    image: "${REGISTER}/blade/blade-flow:${TAG}"
+    image: "${REGISTER}/blade-flow:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     privileged: true
@@ -223,7 +223,7 @@ services:
       - blade_net
 
   blade-flow-design:
-    image: "${REGISTER}/blade/blade-flow-design:${TAG}"
+    image: "${REGISTER}/blade-flow-design:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     privileged: true
@@ -234,7 +234,7 @@ services:
       - blade_net
 
   blade-resource:
-    image: "${REGISTER}/blade/blade-resource:${TAG}"
+    image: "${REGISTER}/blade-resource:${TAG}"
     environment:
       - TZ=Asia/Shanghai
     privileged: true
