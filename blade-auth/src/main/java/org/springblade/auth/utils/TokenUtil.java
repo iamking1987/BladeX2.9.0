@@ -154,7 +154,7 @@ public class TokenUtil {
 	 * @return boolean
 	 */
 	public static boolean judgeTenant(Tenant tenant) {
-		if (tenant == null) {
+		if (tenant == null || tenant.getId() == null) {
 			throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_TENANT);
 		}
 		if (StringUtil.equalsIgnoreCase(tenant.getTenantId(), BladeConstant.ADMIN_TENANT_ID)) {
