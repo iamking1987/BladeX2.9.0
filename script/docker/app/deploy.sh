@@ -1,7 +1,7 @@
 
 #使用说明，用来提示输入参数
 usage() {
-	echo "Usage: sh 执行脚本.sh [port|mount|base|monitor|modules|prometheus|stop|rm|rmiNoneTag]"
+	echo "Usage: sh 执行脚本.sh [port|mount|base|monitor|modules|prometheus|alertmanager|stop|rm|rmiNoneTag]"
 	exit 1
 }
 
@@ -57,13 +57,30 @@ mount(){
 		mkdir -p /docker/prometheus
 		cp prometheus/config/prometheus.yml /docker/prometheus/prometheus.yml
 	fi
+	if test ! -f "/docker/prometheus/rules/alert_rules.yml" ;then
+		mkdir -p /docker/prometheus/rules
+		cp prometheus/config/alert_rules.yml /docker/prometheus/rules/alert_rules.yml
+	fi
 	if test ! -f "/docker/grafana/grafana.ini" ;then
 		mkdir -p /docker/grafana
 		cp prometheus/config/grafana.ini /docker/grafana/grafana.ini
 	fi
+	if test ! -f "/docker/alertmanager/alertmanager.yml" ;then
+		mkdir -p /docker/alertmanager
+		cp prometheus/config/alertmanager.yml /docker/alertmanager/alertmanager.yml
+	fi
+	if test ! -f "/docker/alertmanager/templates/wechat.tmpl" ;then
+		mkdir -p /docker/alertmanager/templates
+		cp prometheus/config/wechat.tmpl /docker/alertmanager/templates/wechat.tmpl
+	fi
+	if test ! -f "/docker/webhook_dingtalk/dingtalk.yml" ;then
+		mkdir -p /docker/webhook_dingtalk
+		cp prometheus/config/dingtalk.yml /docker/webhook_dingtalk/dingtalk.yml
+	fi
 	#增加目录权限
 	chmod -R 777 /docker/prometheus
 	chmod -R 777 /docker/grafana
+	chmod -R 777 /docker/alertmanager
 }
 
 #启动基础模块
@@ -84,6 +101,11 @@ modules(){
 #启动普罗米修斯模块
 prometheus(){
 	docker-compose up -d prometheus node-exporter mysqld-exporter cadvisor grafana
+}
+
+#启动监听模块
+alertmanager(){
+	docker-compose up -d alertmanager webhook-dingtalk
 }
 
 #关闭所有模块
@@ -120,6 +142,9 @@ case "$1" in
 ;;
 "prometheus")
 	prometheus
+;;
+"alertmanager")
+	alertmanager
 ;;
 "stop")
 	stop

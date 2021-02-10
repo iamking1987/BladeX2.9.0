@@ -255,6 +255,7 @@ services:
       - 9090:9090
     volumes:
       - /docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /docker/prometheus/rules:/etc/prometheus/rules
     command: "--config.file=/etc/prometheus/prometheus.yml  --web.enable-lifecycle"
     privileged: true
     restart: always
@@ -332,6 +333,38 @@ services:
     networks:
       blade_net:
         ipv4_address: 172.30.0.30
+
+  alertmanager:
+    image: prom/alertmanager:v0.21.0
+    hostname: "alertmanager"
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - 9093:9093
+    volumes:
+      - /docker/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - /docker/alertmanager/data:/etc/alertmanager/data
+      - /docker/alertmanager/templates:/etc/alertmanager/templates
+    command: "--config.file=/etc/alertmanager/alertmanager.yml --storage.path=/etc/alertmanager/data"
+    privileged: true
+    restart: always
+    networks:
+      blade_net:
+        ipv4_address: 172.30.0.99
+
+  webhook-dingtalk:
+    image: timonwong/prometheus-webhook-dingtalk:v1.4.0
+    hostname: "webhook-dingtalk"
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - 8060:8060
+    command: "ding.profile=webhook_robot=https://oapi.dingtalk.com/robot/send?access_token=xxxxx"
+    privileged: true
+    restart: always
+    networks:
+      blade_net:
+        ipv4_address: 172.30.0.96
 
 networks:
   blade_net:
