@@ -28,8 +28,6 @@ import java.util.List;
  */
 public class AuthProvider {
 
-	public static final String TARGET = "/**";
-	public static final String REPLACEMENT = "";
 	public static final String AUTH_KEY = TokenConstant.HEADER;
 	private static final List<String> DEFAULT_SKIP_URL = new ArrayList<>();
 
