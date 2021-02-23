@@ -40,13 +40,20 @@
             <artifactId>blade-flow-api</artifactId>
             <version>${bladex.project.version}</version>
         </dependency>
+        <!--Oss-->
         <dependency>
             <groupId>org.springblade</groupId>
-            <artifactId>blade-starter-oss-minio</artifactId>
+            <artifactId>blade-starter-oss</artifactId>
         </dependency>
+        <!--MinIO-->
         <dependency>
-            <groupId>org.springblade</groupId>
-            <artifactId>blade-starter-oss-qiniu</artifactId>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+        </dependency>
+        <!--QiNiu-->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
         </dependency>
         <!--<dependency>
             <groupId>org.springblade</groupId>

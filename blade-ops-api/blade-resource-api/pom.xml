@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>org.springblade</groupId>
-            <artifactId>blade-core-sms</artifactId>
+            <artifactId>blade-starter-sms</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
