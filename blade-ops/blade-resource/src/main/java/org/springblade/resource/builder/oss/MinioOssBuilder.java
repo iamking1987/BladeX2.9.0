@@ -33,7 +33,10 @@ public class MinioOssBuilder {
 
 	@SneakyThrows
 	public static OssTemplate template(Oss oss, OssRule ossRule) {
-		MinioClient minioClient = new MinioClient(oss.getEndpoint(), oss.getAccessKey(), oss.getSecretKey());
+		MinioClient minioClient = MinioClient.builder()
+			.endpoint(oss.getEndpoint())
+			.credentials(oss.getAccessKey(), oss.getSecretKey())
+			.build();
 		OssProperties ossProperties = new OssProperties();
 		ossProperties.setEndpoint(oss.getEndpoint());
 		ossProperties.setAccessKey(oss.getAccessKey());

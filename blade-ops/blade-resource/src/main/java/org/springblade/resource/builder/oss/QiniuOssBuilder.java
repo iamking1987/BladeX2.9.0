@@ -16,15 +16,15 @@
  */
 package org.springblade.resource.builder.oss;
 
-import com.qiniu.common.Zone;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
+import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import lombok.SneakyThrows;
 import org.springblade.core.oss.OssTemplate;
-import org.springblade.core.oss.props.OssProperties;
 import org.springblade.core.oss.QiniuTemplate;
+import org.springblade.core.oss.props.OssProperties;
 import org.springblade.core.oss.rule.OssRule;
 import org.springblade.resource.entity.Oss;
 
@@ -37,7 +37,7 @@ public class QiniuOssBuilder {
 
 	@SneakyThrows
 	public static OssTemplate template(Oss oss, OssRule ossRule) {
-		Configuration cfg = new Configuration(Zone.autoZone());
+		Configuration cfg = new Configuration(Region.autoRegion());
 		Auth auth = Auth.create(oss.getAccessKey(), oss.getSecretKey());
 		UploadManager uploadManager = new UploadManager(cfg);
 		BucketManager bucketManager = new BucketManager(auth, cfg);
