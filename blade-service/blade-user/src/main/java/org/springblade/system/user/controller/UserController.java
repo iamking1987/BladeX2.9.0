@@ -173,6 +173,9 @@ public class UserController {
 		return R.status(temp);
 	}
 
+	/**
+	 * 密码重制
+	 */
 	@PostMapping("/reset-password")
 	@ApiOperationSupport(order = 8)
 	@ApiOperation(value = "初始化密码", notes = "传入userId集合")
