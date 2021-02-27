@@ -23,7 +23,7 @@ spring:
 
 #feign配置
 feign:
-  hystrix:
+  sentinel:
     enabled: true
   okhttp:
     enabled: true
