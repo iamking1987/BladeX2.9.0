@@ -50,7 +50,7 @@ public class ApiScopeCache {
 	 * @return permissions
 	 */
 	public static List<String> permissionPath(String roleId) {
-		List<String> permissions = CacheUtil.get(SYS_CACHE, SCOPE_CACHE_CODE, roleId, List.class);
+		List<String> permissions = CacheUtil.get(SYS_CACHE, SCOPE_CACHE_CODE, roleId, List.class, Boolean.FALSE);
 		if (permissions == null) {
 			permissions = getApiScopeClient().permissionPath(roleId);
 			CacheUtil.put(SYS_CACHE, SCOPE_CACHE_CODE, roleId, permissions);
@@ -66,7 +66,7 @@ public class ApiScopeCache {
 	 * @return permissions
 	 */
 	public static List<String> permissionCode(String permission, String roleId) {
-		List<String> permissions = CacheUtil.get(SYS_CACHE, SCOPE_CACHE_CODE, permission + StringPool.COLON + roleId, List.class);
+		List<String> permissions = CacheUtil.get(SYS_CACHE, SCOPE_CACHE_CODE, permission + StringPool.COLON + roleId, List.class, Boolean.FALSE);
 		if (permissions == null) {
 			permissions = getApiScopeClient().permissionCode(permission, roleId);
 			CacheUtil.put(SYS_CACHE, SCOPE_CACHE_CODE, permission + StringPool.COLON + roleId, permissions);

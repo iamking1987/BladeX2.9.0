@@ -56,7 +56,7 @@ public class DataScopeCache {
 	 * @return DataScopeModel
 	 */
 	public static DataScopeModel getDataScopeByMapper(String mapperId, String roleId) {
-		DataScopeModel dataScope = CacheUtil.get(SYS_CACHE, SCOPE_CACHE_CLASS, mapperId + StringPool.COLON + roleId, DataScopeModel.class);
+		DataScopeModel dataScope = CacheUtil.get(SYS_CACHE, SCOPE_CACHE_CLASS, mapperId + StringPool.COLON + roleId, DataScopeModel.class, Boolean.FALSE);
 		if (dataScope == null || !dataScope.getSearched()) {
 			dataScope = getDataScopeClient().getDataScopeByMapper(mapperId, roleId);
 			CacheUtil.put(SYS_CACHE, SCOPE_CACHE_CLASS, mapperId + StringPool.COLON + roleId, dataScope);
@@ -71,7 +71,7 @@ public class DataScopeCache {
 	 * @return DataScopeModel
 	 */
 	public static DataScopeModel getDataScopeByCode(String code) {
-		DataScopeModel dataScope = CacheUtil.get(SYS_CACHE, SCOPE_CACHE_CODE, code, DataScopeModel.class);
+		DataScopeModel dataScope = CacheUtil.get(SYS_CACHE, SCOPE_CACHE_CODE, code, DataScopeModel.class, Boolean.FALSE);
 		if (dataScope == null || !dataScope.getSearched()) {
 			dataScope = getDataScopeClient().getDataScopeByCode(code);
 			CacheUtil.put(SYS_CACHE, SCOPE_CACHE_CODE, code, dataScope);
