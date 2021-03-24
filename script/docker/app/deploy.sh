@@ -14,6 +14,8 @@ port(){
 	firewall-cmd --add-port=8000/tcp --permanent
 	#nacos
 	firewall-cmd --add-port=8848/tcp --permanent
+	firewall-cmd --add-port=9848/tcp --permanent
+	firewall-cmd --add-port=9849/tcp --permanent
 	#sentinel
 	firewall-cmd --add-port=8858/tcp --permanent
 	#grafana
