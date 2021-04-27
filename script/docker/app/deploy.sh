@@ -26,8 +26,10 @@ port(){
 	firewall-cmd --add-port=3379/tcp --permanent
 	#admin
 	firewall-cmd --add-port=7002/tcp --permanent
-	#ureport
+	#turbine
 	firewall-cmd --add-port=7003/tcp --permanent
+	#ureport
+	firewall-cmd --add-port=8108/tcp --permanent
 	#zipkin
 	firewall-cmd --add-port=9411/tcp --permanent
 	#prometheus

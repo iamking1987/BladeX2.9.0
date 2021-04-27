@@ -10,7 +10,7 @@ RUN mkdir -p /blade/report
 
 WORKDIR /blade/report
 
-EXPOSE 7003
+EXPOSE 8108
 
 ADD ./target/blade-report.jar ./app.jar
 
