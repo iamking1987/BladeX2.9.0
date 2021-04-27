@@ -80,9 +80,9 @@ ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix://var/run/docker.sock
 ### 5. 在每个需要构建子项目的根目录下加入Dockerfile,内容可参考如下
 
 ```
-FROM adoptopenjdk/openjdk8-openj9:alpine-slim
+FROM bladex/alpine-java:openjdk8-openj9_cn_slim
 
-MAINTAINER smallchill@163.com
+MAINTAINER bladejava@qq.com
 
 RUN mkdir -p /blade/gateway
 

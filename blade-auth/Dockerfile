@@ -1,14 +1,11 @@
-#若构建后验证码接口依旧报错可以将FROM改为如下两种
+#Docker镜像可以选择以下三种，前两种已经内置字体，第三种为原生的openjdk8-openj9镜像
 #1.FROM bladex/alpine-java:8_server-jre_cn_unlimited
-#2.FROM adoptopenjdk/openjdk8-openj9:jdk8u275-b01_openj9-0.23.0-alpine-slim
-#第2点的最新tag可以到该地址查询：https://hub.docker.com/r/adoptopenjdk/openjdk8-openj9/tags?page=1&ordering=last_updated&name=alpine-slim
-FROM adoptopenjdk/openjdk8-openj9:alpine-slim
+#2.FROM bladex/alpine-java:openjdk8-openj9_cn_slim
+#3.FROM adoptopenjdk/openjdk8-openj9:jdk8u262-b10_openj9-0.21.0-alpine-slim
+#第3点的tag可以到该地址查询：https://hub.docker.com/r/adoptopenjdk/openjdk8-openj9/tags?page=1&ordering=last_updated&name=alpine-slim
+FROM bladex/alpine-java:openjdk8-openj9_cn_slim
 
-MAINTAINER smallchill@163.com
-
-#验证码字体包
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
-RUN set -xe && apk --no-cache add ttf-dejavu fontconfig
+MAINTAINER bladejava@qq.com
 
 RUN mkdir -p /blade/auth
 

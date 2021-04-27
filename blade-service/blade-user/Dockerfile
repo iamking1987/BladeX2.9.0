@@ -1,6 +1,6 @@
-FROM adoptopenjdk/openjdk8-openj9:alpine-slim
+FROM bladex/alpine-java:openjdk8-openj9_cn_slim
 
-MAINTAINER smallchill@163.com
+MAINTAINER bladejava@qq.com
 
 RUN mkdir -p /blade/user
 

@@ -1,6 +1,6 @@
 FROM bladex/alpine-java:8_server-jre_cn_unlimited
 
-MAINTAINER smallchill@163.com
+MAINTAINER bladejava@qq.com
 
 RUN mkdir -p /blade/flowdesign
 

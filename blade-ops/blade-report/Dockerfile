@@ -1,10 +1,6 @@
-FROM adoptopenjdk/openjdk8-openj9:alpine-slim
+FROM bladex/alpine-java:openjdk8-openj9_cn_slim
 
-MAINTAINER smallchill@163.com
-
-#字体包
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
-RUN apk add --update font-adobe-100dpi ttf-dejavu fontconfig
+MAINTAINER bladejava@qq.com
 
 RUN mkdir -p /blade/report
 
