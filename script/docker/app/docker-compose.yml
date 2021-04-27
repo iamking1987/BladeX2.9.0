@@ -175,6 +175,8 @@ services:
       - TZ=Asia/Shanghai
     privileged: true
     restart: always
+    ports:
+      - 8108:8108
     networks:
       blade_net:
         ipv4_address: 172.30.0.98
