@@ -33,12 +33,14 @@
 
     <modules>
         <module>blade-auth</module>
+        <module>blade-common</module>
         <module>blade-gateway</module>
         <module>blade-ops</module>
+        <module>blade-ops-api</module>
+        <module>blade-plugin</module>
+        <module>blade-plugin-api</module>
         <module>blade-service</module>
         <module>blade-service-api</module>
-        <module>blade-common</module>
-        <module>blade-ops-api</module>
     </modules>
 
     <dependencyManagement>
