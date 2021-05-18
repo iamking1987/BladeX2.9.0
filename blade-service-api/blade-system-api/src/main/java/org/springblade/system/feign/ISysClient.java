@@ -40,11 +40,13 @@ public interface ISysClient {
 	String MENU = API_PREFIX + "/menu";
 	String DEPT = API_PREFIX + "/dept";
 	String DEPT_IDS = API_PREFIX + "/dept-ids";
+	String DEPT_IDS_FUZZY = API_PREFIX + "/dept-ids-fuzzy";
 	String DEPT_NAME = API_PREFIX + "/dept-name";
 	String DEPT_NAMES = API_PREFIX + "/dept-names";
 	String DEPT_CHILD = API_PREFIX + "/dept-child";
 	String POST = API_PREFIX + "/post";
 	String POST_IDS = API_PREFIX + "/post-ids";
+	String POST_IDS_FUZZY = API_PREFIX + "/post-ids-fuzzy";
 	String POST_NAME = API_PREFIX + "/post-name";
 	String POST_NAMES = API_PREFIX + "/post-names";
 	String ROLE = API_PREFIX + "/role";
@@ -86,6 +88,16 @@ public interface ISysClient {
 	 */
 	@GetMapping(DEPT_IDS)
 	R<String> getDeptIds(@RequestParam("tenantId") String tenantId, @RequestParam("deptNames") String deptNames);
+
+	/**
+	 * 获取部门id
+	 *
+	 * @param tenantId  租户id
+	 * @param deptNames 部门名
+	 * @return 部门id
+	 */
+	@GetMapping(DEPT_IDS_FUZZY)
+	R<String> getDeptIdsByFuzzy(@RequestParam("tenantId") String tenantId, @RequestParam("deptNames") String deptNames);
 
 	/**
 	 * 获取部门名
@@ -132,6 +144,16 @@ public interface ISysClient {
 	 */
 	@GetMapping(POST_IDS)
 	R<String> getPostIds(@RequestParam("tenantId") String tenantId, @RequestParam("postNames") String postNames);
+
+	/**
+	 * 获取岗位id
+	 *
+	 * @param tenantId  租户id
+	 * @param postNames 岗位名
+	 * @return 岗位id
+	 */
+	@GetMapping(POST_IDS_FUZZY)
+	R<String> getPostIdsByFuzzy(@RequestParam("tenantId") String tenantId, @RequestParam("postNames") String postNames);
 
 	/**
 	 * 获取岗位名

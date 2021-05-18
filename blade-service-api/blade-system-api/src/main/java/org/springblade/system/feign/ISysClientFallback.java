@@ -46,6 +46,11 @@ public class ISysClientFallback implements ISysClient {
 	}
 
 	@Override
+	public R<String> getDeptIdsByFuzzy(String tenantId, String deptNames) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
 	public R<String> getDeptName(Long id) {
 		return R.fail("获取数据失败");
 	}
@@ -67,6 +72,11 @@ public class ISysClientFallback implements ISysClient {
 
 	@Override
 	public R<String> getPostIds(String tenantId, String postNames) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
+	public R<String> getPostIdsByFuzzy(String tenantId, String postNames) {
 		return R.fail("获取数据失败");
 	}
 

@@ -70,6 +70,11 @@ public class SysClient implements ISysClient {
 	}
 
 	@Override
+	public R<String> getDeptIdsByFuzzy(String tenantId, String deptNames) {
+		return R.data(deptService.getDeptIdsByFuzzy(tenantId, deptNames));
+	}
+
+	@Override
 	@GetMapping(DEPT_NAME)
 	public R<String> getDeptName(Long id) {
 		return R.data(deptService.getById(id).getDeptName());
@@ -95,6 +100,11 @@ public class SysClient implements ISysClient {
 	@Override
 	public R<String> getPostIds(String tenantId, String postNames) {
 		return R.data(postService.getPostIds(tenantId, postNames));
+	}
+
+	@Override
+	public R<String> getPostIdsByFuzzy(String tenantId, String postNames) {
+		return R.data(postService.getPostIdsByFuzzy(tenantId, postNames));
 	}
 
 	@Override
