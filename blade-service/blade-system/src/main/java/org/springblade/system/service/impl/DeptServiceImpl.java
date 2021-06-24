@@ -30,6 +30,7 @@ import org.springblade.system.entity.Dept;
 import org.springblade.system.mapper.DeptMapper;
 import org.springblade.system.service.IDeptService;
 import org.springblade.system.vo.DeptVO;
+import org.springblade.system.wrapper.DeptWrapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -150,6 +151,19 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
 		}
 		dept.setIsDeleted(BladeConstant.DB_NOT_DELETED);
 		return saveOrUpdate(dept);
+	}
+
+	@Override
+	public List<DeptVO> search(String deptName, Long parentId) {
+		LambdaQueryWrapper<Dept> queryWrapper = Wrappers.<Dept>query().lambda();
+		if (Func.isNotEmpty(deptName)) {
+			queryWrapper.like(Dept::getDeptName, deptName);
+		}
+		if (Func.isNotEmpty(parentId) && parentId > 0L) {
+			queryWrapper.eq(Dept::getParentId, parentId);
+		}
+		List<Dept> deptList = baseMapper.selectList(queryWrapper);
+		return DeptWrapper.build().listNodeVO(deptList);
 	}
 
 }
