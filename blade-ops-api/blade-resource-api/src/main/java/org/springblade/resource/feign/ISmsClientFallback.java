@@ -37,7 +37,8 @@ public class ISmsClientFallback implements ISmsClient {
 	}
 
 	@Override
-	public R validateMessage(String code, String id, String value) {
+	public R validateMessage(String code, String id, String value, String phone) {
 		return R.fail("远程调用失败");
 	}
+
 }

@@ -65,9 +65,10 @@ public interface ISmsClient {
 	 * @param code  资源编号
 	 * @param id    校验id
 	 * @param value 校验值
+	 * @param phone 手机号
 	 * @return R
 	 */
 	@PostMapping(VALIDATE_MESSAGE)
-	R validateMessage(@RequestParam("code") String code, @RequestParam("id") String id, @RequestParam("value") String value);
+	R validateMessage(@RequestParam("code") String code, @RequestParam("id") String id, @RequestParam("value") String value, @RequestParam("phone") String phone);
 
 }

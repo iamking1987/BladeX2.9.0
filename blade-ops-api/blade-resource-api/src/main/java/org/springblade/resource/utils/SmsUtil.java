@@ -105,8 +105,8 @@ public class SmsUtil {
 	 * @param value 校验值
 	 * @return 发送结果
 	 */
-	public static boolean validateMessage(String code, String id, String value) {
-		R result = getSmsClient().validateMessage(code, id, value);
+	public static boolean validateMessage(String code, String id, String value, String phone) {
+		R result = getSmsClient().validateMessage(code, id, value, phone);
 		return result.isSuccess();
 	}
 

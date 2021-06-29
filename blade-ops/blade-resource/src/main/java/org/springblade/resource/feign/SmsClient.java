@@ -62,8 +62,8 @@ public class SmsClient implements ISmsClient {
 
 	@Override
 	@PostMapping(VALIDATE_MESSAGE)
-	public R validateMessage(String code, String id, String value) {
-		SmsCode smsCode = new SmsCode().setId(id).setValue(value);
+	public R validateMessage(String code, String id, String value, String phone) {
+		SmsCode smsCode = new SmsCode().setId(id).setValue(value).setPhone(phone);
 		boolean validate = smsBuilder.template(code).validateMessage(smsCode);
 		return validate ? R.success(VALIDATE_SUCCESS) : R.fail(VALIDATE_FAIL);
 	}
