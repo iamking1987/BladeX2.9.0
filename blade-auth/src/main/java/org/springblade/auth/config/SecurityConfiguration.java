@@ -50,7 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	@SneakyThrows
 	protected void configure(HttpSecurity http) {
-		http.httpBasic().and().csrf().disable();
+		http.httpBasic().and().csrf().disable().authorizeRequests().anyRequest().fullyAuthenticated();
 	}
 
 }

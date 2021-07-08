@@ -22,7 +22,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
  * 自定义登录成功配置
@@ -34,17 +33,11 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @EnableResourceServer
 public class BladeResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
-	/**
-	 * 自定义登录成功处理器
-	 */
-	private final AuthenticationSuccessHandler appLoginInSuccessHandler;
-
 	@Override
 	@SneakyThrows
 	public void configure(HttpSecurity http) {
 		http.headers().frameOptions().disable();
 		http.formLogin()
-			.successHandler(appLoginInSuccessHandler)
 			.and()
 			.authorizeRequests()
 			.antMatchers(
