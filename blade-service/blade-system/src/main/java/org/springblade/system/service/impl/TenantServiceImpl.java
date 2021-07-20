@@ -81,7 +81,6 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public boolean submitTenant(Tenant tenant) {
-		CacheUtil.clear(SYS_CACHE);
 		if (Func.isEmpty(tenant.getId())) {
 			List<Tenant> tenants = baseMapper.selectList(Wrappers.<Tenant>query().lambda().eq(Tenant::getIsDeleted, BladeConstant.DB_NOT_DELETED));
 			List<String> codes = tenants.stream().map(Tenant::getTenantId).collect(Collectors.toList());
@@ -158,6 +157,7 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 			}
 			return temp;
 		} else {
+			CacheUtil.clear(SYS_CACHE, tenant.getTenantId());
 			return super.saveOrUpdate(tenant);
 		}
 	}
@@ -165,9 +165,9 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public boolean removeTenant(List<Long> ids) {
-		CacheUtil.clear(SYS_CACHE);
-		List<Tenant> tenantList = this.list(Wrappers.<Tenant>query().lambda().in(Tenant::getId, ids));
-		List<String> tenantIds = tenantList.stream().map(tenant -> Func.toStr(tenant.getTenantId())).distinct().collect(Collectors.toList());
+		List<String> tenantIds = this.list(Wrappers.<Tenant>query().lambda().in(Tenant::getId, ids))
+			.stream().map(tenant -> Func.toStr(tenant.getTenantId())).distinct().collect(Collectors.toList());
+		CacheUtil.clear(SYS_CACHE, tenantIds);
 		if (tenantIds.contains(BladeConstant.ADMIN_TENANT_ID)) {
 			throw new ServiceException("不可删除管理租户!");
 		}
@@ -181,7 +181,9 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 
 	@Override
 	public boolean setting(Integer accountNumber, Date expireTime, String ids) {
-		CacheUtil.clear(SYS_CACHE);
+		List<String> tenantIds = this.list(Wrappers.<Tenant>query().lambda().in(Tenant::getId, ids))
+			.stream().map(tenant -> Func.toStr(tenant.getTenantId())).distinct().collect(Collectors.toList());
+		CacheUtil.clear(SYS_CACHE, tenantIds);
 		Func.toLongList(ids).forEach(id -> {
 			Kv kv = Kv.create().set("accountNumber", accountNumber).set("expireTime", expireTime).set("id", id);
 			String licenseKey = DesUtil.encryptToHex(JsonUtil.toJson(kv), DES_KEY);
