@@ -21,11 +21,10 @@ import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
 import org.springblade.auth.constant.AuthConstant;
 import org.springblade.auth.utils.TokenUtil;
+import org.springblade.common.cache.CacheNames;
+import org.springblade.core.redis.cache.BladeRedis;
 import org.springblade.core.tool.api.R;
-import org.springblade.core.tool.utils.Func;
-import org.springblade.core.tool.utils.StringPool;
-import org.springblade.core.tool.utils.StringUtil;
-import org.springblade.core.tool.utils.WebUtil;
+import org.springblade.core.tool.utils.*;
 import org.springblade.system.entity.Tenant;
 import org.springblade.system.feign.ISysClient;
 import org.springblade.system.user.entity.User;
@@ -39,6 +38,7 @@ import org.springframework.security.oauth2.common.exceptions.UserDeniedAuthoriza
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.Duration;
 
 /**
  * 用户信息
@@ -49,8 +49,12 @@ import javax.servlet.http.HttpServletRequest;
 @AllArgsConstructor
 public class BladeUserDetailsServiceImpl implements UserDetailsService {
 
+	public static final Integer FAIL_COUNT = 5;
+
 	private final IUserClient userClient;
 	private final ISysClient sysClient;
+
+	private final BladeRedis bladeRedis;
 
 	@Override
 	@SneakyThrows
@@ -59,10 +63,18 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 		// 获取租户ID
 		String headerTenant = request.getHeader(TokenUtil.TENANT_HEADER_KEY);
 		String paramTenant = request.getParameter(TokenUtil.TENANT_PARAM_KEY);
+		String password = request.getParameter(TokenUtil.PASSWORD_KEY);
 		if (StringUtil.isAllBlank(headerTenant, paramTenant)) {
 			throw new UserDeniedAuthorizationException(TokenUtil.TENANT_NOT_FOUND);
 		}
 		String tenantId = StringUtils.isBlank(headerTenant) ? paramTenant : headerTenant;
+
+		// 判断登录是否锁定
+		// TODO 2.8.3版本将增加：1.参数管理读取配置 2.用户管理增加解封按钮
+		int cnt = Func.toInt(bladeRedis.get(CacheNames.tenantKey(tenantId, CacheNames.USER_FAIL_KEY, username)), 0);
+		if (cnt >= FAIL_COUNT) {
+			throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_TOO_MANY_FAILS);
+		}
 
 		// 获取租户信息
 		R<Tenant> tenant = sysClient.getTenant(tenantId);
@@ -92,7 +104,9 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 		if (result.isSuccess()) {
 			UserInfo userInfo = result.getData();
 			User user = userInfo.getUser();
-			if (user == null || user.getId() == null) {
+			if (user == null || user.getId() == null || !user.getPassword().equals(DigestUtil.hex(password))) {
+				// 错误次数锁定
+				bladeRedis.setEx(CacheNames.tenantKey(tenantId, CacheNames.USER_FAIL_KEY, username), cnt + 1, Duration.ofMinutes(30));
 				throw new UsernameNotFoundException(TokenUtil.USER_NOT_FOUND);
 			}
 			if (Func.isEmpty(userInfo.getRoles())) {
