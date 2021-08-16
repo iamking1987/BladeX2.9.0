@@ -39,6 +39,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
+import java.util.List;
 
 /**
  * 用户信息
@@ -60,6 +61,9 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 	@SneakyThrows
 	public BladeUserDetails loadUserByUsername(String username) {
 		HttpServletRequest request = WebUtil.getRequest();
+		// 获取用户绑定ID
+		String headerDept = request.getHeader(TokenUtil.DEPT_HEADER_KEY);
+		String headerRole = request.getHeader(TokenUtil.ROLE_HEADER_KEY);
 		// 获取租户ID
 		String headerTenant = request.getHeader(TokenUtil.TENANT_HEADER_KEY);
 		String paramTenant = request.getParameter(TokenUtil.TENANT_PARAM_KEY);
@@ -112,8 +116,20 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 			if (Func.isEmpty(userInfo.getRoles())) {
 				throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_ROLE);
 			}
+			// 多部门情况下指定单部门
+			if (Func.isNotEmpty(headerDept) && user.getDeptId().contains(headerDept)) {
+				user.setDeptId(headerDept);
+			}
+			// 多角色情况下指定单角色
+			if (Func.isNotEmpty(headerRole) && user.getRoleId().contains(headerRole)) {
+				R<List<String>> roleResult = sysClient.getRoleAliases(headerRole);
+				if (roleResult.isSuccess()) {
+					userInfo.setRoles(roleResult.getData());
+				}
+				user.setRoleId(headerRole);
+			}
 			return new BladeUserDetails(user.getId(),
-				user.getTenantId(), StringPool.EMPTY, user.getName(), user.getRealName(), user.getDeptId(), user.getPostId(), user.getRoleId(), Func.join(result.getData().getRoles()), Func.toStr(user.getAvatar(), TokenUtil.DEFAULT_AVATAR),
+				user.getTenantId(), StringPool.EMPTY, user.getName(), user.getRealName(), user.getDeptId(), user.getPostId(), user.getRoleId(), Func.join(userInfo.getRoles()), Func.toStr(user.getAvatar(), TokenUtil.DEFAULT_AVATAR),
 				username, AuthConstant.ENCRYPT + user.getPassword(), userInfo.getDetail(), true, true, true, true,
 				AuthorityUtils.commaSeparatedStringToAuthorityList(Func.join(result.getData().getRoles())));
 		} else {
