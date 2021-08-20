@@ -68,6 +68,7 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 		String headerTenant = request.getHeader(TokenUtil.TENANT_HEADER_KEY);
 		String paramTenant = request.getParameter(TokenUtil.TENANT_PARAM_KEY);
 		String password = request.getParameter(TokenUtil.PASSWORD_KEY);
+		String grantType = request.getParameter(TokenUtil.GRANT_TYPE_KEY);
 		if (StringUtil.isAllBlank(headerTenant, paramTenant)) {
 			throw new UserDeniedAuthorizationException(TokenUtil.TENANT_NOT_FOUND);
 		}
@@ -75,8 +76,8 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 
 		// 判断登录是否锁定
 		// TODO 2.8.3版本将增加：1.参数管理读取配置 2.用户管理增加解封按钮
-		int cnt = Func.toInt(bladeRedis.get(CacheNames.tenantKey(tenantId, CacheNames.USER_FAIL_KEY, username)), 0);
-		if (cnt >= FAIL_COUNT) {
+		int count = getFailCount(tenantId, username);
+		if (count >= FAIL_COUNT) {
 			throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_TOO_MANY_FAILS);
 		}
 
@@ -108,11 +109,17 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 		if (result.isSuccess()) {
 			UserInfo userInfo = result.getData();
 			User user = userInfo.getUser();
-			if (user == null || user.getId() == null || !user.getPassword().equals(DigestUtil.hex(password))) {
-				// 错误次数锁定
-				bladeRedis.setEx(CacheNames.tenantKey(tenantId, CacheNames.USER_FAIL_KEY, username), cnt + 1, Duration.ofMinutes(30));
+			// 用户不存在,但提示用户名与密码错误并锁定账号
+			if (user == null || user.getId() == null) {
+				setFailCount(tenantId, username, count);
 				throw new UsernameNotFoundException(TokenUtil.USER_NOT_FOUND);
 			}
+			// 用户存在但密码错误,超过次数则锁定账号
+			if (!grantType.equals(TokenUtil.REFRESH_TOKEN_KEY) && !user.getPassword().equals(DigestUtil.hex(password))) {
+				setFailCount(tenantId, username, count);
+				throw new UsernameNotFoundException(TokenUtil.USER_NOT_FOUND);
+			}
+			// 用户角色不存在
 			if (Func.isEmpty(userInfo.getRoles())) {
 				throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_NO_ROLE);
 			}
@@ -136,5 +143,28 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException(result.getMsg());
 		}
 	}
+
+	/**
+	 * 获取账号错误次数
+	 *
+	 * @param tenantId 租户id
+	 * @param username 账号
+	 * @return int
+	 */
+	private int getFailCount(String tenantId, String username) {
+		return Func.toInt(bladeRedis.get(CacheNames.tenantKey(tenantId, CacheNames.USER_FAIL_KEY, username)), 0);
+	}
+
+	/**
+	 * 设置账号错误次数
+	 *
+	 * @param tenantId 租户id
+	 * @param username 账号
+	 * @param count    次数
+	 */
+	private void setFailCount(String tenantId, String username, int count) {
+		bladeRedis.setEx(CacheNames.tenantKey(tenantId, CacheNames.USER_FAIL_KEY, username), count + 1, Duration.ofMinutes(30));
+	}
+
 
 }

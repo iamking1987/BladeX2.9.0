@@ -76,6 +76,8 @@ public class TokenUtil {
 	public final static String HEADER_PREFIX = "Basic ";
 	public final static String DEFAULT_AVATAR = "";
 	public final static String PASSWORD_KEY = "password";
+	public final static String GRANT_TYPE_KEY = "grant_type";
+	public final static String REFRESH_TOKEN_KEY = "refresh_token";
 
 	private static BladeTenantProperties tenantProperties;
 
