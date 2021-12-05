@@ -101,4 +101,12 @@ public interface IRoleService extends IService<Role> {
 	 */
 	List<RoleVO> search(String roleName, Long parentId);
 
+	/**
+	 * 删除角色
+	 *
+	 * @param ids
+	 * @return
+	 */
+	boolean removeRole(String ids);
+
 }
