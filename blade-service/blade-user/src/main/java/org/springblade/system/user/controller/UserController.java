@@ -19,16 +19,19 @@ package org.springblade.system.user.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
+import org.springblade.common.cache.CacheNames;
 import org.springblade.core.cache.utils.CacheUtil;
 import org.springblade.core.excel.util.ExcelUtil;
 import org.springblade.core.mp.support.Condition;
 import org.springblade.core.mp.support.Query;
+import org.springblade.core.redis.cache.BladeRedis;
 import org.springblade.core.secure.BladeUser;
 import org.springblade.core.secure.annotation.PreAuth;
 import org.springblade.core.secure.utils.AuthUtil;
@@ -37,6 +40,7 @@ import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.utils.DateUtil;
+import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringPool;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.excel.UserExcel;
@@ -68,6 +72,7 @@ import static org.springblade.core.cache.constant.CacheConstant.USER_CACHE;
 public class UserController {
 
 	private final IUserService userService;
+	private final BladeRedis bladeRedis;
 
 	/**
 	 * 查询单条
@@ -272,7 +277,6 @@ public class UserController {
 	}
 
 
-
 	/**
 	 * 配置用户平台信息
 	 */
@@ -310,6 +314,19 @@ public class UserController {
 	@GetMapping("/search/user")
 	public R<IPage<UserVO>> userSearch(@ApiIgnore UserVO user, @ApiIgnore Query query) {
 		return R.data(userService.selectUserSearch(user, query));
+	}
+
+
+	/**
+	 * 用户解锁
+	 */
+	@PostMapping("/unlock")
+	@ApiOperationSupport(order = 19)
+	@ApiOperation(value = "账号解锁", notes = "传入id")
+	public R unlock(String userIds) {
+		List<User> userList = userService.list(Wrappers.<User>lambdaQuery().in(User::getId, Func.toLongList(userIds)));
+		userList.forEach(user -> bladeRedis.del(CacheNames.tenantKey(user.getTenantId(), CacheNames.USER_FAIL_KEY, user.getAccount())));
+		return R.success("操作成功");
 	}
 
 }

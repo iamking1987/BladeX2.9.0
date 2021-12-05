@@ -25,6 +25,7 @@ import org.springblade.common.cache.CacheNames;
 import org.springblade.core.redis.cache.BladeRedis;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.utils.*;
+import org.springblade.system.cache.ParamCache;
 import org.springblade.system.entity.Tenant;
 import org.springblade.system.feign.ISysClient;
 import org.springblade.system.user.entity.User;
@@ -51,6 +52,7 @@ import java.util.List;
 public class BladeUserDetailsServiceImpl implements UserDetailsService {
 
 	public static final Integer FAIL_COUNT = 5;
+	public static final String FAIL_COUNT_VALUE = "account.failCount";
 
 	private final IUserClient userClient;
 	private final ISysClient sysClient;
@@ -75,9 +77,9 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 		String tenantId = StringUtils.isBlank(headerTenant) ? paramTenant : headerTenant;
 
 		// 判断登录是否锁定
-		// TODO 2.8.3版本将增加：1.参数管理读取配置 2.用户管理增加解封按钮
 		int count = getFailCount(tenantId, username);
-		if (count >= FAIL_COUNT) {
+		int failCount = Func.toInt(ParamCache.getValue(FAIL_COUNT_VALUE), FAIL_COUNT);
+		if (count >= failCount) {
 			throw new UserDeniedAuthorizationException(TokenUtil.USER_HAS_TOO_MANY_FAILS);
 		}
 
