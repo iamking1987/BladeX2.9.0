@@ -137,6 +137,8 @@ public class BladeUserDetailsServiceImpl implements UserDetailsService {
 				}
 				user.setRoleId(headerRole);
 			}
+			// 成功则清除登录错误次数
+			bladeRedis.del(CacheNames.tenantKey(tenantId, CacheNames.USER_FAIL_KEY, username));
 			return new BladeUserDetails(user.getId(),
 				user.getTenantId(), StringPool.EMPTY, user.getName(), user.getRealName(), user.getDeptId(), user.getPostId(), user.getRoleId(), Func.join(userInfo.getRoles()), Func.toStr(user.getAvatar(), TokenUtil.DEFAULT_AVATAR),
 				username, AuthConstant.ENCRYPT + user.getPassword(), userInfo.getDetail(), true, true, true, true,
