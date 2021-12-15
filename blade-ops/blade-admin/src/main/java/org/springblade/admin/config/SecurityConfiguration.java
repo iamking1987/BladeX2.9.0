@@ -17,6 +17,7 @@
 package org.springblade.admin.config;
 
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
+import org.springblade.admin.security.InternalAuthorizationManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -47,14 +48,16 @@ public class SecurityConfiguration {
 		successHandler.setLocation(URI.create(contextPath + "/"));
 		return http.headers().frameOptions().disable().and()
 			.authorizeExchange()
+			// 放开静态文件和登陆
 			.pathMatchers(
 				contextPath + "/assets/**"
 				, contextPath + "/login"
-				, contextPath + "/actuator/**"
 				, contextPath + "/v1/agent/**"
 				, contextPath + "/v1/catalog/**"
 				, contextPath + "/v1/health/**"
 			).permitAll()
+			// 内网可访问 actuator
+			.pathMatchers(contextPath + "/actuator", contextPath + "/actuator/**").access(new InternalAuthorizationManager())
 			.anyExchange().authenticated().and()
 			.formLogin().loginPage(contextPath + "/login")
 			.authenticationSuccessHandler(successHandler).and()

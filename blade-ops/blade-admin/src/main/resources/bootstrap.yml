@@ -25,6 +25,9 @@ spring:
             url: https://bladex.vip/
             order: 1
             iframe: true
+      ## 用于内网安全，判断 admin proxy
+      instance-proxy:
+        ignored-headers: "X-Forwarded-For"
   security:
     user:
       name: blade
