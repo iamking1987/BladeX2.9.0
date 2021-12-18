@@ -25,14 +25,13 @@ import org.springblade.core.secure.BladeUser;
 import org.springblade.core.secure.utils.AuthUtil;
 import org.springblade.core.tool.constant.BladeConstant;
 import org.springblade.core.tool.node.ForestNodeMerger;
+import org.springblade.core.tool.node.TreeNode;
 import org.springblade.core.tool.support.Kv;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringUtil;
+import org.springblade.system.cache.SysCache;
 import org.springblade.system.dto.MenuDTO;
-import org.springblade.system.entity.Menu;
-import org.springblade.system.entity.RoleMenu;
-import org.springblade.system.entity.RoleScope;
-import org.springblade.system.entity.TopMenuSetting;
+import org.springblade.system.entity.*;
 import org.springblade.system.mapper.MenuMapper;
 import org.springblade.system.service.IMenuService;
 import org.springblade.system.service.IRoleMenuService;
@@ -95,7 +94,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 		}
 		// 非超级管理员并且不是顶部菜单请求则返回对应角色权限菜单
 		else if (!AuthUtil.isAdministrator() && Func.isEmpty(topMenuId)) {
-			roleMenus = baseMapper.roleMenuByRoleId(Func.toLongList(roleId));
+			roleMenus = tenantPackageMenu(baseMapper.roleMenuByRoleId(Func.toLongList(roleId)));
 		}
 		// 顶部菜单请求返回对应角色权限菜单
 		else {
@@ -139,27 +138,53 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 	}
 
 	@Override
-	public List<MenuVO> tree() {
+	public List<TreeNode> tree() {
 		return ForestNodeMerger.merge(baseMapper.tree());
 	}
 
 	@Override
-	public List<MenuVO> grantTree(BladeUser user) {
-		return ForestNodeMerger.merge(user.getTenantId().equals(BladeConstant.ADMIN_TENANT_ID) ? baseMapper.grantTree() : baseMapper.grantTreeByRole(Func.toLongList(user.getRoleId())));
+	public List<TreeNode> grantTree(BladeUser user) {
+		List<TreeNode> menuTree = user.getTenantId().equals(BladeConstant.ADMIN_TENANT_ID) ? baseMapper.grantTree() : baseMapper.grantTreeByRole(Func.toLongList(user.getRoleId()));
+		return ForestNodeMerger.merge(tenantPackageTree(menuTree, user.getTenantId()));
 	}
 
 	@Override
-	public List<MenuVO> grantTopTree(BladeUser user) {
-		return ForestNodeMerger.merge(user.getTenantId().equals(BladeConstant.ADMIN_TENANT_ID) ? baseMapper.grantTopTree() : baseMapper.grantTopTreeByRole(Func.toLongList(user.getRoleId())));
+	public List<TreeNode> grantTopTree(BladeUser user) {
+		List<TreeNode> menuTree = user.getTenantId().equals(BladeConstant.ADMIN_TENANT_ID) ? baseMapper.grantTopTree() : baseMapper.grantTopTreeByRole(Func.toLongList(user.getRoleId()));
+		return ForestNodeMerger.merge(tenantPackageTree(menuTree, user.getTenantId()));
+	}
+
+	/**
+	 * 租户菜单权限自定义筛选
+	 */
+	private List<TreeNode> tenantPackageTree(List<TreeNode> menuTree, String tenantId) {
+		TenantPackage tenantPackage = SysCache.getTenantPackage(tenantId);
+		if (!AuthUtil.isAdministrator() && Func.isNotEmpty(tenantPackage) && tenantPackage.getId() > 0L) {
+			List<Long> menuIds = Func.toLongList(tenantPackage.getMenuId());
+			menuTree = menuTree.stream().filter(x -> menuIds.contains(x.getId())).collect(Collectors.toList());
+		}
+		return menuTree;
+	}
+
+	/**
+	 * 租户菜单权限自定义筛选
+	 */
+	private List<Menu> tenantPackageMenu(List<Menu> menu) {
+		TenantPackage tenantPackage = SysCache.getTenantPackage(AuthUtil.getTenantId());
+		if (Func.isNotEmpty(tenantPackage) && tenantPackage.getId() > 0L) {
+			List<Long> menuIds = Func.toLongList(tenantPackage.getMenuId());
+			menu = menu.stream().filter(x -> menuIds.contains(x.getId())).collect(Collectors.toList());
+		}
+		return menu;
 	}
 
 	@Override
-	public List<MenuVO> grantDataScopeTree(BladeUser user) {
+	public List<TreeNode> grantDataScopeTree(BladeUser user) {
 		return ForestNodeMerger.merge(user.getTenantId().equals(BladeConstant.ADMIN_TENANT_ID) ? baseMapper.grantDataScopeTree() : baseMapper.grantDataScopeTreeByRole(Func.toLongList(user.getRoleId())));
 	}
 
 	@Override
-	public List<MenuVO> grantApiScopeTree(BladeUser user) {
+	public List<TreeNode> grantApiScopeTree(BladeUser user) {
 		return ForestNodeMerger.merge(user.getTenantId().equals(BladeConstant.ADMIN_TENANT_ID) ? baseMapper.grantApiScopeTree() : baseMapper.grantApiScopeTreeByRole(Func.toLongList(user.getRoleId())));
 	}
 

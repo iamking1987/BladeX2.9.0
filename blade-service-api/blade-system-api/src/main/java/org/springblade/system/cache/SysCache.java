@@ -56,6 +56,7 @@ public class SysCache {
 	private static final String ROLE_ALIASES_ID = "roleAliases:id:";
 	private static final String TENANT_ID = "tenant:id:";
 	private static final String TENANT_TENANT_ID = "tenant:tenantId:";
+	private static final String TENANT_PACKAGE_ID = "tenant:packageId:";
 
 	private static ISysClient sysClient;
 
@@ -354,6 +355,19 @@ public class SysCache {
 			R<Tenant> result = getSysClient().getTenant(tenantId);
 			return result.getData();
 		});
+	}
+
+	/**
+	 * 获取租户产品包
+	 *
+	 * @param tenantId 租户id
+	 * @return Tenant
+	 */
+	public static TenantPackage getTenantPackage(String tenantId) {
+		return CacheUtil.get(SYS_CACHE, TENANT_PACKAGE_ID, tenantId, () -> {
+			R<TenantPackage> result = getSysClient().getTenantPackage(tenantId);
+			return result.getData();
+		}, Boolean.FALSE);
 	}
 
 }

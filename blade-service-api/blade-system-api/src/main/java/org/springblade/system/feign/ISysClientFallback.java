@@ -131,6 +131,11 @@ public class ISysClientFallback implements ISysClient {
 	}
 
 	@Override
+	public R<TenantPackage> getTenantPackage(String tenantId) {
+		return R.fail("获取数据失败");
+	}
+
+	@Override
 	public R<Param> getParam(Long id) {
 		return R.fail("获取数据失败");
 	}

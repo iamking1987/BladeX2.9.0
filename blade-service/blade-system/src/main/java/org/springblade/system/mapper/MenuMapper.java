@@ -17,6 +17,7 @@
 package org.springblade.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springblade.core.tool.node.TreeNode;
 import org.springblade.system.dto.MenuDTO;
 import org.springblade.system.entity.Menu;
 import org.springblade.system.vo.MenuVO;
@@ -55,14 +56,14 @@ public interface MenuMapper extends BaseMapper<Menu> {
 	 *
 	 * @return
 	 */
-	List<MenuVO> tree();
+	List<TreeNode> tree();
 
 	/**
 	 * 授权树形结构
 	 *
 	 * @return
 	 */
-	List<MenuVO> grantTree();
+	List<TreeNode> grantTree();
 
 	/**
 	 * 授权树形结构
@@ -70,14 +71,14 @@ public interface MenuMapper extends BaseMapper<Menu> {
 	 * @param roleId
 	 * @return
 	 */
-	List<MenuVO> grantTreeByRole(List<Long> roleId);
+	List<TreeNode> grantTreeByRole(List<Long> roleId);
 
 	/**
 	 * 顶部菜单树形结构
 	 *
 	 * @return
 	 */
-	List<MenuVO> grantTopTree();
+	List<TreeNode> grantTopTree();
 
 	/**
 	 * 顶部菜单树形结构
@@ -85,21 +86,21 @@ public interface MenuMapper extends BaseMapper<Menu> {
 	 * @param roleId
 	 * @return
 	 */
-	List<MenuVO> grantTopTreeByRole(List<Long> roleId);
+	List<TreeNode> grantTopTreeByRole(List<Long> roleId);
 
 	/**
 	 * 数据权限授权树形结构
 	 *
 	 * @return
 	 */
-	List<MenuVO> grantDataScopeTree();
+	List<TreeNode> grantDataScopeTree();
 
 	/**
 	 * 接口权限授权树形结构
 	 *
 	 * @return
 	 */
-	List<MenuVO> grantApiScopeTree();
+	List<TreeNode> grantApiScopeTree();
 
 	/**
 	 * 数据权限授权树形结构
@@ -107,7 +108,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
 	 * @param roleId
 	 * @return
 	 */
-	List<MenuVO> grantDataScopeTreeByRole(List<Long> roleId);
+	List<TreeNode> grantDataScopeTreeByRole(List<Long> roleId);
 
 	/**
 	 * 接口权限授权树形结构
@@ -115,7 +116,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
 	 * @param roleId
 	 * @return
 	 */
-	List<MenuVO> grantApiScopeTreeByRole(List<Long> roleId);
+	List<TreeNode> grantApiScopeTreeByRole(List<Long> roleId);
 
 	/**
 	 * 所有菜单

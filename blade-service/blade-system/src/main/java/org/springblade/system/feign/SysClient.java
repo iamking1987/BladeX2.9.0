@@ -48,6 +48,8 @@ public class SysClient implements ISysClient {
 
 	private final ITenantService tenantService;
 
+	private final ITenantPackageService tenantPackageService;
+
 	private final IParamService paramService;
 
 	private final IRegionService regionService;
@@ -162,6 +164,13 @@ public class SysClient implements ISysClient {
 	@GetMapping(TENANT_ID)
 	public R<Tenant> getTenant(String tenantId) {
 		return R.data(tenantService.getByTenantId(tenantId));
+	}
+
+	@Override
+	@GetMapping(TENANT_PACKAGE)
+	public R<TenantPackage> getTenantPackage(String tenantId) {
+		Tenant tenant = tenantService.getByTenantId(tenantId);
+		return R.data(tenantPackageService.getById(tenant.getPackageId()));
 	}
 
 	@Override

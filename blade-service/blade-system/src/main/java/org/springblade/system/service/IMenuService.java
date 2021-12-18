@@ -18,6 +18,7 @@ package org.springblade.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springblade.core.secure.BladeUser;
+import org.springblade.core.tool.node.TreeNode;
 import org.springblade.core.tool.support.Kv;
 import org.springblade.system.entity.Menu;
 import org.springblade.system.vo.MenuVO;
@@ -72,7 +73,7 @@ public interface IMenuService extends IService<Menu> {
 	 *
 	 * @return
 	 */
-	List<MenuVO> tree();
+	List<TreeNode> tree();
 
 	/**
 	 * 授权树形结构
@@ -80,7 +81,7 @@ public interface IMenuService extends IService<Menu> {
 	 * @param user
 	 * @return
 	 */
-	List<MenuVO> grantTree(BladeUser user);
+	List<TreeNode> grantTree(BladeUser user);
 
 	/**
 	 * 顶部菜单树形结构
@@ -88,7 +89,7 @@ public interface IMenuService extends IService<Menu> {
 	 * @param user
 	 * @return
 	 */
-	List<MenuVO> grantTopTree(BladeUser user);
+	List<TreeNode> grantTopTree(BladeUser user);
 
 	/**
 	 * 数据权限授权树形结构
@@ -96,7 +97,7 @@ public interface IMenuService extends IService<Menu> {
 	 * @param user
 	 * @return
 	 */
-	List<MenuVO> grantDataScopeTree(BladeUser user);
+	List<TreeNode> grantDataScopeTree(BladeUser user);
 
 	/**
 	 * 接口权限授权树形结构
@@ -104,7 +105,7 @@ public interface IMenuService extends IService<Menu> {
 	 * @param user
 	 * @return
 	 */
-	List<MenuVO> grantApiScopeTree(BladeUser user);
+	List<TreeNode> grantApiScopeTree(BladeUser user);
 
 	/**
 	 * 默认选中节点
