@@ -37,6 +37,8 @@ import org.springblade.system.cache.DictCache;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.enums.DictEnum;
 import org.springblade.system.service.IDeptService;
+import org.springblade.system.user.cache.UserCache;
+import org.springblade.system.user.entity.User;
 import org.springblade.system.vo.DeptVO;
 import org.springblade.system.wrapper.DeptWrapper;
 import org.springframework.web.bind.annotation.*;
@@ -164,7 +166,11 @@ public class DeptController extends BladeController {
 	@GetMapping("/select")
 	@ApiOperationSupport(order = 8)
 	@ApiOperation(value = "下拉数据源", notes = "传入id集合")
-	public R<List<Dept>> select(String deptId) {
+	public R<List<Dept>> select(Long userId, String deptId) {
+		if (Func.isNotEmpty(userId)) {
+			User user = UserCache.getUser(userId);
+			deptId = user.getDeptId();
+		}
 		List<Dept> list = deptService.list(Wrappers.<Dept>lambdaQuery().in(Dept::getId, Func.toLongList(deptId)));
 		return R.data(list);
 	}

@@ -35,6 +35,8 @@ import org.springblade.core.tool.utils.Func;
 import org.springblade.system.cache.SysCache;
 import org.springblade.system.entity.Role;
 import org.springblade.system.service.IRoleService;
+import org.springblade.system.user.cache.UserCache;
+import org.springblade.system.user.entity.User;
 import org.springblade.system.vo.GrantVO;
 import org.springblade.system.vo.RoleVO;
 import org.springblade.system.wrapper.RoleWrapper;
@@ -157,7 +159,11 @@ public class RoleController extends BladeController {
 	@GetMapping("/select")
 	@ApiOperationSupport(order = 8)
 	@ApiOperation(value = "下拉数据源", notes = "传入id集合")
-	public R<List<Role>> select(String roleId) {
+	public R<List<Role>> select(Long userId, String roleId) {
+		if (Func.isNotEmpty(userId)) {
+			User user = UserCache.getUser(userId);
+			roleId = user.getRoleId();
+		}
 		List<Role> list = roleService.list(Wrappers.<Role>lambdaQuery().in(Role::getId, Func.toLongList(roleId)));
 		return R.data(list);
 	}
