@@ -37,12 +37,12 @@
             <groupId>org.springblade</groupId>
             <artifactId>blade-starter-sms</artifactId>
         </dependency>
-        <!--MinIO-->
+        <!--MinIO OSS-->
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
         </dependency>
-        <!--Alioss-->
+        <!--Ali OSS-->
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
@@ -52,7 +52,7 @@
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
         </dependency>
-        <!--腾讯COS-->
+        <!--腾讯COS  OSS-->
         <dependency>
             <groupId>com.qcloud</groupId>
             <artifactId>cos_api</artifactId>
@@ -62,7 +62,7 @@
             <groupId>com.github.qcloudsms</groupId>
             <artifactId>qcloudsms</artifactId>
         </dependency>
-        <!--QiNiu-->
+        <!--QiNiu OSS-->
         <dependency>
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>
@@ -81,6 +81,16 @@
             <groupId>org.springblade</groupId>
             <artifactId>blade-dict-api</artifactId>
             <version>${bladex.project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-starter-http</artifactId>
         </dependency>
     </dependencies>
 

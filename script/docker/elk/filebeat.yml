@@ -3,7 +3,7 @@ filebeat.inputs:
     enabled: true
     paths:
       # 当前目录下的所有.log文件
-      - /home/project/elk/logs/*.log
+      - /home/test/elk/logs/*.log
     multiline.pattern: ^\[
     multiline.negate: true
     multiline.match: after

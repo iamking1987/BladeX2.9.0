@@ -8,4 +8,24 @@ flowable:
   label-font-name: \u5B8B\u4F53
   annotation-font-name: \u5B8B\u4F53
   check-process-definitions: false
-  database-schema-update: false
+  database-schema-update: false  #表自动更新
+
+  #后增加
+  async-executor-activate: false # 关闭定时任务
+  app:
+    enabled: false
+  cmmn:
+    enabled: false
+  idm:
+    enabled: false
+  dmn:
+    enabled: false
+  form:
+    enabled: false
+  content:
+    enabled: false
+  eventregistry:
+    enabled: false
+  custom-mybatis-x-m-l-mappers:
+    - org/springblade/plugin/workflow/process/mapper/WfProcessDefinition.xml
+    - org/springblade/plugin/workflow/process/mapper/WfHistoricTaskInstance.xml

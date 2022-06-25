@@ -2,11 +2,14 @@ knife4j:
   cloud:
     routes:
       - name: 授权模块
-        uri: 192.168.0.157:88
+        uri: 127.0.0.1:8080
+        #        uri: 172.31.50.121:88
         location: /blade-auth/v2/api-docs
       - name: 工作台模块
-        uri: 192.168.0.157:88
+        uri: 127.0.0.1:8080
+        #        uri: 172.31.50.121:88
         location: /blade-desk/v2/api-docs
       - name: 系统模块
-        uri: 192.168.0.157:88
+        uri: 127.0.0.1:8080
+        #        uri: 172.31.50.121:88
         location: /blade-system/v2/api-docs

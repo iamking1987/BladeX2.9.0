@@ -18,6 +18,8 @@ package org.springblade.desk.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.springblade.core.datascope.annotation.DataAuth;
+import org.springblade.core.datascope.enums.DataScopeEnum;
 import org.springblade.desk.entity.Notice;
 import org.springblade.desk.vo.NoticeVO;
 
@@ -45,6 +47,12 @@ public interface NoticeMapper extends BaseMapper<Notice> {
 	 * @param notice 实体
 	 * @return List<NoticeVO>
 	 */
+	// @DataAuth(type = DataScopeEnum.OWN_DEPT)  //仅仅本部门数据可见
+	//@DataAuth(column = "create_user",type = DataScopeEnum.OWN)  //仅仅数据创建人可见
+
+	//${}中可有userId,deptId roleId tenantId,account userName 注意数组的（${}）写法  在BladeUserDetail中的所有字段都可
+	//@DataAuth(type = DataScopeEnum.CUSTOM,value = "where scope.create_user =${userId} or scope.create_dept in (${deptId})")
+
 	List<NoticeVO> selectNoticePage(IPage page, NoticeVO notice);
 
 }

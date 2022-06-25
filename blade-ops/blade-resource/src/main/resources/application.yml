@@ -3,11 +3,18 @@ server:
   port: 8010
 
 #默认对象存储配置
-oss:
-  enabled: true
-  name: minio
-  tenant-mode: true
-  endpoint: http://127.0.0.1:9000
-  access-key: D99KGE6ZTQXSATTJWU24
-  secret-key: QyVqGnhIQQE734UYSUFlGOZViE6+ZlDEfUG3NjhJ
-  bucket-name: bladex
+#  endpoint: http://127.0.0.1:9000                                                #OSS对外开放的地址
+#  access-key: D99KGE6ZTQXSATTJWU24                                               #Oss提供的accessKey
+#  secret-key: QyVqGnhIQQE734UYSUFlGOZViE6+ZlDEfUG3NjhJ                           #oss提供的SecretKey
+#  MINIO_ROOT_USER: AKIAIOSFODNN7EXAMPLE
+#  MINIO_ROOT_PASSWORD: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+#oss:
+#  enabled: true                                                                   #是否开启OSS配置
+#  name: minio                                                                     #开启OSS类型： minio alioss qiniu tencentcos
+#  tenant-mode: true
+##  endpoint: http://172.31.50.121:9010   #http://127.0.0.1:9000
+##  access-key: AKIAIOSFODNN7EXAMPLE       D99KGE6ZTQXSATTJWU24
+#  access-key: admin
+##  secret-key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY      QyVqGnhIQQE734UYSUFlGOZViE6+ZlDEfUG3NjhJ
+#  secret-key: minio12345
+#  bucket-name: bladex                                                             #存储桶名

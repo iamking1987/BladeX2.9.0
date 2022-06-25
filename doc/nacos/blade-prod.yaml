@@ -32,7 +32,8 @@ blade:
     enabled: false
     ##将docker脚本部署的redis服务映射为宿主机ip
     ##生产环境推荐使用阿里云高可用redis服务并设置密码
-    address: redis://192.168.0.157:3379
+    #address: redis://192.168.0.157:3379
+    address: redis://172.31.50.121:3379
   #通用开发生产环境数据库地址(特殊情况可在对应的子工程里配置覆盖)
   datasource:
     prod:

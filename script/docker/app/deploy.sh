@@ -34,8 +34,11 @@ port(){
 	firewall-cmd --add-port=9411/tcp --permanent
 	#prometheus
 	firewall-cmd --add-port=9090/tcp --permanent
+
 	#flowdesign
-	firewall-cmd --add-port=9999/tcp --permanent
+	#firewall-cmd --add-port=9999/tcp --permanent
+
+
 	#swagger
 	firewall-cmd --add-port=18000/tcp --permanent
 	#firewalld
@@ -45,52 +48,53 @@ port(){
 ##放置挂载文件
 mount(){
 	#挂载配置文件
-	if test ! -f "/docker/nginx/api/nginx.conf" ;then
-		mkdir -p /docker/nginx/api
-		cp nginx/api/nginx.conf /docker/nginx/api/nginx.conf
-	fi
-	if test ! -f "/docker/nginx/web/nginx.conf" ;then
-		mkdir -p /docker/nginx/web
-		cp nginx/web/nginx.conf /docker/nginx/web/nginx.conf
-		cp -r nginx/web/html /docker/nginx/web/html
-	fi
+#	if test ! -f "/docker/nginx/api/nginx.conf" ;then
+#		mkdir -p /docker/nginx/api
+#		cp nginx/api/nginx.conf /docker/nginx/api/nginx.conf
+#	fi
+#	if test ! -f "/docker/nginx/web/nginx.conf" ;then
+#		mkdir -p /docker/nginx/web
+#		cp nginx/web/nginx.conf /docker/nginx/web/nginx.conf
+#		cp -r nginx/web/html /docker/nginx/web/html
+#	fi
 	if test ! -f "/docker/nacos/init.d/custom.properties" ;then
 		mkdir -p /docker/nacos/init.d
 		cp nacos/init.d/custom.properties /docker/nacos/init.d/custom.properties
 	fi
-	if test ! -f "/docker/prometheus/prometheus.yml" ;then
-		mkdir -p /docker/prometheus
-		cp prometheus/config/prometheus.yml /docker/prometheus/prometheus.yml
-	fi
-	if test ! -f "/docker/prometheus/rules/alert_rules.yml" ;then
-		mkdir -p /docker/prometheus/rules
-		cp prometheus/config/alert_rules.yml /docker/prometheus/rules/alert_rules.yml
-	fi
-	if test ! -f "/docker/grafana/grafana.ini" ;then
-		mkdir -p /docker/grafana
-		cp prometheus/config/grafana.ini /docker/grafana/grafana.ini
-	fi
-	if test ! -f "/docker/alertmanager/alertmanager.yml" ;then
-		mkdir -p /docker/alertmanager
-		cp prometheus/config/alertmanager.yml /docker/alertmanager/alertmanager.yml
-	fi
-	if test ! -f "/docker/alertmanager/templates/wechat.tmpl" ;then
-		mkdir -p /docker/alertmanager/templates
-		cp prometheus/config/wechat.tmpl /docker/alertmanager/templates/wechat.tmpl
-	fi
-	if test ! -f "/docker/webhook_dingtalk/dingtalk.yml" ;then
-		mkdir -p /docker/webhook_dingtalk
-		cp prometheus/config/dingtalk.yml /docker/webhook_dingtalk/dingtalk.yml
-	fi
+#	if test ! -f "/docker/prometheus/prometheus.yml" ;then
+#		mkdir -p /docker/prometheus
+#		cp prometheus/config/prometheus.yml /docker/prometheus/prometheus.yml
+#	fi
+#	if test ! -f "/docker/prometheus/rules/alert_rules.yml" ;then
+#		mkdir -p /docker/prometheus/rules
+#		cp prometheus/config/alert_rules.yml /docker/prometheus/rules/alert_rules.yml
+#	fi
+#	if test ! -f "/docker/grafana/grafana.ini" ;then
+#		mkdir -p /docker/grafana
+#		cp prometheus/config/grafana.ini /docker/grafana/grafana.ini
+#	fi
+#	if test ! -f "/docker/alertmanager/alertmanager.yml" ;then
+#		mkdir -p /docker/alertmanager
+#		cp prometheus/config/alertmanager.yml /docker/alertmanager/alertmanager.yml
+#	fi
+#	if test ! -f "/docker/alertmanager/templates/wechat.tmpl" ;then
+#		mkdir -p /docker/alertmanager/templates
+#		cp prometheus/config/wechat.tmpl /docker/alertmanager/templates/wechat.tmpl
+#	fi
+#	if test ! -f "/docker/webhook_dingtalk/dingtalk.yml" ;then
+#		mkdir -p /docker/webhook_dingtalk
+#		cp prometheus/config/dingtalk.yml /docker/webhook_dingtalk/dingtalk.yml
+#	fi
 	#增加目录权限
-	chmod -R 777 /docker/prometheus
-	chmod -R 777 /docker/grafana
-	chmod -R 777 /docker/alertmanager
+#	chmod -R 777 /docker/prometheus
+#	chmod -R 777 /docker/grafana
+#	chmod -R 777 /docker/alertmanager
 }
 
 #启动基础模块
 base(){
-	docker-compose up -d nacos sentinel seata-server web-nginx blade-nginx blade-redis
+	docker-compose up -d nacos
+#	sentinel seata-server web-nginx blade-nginx blade-redis
 }
 
 #启动监控模块
@@ -98,9 +102,9 @@ monitor(){
 	docker-compose up -d blade-admin blade-turbine
 }
 
-#启动程序模块
+#启动程序模块 此处删除了blade-flow-design blade-flow
 modules(){
-	docker-compose up -d blade-gateway1 blade-gateway2 blade-auth1 blade-auth2 blade-swagger blade-report blade-user blade-desk blade-system blade-log blade-flow blade-flow-design blade-resource
+	docker-compose up -d blade-gateway1 blade-gateway2 blade-auth1 blade-auth2 blade-swagger blade-report blade-user blade-desk blade-system blade-log   blade-resource blade-workflow
 }
 
 #启动普罗米修斯模块

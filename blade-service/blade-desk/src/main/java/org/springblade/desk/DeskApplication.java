@@ -20,12 +20,14 @@ import org.springblade.core.cloud.feign.EnableBladeFeign;
 import org.springblade.core.launch.BladeApplication;
 import org.springblade.core.launch.constant.AppConstant;
 import org.springframework.cloud.client.SpringCloudApplication;
+import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 /**
  * Desk启动器
  *
  * @author Chill
  */
+@EnableSwagger2WebMvc
 @EnableBladeFeign
 @SpringCloudApplication
 // @SeataCloudApplication

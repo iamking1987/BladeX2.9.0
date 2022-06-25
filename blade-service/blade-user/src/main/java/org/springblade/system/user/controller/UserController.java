@@ -34,6 +34,7 @@ import org.springblade.core.mp.support.Query;
 import org.springblade.core.redis.cache.BladeRedis;
 import org.springblade.core.secure.BladeUser;
 import org.springblade.core.secure.annotation.PreAuth;
+import org.springblade.core.secure.constant.AuthConstant;
 import org.springblade.core.secure.utils.AuthUtil;
 import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
@@ -42,6 +43,8 @@ import org.springblade.core.tool.constant.RoleConstant;
 import org.springblade.core.tool.utils.DateUtil;
 import org.springblade.core.tool.utils.Func;
 import org.springblade.core.tool.utils.StringPool;
+import org.springblade.system.entity.Dept;
+import org.springblade.system.user.cache.UserCache;
 import org.springblade.system.user.entity.User;
 import org.springblade.system.user.excel.UserExcel;
 import org.springblade.system.user.excel.UserImporter;
@@ -54,9 +57,8 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.text.Collator;
+import java.util.*;
 
 import static org.springblade.core.cache.constant.CacheConstant.USER_CACHE;
 
@@ -235,6 +237,7 @@ public class UserController {
 	public R importUser(MultipartFile file, Integer isCovered) {
 		UserImporter userImporter = new UserImporter(userService, isCovered == 1);
 		ExcelUtil.save(file, userImporter, UserExcel.class);
+
 		return R.success("操作成功");
 	}
 
@@ -328,5 +331,35 @@ public class UserController {
 		userList.forEach(user -> bladeRedis.del(CacheNames.tenantKey(user.getTenantId(), CacheNames.USER_FAIL_KEY, user.getAccount())));
 		return R.success("操作成功");
 	}
+
+
+
+
+	private static int chineseCompare(User o1,User o2){
+		Collator collator = Collator.getInstance(java.util.Locale.CHINA);
+		return collator.compare(o1.getRealName(), o2.getRealName());
+	}
+	/**
+	 * 下拉数据源
+	 */
+	@PreAuth(AuthConstant.PERMIT_ALL)
+	@GetMapping("/select")
+	@ApiOperationSupport(order = 20)
+	@ApiOperation(value = "下拉数据源", notes = "传入id集合")
+	public R<List<UserVO>> select() {
+		List<User> userList = userService.list();
+		//汉字排序
+		Collections.sort(userList,new Comparator<User>() {
+                 @Override
+                 public int compare(User u1, User u2) {
+                     Collator collator = Collator.getInstance(java.util.Locale.CHINA);
+                     return chineseCompare(u1, u2);
+                  };
+		});
+		return R.data(UserWrapper.build().listVO(userList));
+	}
+
+
+
 
 }

@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.support.Kv;
+import org.springblade.modules.blog.entity.Blog;
+import org.springblade.modules.blog.feign.BlogClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +29,14 @@ import java.util.Map;
 @Api(value = "首页", tags = "首页")
 public class DashBoardController {
 
+	private BlogClient client;
+
+	@GetMapping("/dashboard/blog-detail")
+	public R blogDtail(Long id){
+		R<Blog> result = client.detail(id);
+		return result;
+	}
+
 	/**
 	 * 活跃用户
 	 */
@@ -42,7 +52,7 @@ public class DashBoardController {
 		map1.put("user", Kv.create().set("name", "曲丽丽").set("avatar", "https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"));
 		map1.put("group", Kv.create().set("name", "高逼格设计天团").set("link", "http://github.com/"));
 		map1.put("project", Kv.create().set("name", "六月迭代").set("link", "http://github.com/"));
-		map1.put("template", "在 @{group} 新建项目 @{project}");
+		map1.put("template", "在 @{group} 新建项目 @{test}");
 		list.add(map1);
 
 		Map<String, Object> map2 = new HashMap<>(16);
@@ -51,7 +61,7 @@ public class DashBoardController {
 		map2.put("user", Kv.create().set("name", "付小小").set("avatar", "https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"));
 		map2.put("group", Kv.create().set("name", "高逼格设计天团").set("link", "http://github.com/"));
 		map2.put("project", Kv.create().set("name", "七月月迭代").set("link", "http://github.com/"));
-		map2.put("template", "在  @{group} 新建项目 @{project}");
+		map2.put("template", "在  @{group} 新建项目 @{test}");
 		list.add(map2);
 
 		return R.data(list);
@@ -70,7 +80,7 @@ public class DashBoardController {
 		map.put("user", Kv.create().set("name", "曲丽丽").set("avatar", "https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"));
 		map.put("group", Kv.create().set("name", "高逼格设计天团").set("link", "http://github.com/"));
 		map.put("project", Kv.create().set("name", "六月迭代").set("link", "http://github.com/"));
-		map.put("template", "在 @{group} 新建项目 @{project}");
+		map.put("template", "在 @{group} 新建项目 @{test}");
 		return R.data(map);
 	}
 

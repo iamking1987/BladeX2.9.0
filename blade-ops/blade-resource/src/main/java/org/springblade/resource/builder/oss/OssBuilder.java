@@ -83,8 +83,8 @@ public class OssBuilder {
 	 * @return OssTemplate
 	 */
 	public OssTemplate template(String code) {
-		String tenantId = AuthUtil.getTenantId();
-		Oss oss = getOss(tenantId, code);
+		String tenantId = AuthUtil.getTenantId();   //获取租户Id
+		Oss oss = getOss(tenantId, code);           //根据租户Id和资源编号获取Oss存储实体
 		Oss ossCached = ossPool.get(tenantId);
 		OssTemplate template = templatePool.get(tenantId);
 		// 若为空或者不一致，则重新加载
@@ -123,10 +123,12 @@ public class OssBuilder {
 	 * @return Oss
 	 */
 	public Oss getOss(String tenantId, String code) {
+
+
 		String key = tenantId;
-		LambdaQueryWrapper<Oss> lqw = Wrappers.<Oss>query().lambda().eq(Oss::getTenantId, tenantId);
+		LambdaQueryWrapper<Oss> lqw = Wrappers.<Oss>query().lambda().eq(Oss::getTenantId, tenantId);   //查询条件：租户Id加入
 		// 获取传参的资源编号并查询，若有则返回，若没有则调启用的配置
-		String ossCode = StringUtil.isBlank(code) ? WebUtil.getParameter(OSS_PARAM_KEY) : code;
+		String ossCode = StringUtil.isBlank(code) ? WebUtil.getParameter(OSS_PARAM_KEY) : code;  //如果没有传入，从请求中获取code
 		if (StringUtil.isNotBlank(ossCode)) {
 			key = key.concat(StringPool.DASH).concat(ossCode);
 			lqw.eq(Oss::getOssCode, ossCode);

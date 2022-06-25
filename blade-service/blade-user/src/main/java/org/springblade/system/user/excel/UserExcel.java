@@ -39,10 +39,10 @@ public class UserExcel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@ColumnWidth(15)
-	@ExcelProperty("租户编号")
-	private String tenantId;
+	@ExcelProperty("租户编号")   //必要的一个注解，注解中有三个参数value,index,converter分别代表列明，列序号，数据转换方式类
+	private String tenantId;   //value和index只能二选一，通常不用设置converter
 
-	@ExcelIgnore
+	@ExcelIgnore   //不将该字段转换成Excel
 	@ExcelProperty("用户平台")
 	private String userType;
 

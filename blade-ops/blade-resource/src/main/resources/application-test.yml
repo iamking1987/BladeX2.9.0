@@ -4,3 +4,16 @@ spring:
     url: ${blade.datasource.test.url}
     username: ${blade.datasource.test.username}
     password: ${blade.datasource.test.password}
+
+oss:
+  enabled: true                                                                   #是否开启OSS配置
+  name: minio                                                                     #开启OSS类型： minio alioss qiniu tencentcos
+  tenant-mode: true
+  #  endpoint: http://172.31.50.121:9010   #http://127.0.0.1:9000
+  endpoint: ${oss.endpoint}   #http://127.0.0.1:9000
+  access-key: admin
+  secret-key: minio12345
+  bucket-name: bladex
+
+  deployServerIp: ${oss.deployServerIp}  #'172.31.50.121'
+  loginServerIp:  ${oss.loginServerIp}

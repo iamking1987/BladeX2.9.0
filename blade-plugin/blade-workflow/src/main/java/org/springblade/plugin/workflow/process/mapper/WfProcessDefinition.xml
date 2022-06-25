@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.flowable.engine.impl.persistence.entity.ProcessDefinitionEntityImpl">
+
+    <select id="selectWfProcessDefinitionsByQueryCriteria"
+            parameterType="org.springblade.plugin.workflow.core.query.WfProcessDefinitionQuery" resultMap="processDefinitionResultMap">
+        <if test="firstResult != null and firstResult &gt;= 0">${limitBefore}</if>
+        select RES.*
+        <if test="firstResult != null and firstResult &gt;= 0">${limitBetween}</if>
+        <include refid="selectWfProcessDefinitionsByQueryCriteriaSql"/>
+        ${orderBy}
+        <if test="firstResult != null and firstResult &gt;= 0">${limitAfter}</if>
+    </select>
+
+    <select id="selectWfProcessDefinitionCountByQueryCriteria"
+            parameterType="org.springblade.plugin.workflow.core.query.WfProcessDefinitionQuery" resultType="long">
+        select count(RES.ID_)
+        <include refid="selectWfProcessDefinitionsByQueryCriteriaSql"/>
+    </select>
+
+    <sql id="selectWfProcessDefinitionsByQueryCriteriaSql">
+        from ${prefix}ACT_RE_PROCDEF RES
+        <where>
+            <if test="id != null">
+                RES.ID_ = #{id}
+            </if>
+            <if test="ids != null and ids">
+                and RES.ID_ in
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="category != null">
+                and RES.CATEGORY_ = #{category}
+            </if>
+            <if test="categoryLike != null">
+                and RES.CATEGORY_ like #{categoryLike}${wildcardEscapeClause}
+            </if>
+            <if test="categoryNotEquals != null">
+                and ( RES.CATEGORY_ &lt;&gt; #{categoryNotEquals} OR RES.CATEGORY_ is null )
+            </if>
+            <if test="name != null">
+                and RES.NAME_ = #{name}
+            </if>
+            <if test="nameLike != null">
+                and RES.NAME_ like #{nameLike}${wildcardEscapeClause}
+            </if>
+            <if test="key != null">
+                and RES.KEY_ = #{key}
+            </if>
+            <if test="keyLike != null">
+                and RES.KEY_ like #{keyLike}${wildcardEscapeClause}
+            </if>
+            <if test="resourceName != null">
+                and RES.RESOURCE_NAME_ = #{resourceName}
+            </if>
+            <if test="resourceNameLike != null">
+                and RES.RESOURCE_NAME_ like #{resourceNameLike}${wildcardEscapeClause}
+            </if>
+            <if test="version != null">
+                and RES.VERSION_ = #{version}
+            </if>
+            <if test="versionGt != null">
+                and RES.VERSION_ &gt; #{versionGt}
+            </if>
+            <if test="versionGte != null">
+                and RES.VERSION_ &gt;= #{versionGte}
+            </if>
+            <if test="versionLt != null">
+                and RES.VERSION_ &lt; #{versionLt}
+            </if>
+            <if test="versionLte != null">
+                and RES.VERSION_ &lt;= #{versionLte}
+            </if>
+            <if test="deploymentId != null">
+                and RES.DEPLOYMENT_ID_ = #{deploymentId}
+            </if>
+            <if test="deploymentIds != null and !deploymentIds.isEmpty()">
+                and RES.DEPLOYMENT_ID_ in
+                <foreach item="item" index="index" collection="deploymentIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="latest">
+                and RES.VERSION_ = (select max(VERSION_) from ${prefix}ACT_RE_PROCDEF where KEY_ = RES.KEY_
+                <if test="tenantId != null">
+                    and TENANT_ID_ = #{tenantId}
+                </if>
+                <if test="tenantIdLike != null">
+                    and TENANT_ID_ like #{tenantIdLike}${wildcardEscapeClause}
+                </if>
+                <if test="withoutTenantId">
+                    and (TENANT_ID_ = '' or TENANT_ID_ is null)
+                </if>
+                <if test="tenantId == null and tenantIdLike == null and !withoutTenantId">
+                    and ( (TENANT_ID_ IS NOT NULL and TENANT_ID_ = RES.TENANT_ID_) or (TENANT_ID_ IS NULL and
+                    RES.TENANT_ID_ IS NULL) )
+                </if>
+                )
+            </if>
+            <if test="suspensionState != null">
+                and (RES.SUSPENSION_STATE_ = #{suspensionState.stateCode})
+            </if>
+            <if test="tenantId != null">
+                and RES.TENANT_ID_ = #{tenantId}
+            </if>
+            <if test="tenantIdLike != null">
+                and RES.TENANT_ID_ like #{tenantIdLike}${wildcardEscapeClause}
+            </if>
+            <if test="withoutTenantId">
+                and (RES.TENANT_ID_ = '' or RES.TENANT_ID_ is null)
+            </if>
+            <if test="engineVersion != null">
+                and RES.ENGINE_VERSION_ = #{engineVersion}
+            </if>
+            <if test="eventSubscriptionType != null">
+                and exists(select 1 from ${prefix}ACT_RU_EVENT_SUBSCR EVT where RES.ID_ = EVT.CONFIGURATION_ and
+                EVT.EVENT_TYPE_ = #{eventSubscriptionType} and EVT.EVENT_NAME_ = #{eventSubscriptionName})
+            </if>
+            <if test="platform != null">
+                AND EXISTS (select ID_ from ${prefix}ACT_RU_IDENTITYLINK IDN where IDN.PROC_DEF_ID_ = RES.ID_ and IDN.GROUP_ID_ = #{platform})
+            </if>
+            <if test="includeAuthorization">
+                AND
+                <trim prefix="(" prefixOverrides="OR" suffix=")">
+                    <if test="authorizationUserId != null">
+                        exists (select ID_ from ${prefix}ACT_RU_IDENTITYLINK IDN where IDN.PROC_DEF_ID_ = RES.ID_ and
+                        IDN.USER_ID_ = #{authorizationUserId})
+                    </if>
+                    <if test="authorizationGroups != null &amp;&amp; authorizationGroups.size() &gt; 0">
+                        OR exists (select ID_ from ${prefix}ACT_RU_IDENTITYLINK IDN where IDN.PROC_DEF_ID_ = RES.ID_ and
+                        IDN.GROUP_ID_ IN
+                        <foreach item="group" index="index" collection="authorizationGroups"
+                                 open="(" separator="," close=")">
+                            #{group}
+                        </foreach>
+                        )
+                    </if>
+                </trim>
+            </if>
+        </where>
+    </sql>
+</mapper>

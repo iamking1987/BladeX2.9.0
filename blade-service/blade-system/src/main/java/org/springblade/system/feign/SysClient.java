@@ -163,7 +163,8 @@ public class SysClient implements ISysClient {
 	@Override
 	@GetMapping(TENANT_ID)
 	public R<Tenant> getTenant(String tenantId) {
-		return R.data(tenantService.getByTenantId(tenantId));
+		Tenant tenant = tenantService.getByTenantId(tenantId);
+		return R.data(tenant);
 	}
 
 	@Override

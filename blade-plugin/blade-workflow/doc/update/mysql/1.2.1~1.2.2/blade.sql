@@ -1,0 +1,1 @@
+INSERT INTO `blade_menu` (`id`, `parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`) VALUES (1412667489128562800, 1412666776159797249, 'wf_ops_done', '办结流程', 'menu', '/plugin/workflow/ops/done', 'iconfont iconicon_exchange', 1, 1, 0, 1, '', 0);

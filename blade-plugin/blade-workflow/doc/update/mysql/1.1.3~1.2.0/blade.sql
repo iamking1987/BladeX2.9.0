@@ -1,0 +1,2 @@
+INSERT INTO `blade_menu` (`id`, `parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`) VALUES (1412667489128562705, 1412667489128562690, 'wf_ops_add_multi_instance', '加签', 'menu', NULL, NULL, 1, 2, 0, 1, NULL, 0);
+INSERT INTO `blade_menu` (`id`, `parent_id`, `code`, `name`, `alias`, `path`, `source`, `sort`, `category`, `action`, `is_open`, `remark`, `is_deleted`) VALUES (1412667489128562706, 1412667489128562690, 'wf_ops_delete_multi_instance', '减签', 'menu', NULL, NULL, 1, 2, 0, 1, NULL, 0);

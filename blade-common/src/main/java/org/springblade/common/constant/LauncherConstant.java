@@ -26,7 +26,10 @@ import static org.springblade.core.launch.constant.AppConstant.APPLICATION_NAME_
  * @author Chill
  */
 public interface LauncherConstant {
-
+	/**
+	 * demo
+	 */
+	String APPLICATION_DEMO_NAME = APPLICATION_NAME_PREFIX + "demo";
 	/**
 	 * xxljob
 	 */
@@ -40,7 +43,9 @@ public interface LauncherConstant {
 	/**
 	 * nacos dev 地址
 	 */
-	String NACOS_DEV_ADDR = "127.0.0.1:8848";
+//	String NACOS_DEV_ADDR = "127.0.0.1:8848";
+//	String NACOS_DEV_ADDR = "172.30.0.48:8848";
+	String NACOS_DEV_ADDR = "172.31.50.121:8848";
 
 	/**
 	 * nacos prod 地址
@@ -50,6 +55,7 @@ public interface LauncherConstant {
 	/**
 	 * nacos test 地址
 	 */
+//	String NACOS_TEST_ADDR = "172.30.0.48:8848";
 	String NACOS_TEST_ADDR = "172.30.0.48:8848";
 
 	/**
@@ -70,7 +76,8 @@ public interface LauncherConstant {
 	/**
 	 * seata dev 地址
 	 */
-	String SEATA_DEV_ADDR = "127.0.0.1:8091";
+//	String SEATA_DEV_ADDR = "127.0.0.1:8091";
+	String SEATA_DEV_ADDR = "172.30.0.120:8091";
 
 	/**
 	 * seata prod 地址
@@ -100,17 +107,21 @@ public interface LauncherConstant {
 	/**
 	 * elk dev 地址
 	 */
-	String ELK_DEV_ADDR = "127.0.0.1:9000";
+//	String ELK_DEV_ADDR = "127.0.0.1:9000";
+//	String ELK_DEV_ADDR = "192.168.111.70:9000";
+	String ELK_DEV_ADDR = "172.31.50.121:9000";
 
 	/**
 	 * elk prod 地址
 	 */
-	String ELK_PROD_ADDR = "172.30.0.72:9000";
+//	String ELK_PROD_ADDR = "172.30.0.72:9000";
+	String ELK_PROD_ADDR = "172.31.50.121:9000";
 
 	/**
 	 * elk test 地址
 	 */
-	String ELK_TEST_ADDR = "172.30.0.72:9000";
+//	String ELK_TEST_ADDR = "172.30.0.72:9000";
+	String ELK_TEST_ADDR = "172.31.50.121:9000";
 
 	/**
 	 * seata file模式

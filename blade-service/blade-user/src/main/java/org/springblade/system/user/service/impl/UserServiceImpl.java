@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springblade.common.constant.CommonConstant;
 import org.springblade.common.constant.TenantConstant;
 import org.springblade.core.log.exception.ServiceException;
@@ -66,6 +67,7 @@ import static org.springblade.common.constant.CommonConstant.DEFAULT_PARAM_PASSW
  *
  * @author Chill
  */
+@Slf4j
 @Service
 @AllArgsConstructor
 public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implements IUserService {
@@ -154,6 +156,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 			queryWrapper.like(User::getName, user.getName());
 		}
 		if (StringUtil.isNotBlank(user.getDeptName())) {
+
 			String deptIds = SysCache.getDeptIdsByFuzzy(AuthUtil.getTenantId(), user.getDeptName());
 			if (StringUtil.isNotBlank(deptIds)) {
 				queryWrapper.and(wrapper -> {
@@ -188,6 +191,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
 	@Override
 	public UserInfo userInfo(String tenantId, String account) {
+		log.info("++++++++++正在获取用户信息+++++++++++++++++");
 		User user = baseMapper.getUser(tenantId, account);
 		return buildUserInfo(user);
 	}

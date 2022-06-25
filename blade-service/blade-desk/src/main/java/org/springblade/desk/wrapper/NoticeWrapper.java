@@ -24,6 +24,10 @@ import org.springblade.desk.vo.NoticeVO;
 import org.springblade.system.cache.DictCache;
 import org.springblade.system.enums.DictEnum;
 
+import java.util.Objects;
+
+import org.springblade.core.mp.support.SqlKeyword;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -47,7 +51,7 @@ public class NoticeWrapper extends BaseEntityWrapper<Notice, NoticeVO> {
 	}
 
 	/**
-	 * 查询条件处理
+	 * 查询条件处理    模糊查询参考
 	 */
 	public void noticeQuery(Map<String, Object> notice) {
 		// 此场景仅在 pg数据库 map类型传参的情况下需要处理，entity传参已经包含数据类型，则无需关心

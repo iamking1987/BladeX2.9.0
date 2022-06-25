@@ -43,3 +43,18 @@ monitor:
     access-token: xxx
     # 如果采用密钥形式，需要添加，否则需要去掉该参数
     secret:
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+
+logging:
+  file:
+    name: /application/applogs/admin.log

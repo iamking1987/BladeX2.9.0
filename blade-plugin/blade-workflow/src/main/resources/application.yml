@@ -1,0 +1,49 @@
+#服务器端口
+server:
+  port: 8009
+
+spring:
+  jackson:
+    default-property-inclusion: non_null
+
+#flowable配置
+flowable:
+  activity-font-name: \u5B8B\u4F53
+  label-font-name: \u5B8B\u4F53
+  annotation-font-name: \u5B8B\u4F53
+  check-process-definitions: false
+  database-schema-update: true # 升级flowable 表自动更新
+  async-executor-activate: false # 定时任务
+  app:
+    enabled: false
+  cmmn:
+    enabled: false
+  idm:
+    enabled: false
+  dmn:
+    enabled: false
+  form:
+    enabled: false
+  content:
+    enabled: false
+  eventregistry:
+    enabled: false
+  custom-mybatis-x-m-l-mappers:
+    - org/springblade/plugin/workflow/process/mapper/WfProcessDefinition.xml
+    - org/springblade/plugin/workflow/process/mapper/WfHistoricTaskInstance.xml
+
+
+
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+logging:
+  file:
+    name: logs/wf.log

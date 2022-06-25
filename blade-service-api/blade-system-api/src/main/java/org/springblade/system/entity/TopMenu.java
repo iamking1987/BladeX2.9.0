@@ -33,6 +33,7 @@ import org.springblade.core.tenant.mp.TenantEntity;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "TopMenu对象", description = "顶部菜单表")
 public class TopMenu extends TenantEntity {
+//public class TopMenu  {
 
 	private static final long serialVersionUID = 1L;
 

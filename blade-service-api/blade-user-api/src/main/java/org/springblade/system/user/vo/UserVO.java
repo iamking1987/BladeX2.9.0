@@ -77,6 +77,9 @@ public class UserVO extends User {
 	 */
 	private String sexName;
 
+
+	private String realName;
+
 	/**
 	 * 拓展信息
 	 */

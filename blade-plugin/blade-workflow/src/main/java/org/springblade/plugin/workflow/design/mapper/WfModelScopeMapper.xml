@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.plugin.workflow.design.mapper.WfModelScopeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="wfModelScopeResultMap" type="org.springblade.plugin.workflow.design.entity.WfModelScope">
+        <result column="id" property="id"/>
+        <result column="model_id" property="modelId"/>
+        <result column="model_key" property="modelKey"/>
+        <result column="type" property="type"/>
+        <result column="val" property="val"/>
+        <result column="text" property="text"/>
+    </resultMap>
+
+</mapper>

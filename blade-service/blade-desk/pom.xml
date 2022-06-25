@@ -32,6 +32,11 @@
         </dependency>
         <dependency>
             <groupId>org.springblade</groupId>
+            <artifactId>blade-demo-api</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springblade</groupId>
             <artifactId>blade-user-api</artifactId>
             <version>${bladex.project.version}</version>
         </dependency>
@@ -59,6 +64,11 @@
             <groupId>org.springblade</groupId>
             <artifactId>blade-starter-transaction</artifactId>
         </dependency>-->
+        <dependency>
+            <groupId>org.springblade</groupId>
+            <artifactId>blade-demo-api</artifactId>
+            <version>${bladex.project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

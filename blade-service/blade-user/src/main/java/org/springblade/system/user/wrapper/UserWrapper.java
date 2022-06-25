@@ -53,6 +53,7 @@ public class UserWrapper extends BaseEntityWrapper<User, UserVO> {
 		userVO.setPostName(Func.join(postName));
 		userVO.setSexName(DictCache.getValue(DictEnum.SEX, user.getSex()));
 		userVO.setUserTypeName(DictCache.getValue(DictEnum.USER_TYPE, user.getUserType()));
+		userVO.setRealName(user.getRealName());
 		return userVO;
 	}
 

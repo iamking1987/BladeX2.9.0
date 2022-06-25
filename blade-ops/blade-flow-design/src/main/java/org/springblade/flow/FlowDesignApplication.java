@@ -16,6 +16,7 @@
  */
 package org.springblade.flow;
 
+//import org.flowable.ui.common.conf.DevelopmentConfiguration;
 import org.flowable.ui.common.conf.DevelopmentConfiguration;
 import org.flowable.ui.common.rest.idm.remote.RemoteAccountResource;
 import org.springblade.core.launch.BladeApplication;

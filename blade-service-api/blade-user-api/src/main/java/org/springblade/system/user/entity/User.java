@@ -32,6 +32,7 @@ import java.util.Date;
 @TableName("blade_user")
 @EqualsAndHashCode(callSuper = true)
 public class User extends TenantEntity {
+//public class User {
 
 	private static final long serialVersionUID = 1L;
 

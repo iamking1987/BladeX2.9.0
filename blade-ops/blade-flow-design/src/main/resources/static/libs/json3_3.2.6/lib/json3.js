@@ -393,7 +393,7 @@
               if (getDay) {
                 // Manually compute the year, month, date, hours, minutes,
                 // seconds, and milliseconds if the `getUTC*` methods are
-                // buggy. Adapted from @Yaffle's `date-shim` project.
+                // buggy. Adapted from @Yaffle's `date-shim` test.
                 date = floor(value / 864e5);
                 for (year = floor(date / 365.2425) + 1970 - 1; getDay(year + 1, 0) <= date; year++);
                 for (month = floor((date - getDay(year, 0)) / 30.42); getDay(year, month + 1) <= date; month++);

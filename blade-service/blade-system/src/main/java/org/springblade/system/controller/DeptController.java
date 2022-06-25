@@ -36,15 +36,18 @@ import org.springblade.core.tool.utils.Func;
 import org.springblade.system.cache.DictCache;
 import org.springblade.system.entity.Dept;
 import org.springblade.system.enums.DictEnum;
+import org.springblade.system.feign.ISysClient;
 import org.springblade.system.service.IDeptService;
 import org.springblade.system.user.cache.UserCache;
 import org.springblade.system.user.entity.User;
+import org.springblade.system.user.feign.IUserClient;
 import org.springblade.system.vo.DeptVO;
 import org.springblade.system.wrapper.DeptWrapper;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +68,8 @@ public class DeptController extends BladeController {
 
 	private final IDeptService deptService;
 
+	private final IUserClient iUserClient;
+
 	/**
 	 * 详情
 	 */
@@ -72,6 +77,7 @@ public class DeptController extends BladeController {
 	@ApiOperationSupport(order = 1)
 	@ApiOperation(value = "详情", notes = "传入dept")
 	public R<DeptVO> detail(Dept dept) {
+
 		Dept detail = deptService.getOne(Condition.getQueryWrapper(dept));
 		return R.data(DeptWrapper.build().entityVO(detail));
 	}
@@ -167,11 +173,17 @@ public class DeptController extends BladeController {
 	@ApiOperationSupport(order = 8)
 	@ApiOperation(value = "下拉数据源", notes = "传入id集合")
 	public R<List<Dept>> select(Long userId, String deptId) {
+		List<Dept> list =new ArrayList<>();
 		if (Func.isNotEmpty(userId)) {
 			User user = UserCache.getUser(userId);
 			deptId = user.getDeptId();
+
 		}
-		List<Dept> list = deptService.list(Wrappers.<Dept>lambdaQuery().in(Dept::getId, Func.toLongList(deptId)));
+		if(Func.isNotEmpty(deptId)){
+			list = deptService.list(Wrappers.<Dept>lambdaQuery().in(Dept::getId, Func.toLongList(deptId)));
+		}else{
+			list = deptService.list();
+		}
 		return R.data(list);
 	}
 

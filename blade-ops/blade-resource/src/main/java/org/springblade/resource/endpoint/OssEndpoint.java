@@ -19,9 +19,23 @@ package org.springblade.resource.endpoint;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.springblade.core.http.HttpRequest;
+import org.springblade.core.http.LogLevel;
+import org.springblade.core.oss.OssTemplate;
 import org.springblade.core.oss.model.BladeFile;
 import org.springblade.core.oss.model.OssFile;
 import org.springblade.core.secure.annotation.PreAuth;
+import org.springblade.core.secure.utils.AuthUtil;
 import org.springblade.core.tenant.annotation.NonDS;
 import org.springblade.core.tool.api.R;
 import org.springblade.core.tool.constant.RoleConstant;
@@ -30,8 +44,18 @@ import org.springblade.core.tool.utils.Func;
 import org.springblade.resource.builder.oss.OssBuilder;
 import org.springblade.resource.entity.Attach;
 import org.springblade.resource.service.IAttachService;
+import org.springblade.resource.service.IResmapService;
+import org.springblade.resource.util.BladeFileMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Map;
 
 /**
  * 对象存储端点
@@ -45,6 +69,10 @@ import org.springframework.web.multipart.MultipartFile;
 @Api(value = "对象存储端点", tags = "对象存储端点")
 public class OssEndpoint {
 
+
+	private IResmapService resmapService ;
+
+	private final BladeFileMap bladeFileMap;
 	/**
 	 * 对象存储构建类
 	 */
@@ -143,10 +171,24 @@ public class OssEndpoint {
 	 */
 	@SneakyThrows
 	@PostMapping("/put-file")
-	public R<BladeFile> putFile(@RequestParam MultipartFile file) {
-		BladeFile bladeFile = ossBuilder.template().putFile(file.getOriginalFilename(), file.getInputStream());
-		return R.data(bladeFile);
+	public R<BladeFile> putFile(@RequestParam MultipartFile file, HttpServletRequest request) {
+
+
+
+		String originalFilename = file.getOriginalFilename();
+		InputStream inputStream = file.getInputStream();
+		OssTemplate template = ossBuilder.template();
+
+
+		BladeFile bladeFile = template.putFile(originalFilename, inputStream);
+		//解决过网闸地址映射问题
+		BladeFile bladeFile1 = bladeFileMap.toLoginServerFlie(bladeFile);
+
+//		BladeFile bladeFile = ossBuilder.template().putFile(file.getOriginalFilename(), file.getInputStream());
+		return R.data(bladeFile1);
 	}
+
+
 
 	/**
 	 * 上传文件
@@ -159,7 +201,9 @@ public class OssEndpoint {
 	@PostMapping("/put-file-by-name")
 	public R<BladeFile> putFile(@RequestParam String fileName, @RequestParam MultipartFile file) {
 		BladeFile bladeFile = ossBuilder.template().putFile(fileName, file.getInputStream());
-		return R.data(bladeFile);
+		//解决过网闸地址映射问题
+		BladeFile bladeFile1 = bladeFileMap.toLoginServerFlie(bladeFile);
+		return R.data(bladeFile1);
 	}
 
 	/**
@@ -175,7 +219,9 @@ public class OssEndpoint {
 		BladeFile bladeFile = ossBuilder.template().putFile(fileName, file.getInputStream());
 		Long attachId = buildAttach(fileName, file.getSize(), bladeFile);
 		bladeFile.setAttachId(attachId);
-		return R.data(bladeFile);
+		//解决过网闸地址映射问题
+		BladeFile bladeFile1 = bladeFileMap.toLoginServerFlie(bladeFile);
+		return R.data(bladeFile1);
 	}
 
 	/**
@@ -191,7 +237,9 @@ public class OssEndpoint {
 		BladeFile bladeFile = ossBuilder.template().putFile(fileName, file.getInputStream());
 		Long attachId = buildAttach(fileName, file.getSize(), bladeFile);
 		bladeFile.setAttachId(attachId);
-		return R.data(bladeFile);
+		//解决过网闸地址映射问题
+		BladeFile bladeFile1 = bladeFileMap.toLoginServerFlie(bladeFile);
+		return R.data(bladeFile1);
 	}
 
 	/**
@@ -243,4 +291,38 @@ public class OssEndpoint {
 		return R.success("操作成功");
 	}
 
+	@SneakyThrows
+	@GetMapping("/get-file/{d}/{n}")
+	public void getFiles(HttpServletRequest request, HttpServletResponse response, @PathVariable("d") String d, @PathVariable("n") String n) {
+
+		System.out.println("d="+d);
+		System.out.println("n="+n);
+
+		String rightLink = "/oss/endpoint/get-file/"+d+"/"+n;
+		String ossUrl = resmapService.getPrimitiveLinkByUrl(rightLink);
+
+		HttpGet get = new HttpGet(ossUrl);
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		CloseableHttpResponse responseGet = httpClient.execute(get);
+
+		InputStream content = responseGet.getEntity().getContent();
+		byte[] bytes = n.getBytes("UTF-8");
+		String fileName = new String(bytes, "ISO8859-1");
+		//修改响应头content-disposition为attachment 附件形式保存  并设置文件名
+		response.setHeader("content-disposition","attachment;filename="+fileName);
+		ServletOutputStream os = response.getOutputStream();
+		//将输入流写入输出流
+		int len = -1;
+		byte[] buf = new byte[1024];
+		while((len = content.read(buf))!=-1){
+			os.write(buf,0,len);
+		}
+
+		if(httpClient!=null){
+			httpClient.close();
+		}
+		if(responseGet!=null){
+			responseGet.close();
+		}
+	}
 }

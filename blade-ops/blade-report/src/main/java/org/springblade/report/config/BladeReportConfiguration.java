@@ -34,10 +34,10 @@ public class BladeReportConfiguration {
 
 	/**
 	 * 自定义报表可选数据源
-	 */
-	@Bean
-	public ReportDataSource reportDataSource(DataSource dataSource) {
-		return new ReportDataSource(dataSource);
+		 */
+@Bean
+public ReportDataSource reportDataSource(DataSource dataSource) {
+	return new ReportDataSource(dataSource);
 	}
 
-}
+	}

@@ -33,6 +33,7 @@ import org.springblade.core.tenant.mp.TenantEntity;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "Oss对象", description = "Oss对象")
 public class Oss extends TenantEntity {
+//public class Oss {
 
 	private static final long serialVersionUID = 1L;
 	/**

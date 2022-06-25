@@ -1,0 +1,6 @@
+#数据源配置
+spring:
+  datasource:
+    url: ${blade.datasource.workflow.prod.url}
+    username: ${blade.datasource.workflow.prod.username}
+    password: ${blade.datasource.workflow.prod.password}

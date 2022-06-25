@@ -1,0 +1,9 @@
+#数据源配置
+spring:
+  datasource:
+#    url: ${blade.datasource.workflow.dev.url}
+#    username: ${blade.datasource.workflow.dev.username}
+#    password: ${blade.datasource.workflow.dev.password}
+    url: jdbc:mysql://172.31.50.121:3306/bladex_workflow?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&tinyInt1isBit=false&allowMultiQueries=true&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
+    username: root
+    password: password

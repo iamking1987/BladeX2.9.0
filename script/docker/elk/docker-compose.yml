@@ -64,7 +64,7 @@ services:
     volumes:
       - ./kibana/conf/kibana.yml:/usr/share/kibana/config/kibana.yml
     environment:
-      - elasticsearch.hosts=http://es-master:9200
+      - elasticsearch.hosts=http://es-master:19200
     depends_on:
       - es-master
       - es-slave1
@@ -83,7 +83,7 @@ services:
     volumes:
       - ./filebeat/conf/filebeat.yml:/usr/share/filebeat/filebeat.yml
       # 映射到容器中[作为数据源]
-      - ./logs:/home/project/elk/logs
+      - ./logs:/home/test/elk/logs
       - ./filebeat/logs:/usr/share/filebeat/logs
       - ./filebeat/data:/usr/share/filebeat/data
     # 将指定容器连接到当前连接，可以设置别名，避免ip方式导致的容器重启动态改变的无法连接情况
